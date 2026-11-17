@@ -1,0 +1,22 @@
+# Obsidian workspace & volatile state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspaces.json
+.obsidian/cache
+.trash/
+
+# OS & editor artifacts
+.DS_Store
+Thumbs.db
+
+# Optional static build outputs (e.g., Quartz v4)
+public/
+.quartz-cache/
+node_modules/
+
+# Secrets & local environment files
+.env
+.env.*
+*.pem
+*.key
+
