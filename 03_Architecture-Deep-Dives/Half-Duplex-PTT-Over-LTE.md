@@ -1,98 +1,218 @@
 ---
 title: Half-Duplex Push-to-Talk Over LTE
-description: Engineering real two-way radio discipline in software using lease-backed floor locks, 10-33 SOS preemption, Web Audio chirps, scanner hotkey guards, and hybrid LiveKit + offline store-and-forward transport.
+description: Engineering true two-way radio discipline in software using lease-backed floor locks, 10-33 SOS preemption, Zod/Firestore channel isolation, Motorola-style Web Audio chirps, <35ms scanner hotkey guards, and hybrid LiveKit + dead-zone replay.
 tags:
   - architecture
   - ptt
   - webrtc
   - web-audio
   - offline-first
+  - security-erp
 updated: 2026-11-17
 ---
 
 # Half-Duplex Push-to-Talk Over LTE
 
-Physical two-way tactical radios cost `$800–$1,500` per handset, depend on line-of-sight FCC repeaters, and fail across multi-site regional deployments. Yet naive VoIP or full-duplex conference calls fail just as badly on patrol: officers talk over each other ("doubling"), interrupt emergency traffic, burn cellular data continuously, and lose transmissions inside concrete garages.
+Physical two-way tactical radios (P25 / DMR / LMR handsets) cost **`$800–$1,500` per unit**, depend on line-of-sight FCC repeaters, and fail completely when contract security agencies manage dozens of dispersed sites across state lines. Yet naive VoIP apps or full-duplex conference rooms perform poorly in active patrol operations: officers talk over each other ("doubling"), interrupt emergency duress calls, burn cellular bandwidth continuously, and lose critical audio inside subterranean parking decks or concrete stairwells.
 
-To bring authentic radio discipline to LTE smartphones and dispatch browsers inside [Arclight Security](../01_Products/Arclight-Security-ERP.md), we architected a **half-duplex Push-to-Talk (PTT) subsystem** combining server-enforced floor leases, emergency preemption, synthesized radio tones, and a hybrid WebRTC + store-and-forward transport layer.
+Inside [Arclight Security](../01_Products/Arclight-Security-ERP.md), we architected a **half-duplex Push-to-Talk (PTT) communications layer** bringing strict two-way radio discipline to web dispatch consoles and rugged mobile guard handsets over LTE and Wi-Fi.
 
 > [!NOTE]
-> **Implementation Status:** Arclight's PTT domain contracts, Zod channel invariants, Firestore security rules, Motorola-style Web Audio chirps, scanner-safe hotkey filters, and a 13-suite Tier-1 E2E specification are landed in the codebase, driving full Web Command and Mobile Guard rollout.
+> **Implementation Status:** Arclight's PTT domain contracts, Zod channel/role refinements, Firestore channel and transmission security rules, Motorola-style Web Audio tones, `<35ms` scanner-safe hotkey filters, and a **13-suite Tier-1 E2E architectural test specification** are landed in the repository, driving full Web Command and Mobile Guard rollout.
 
 ---
 
-## 1. Lease-Backed Floor Control & Preemption
+## 1. Floor State Machine & Lease-Backed Arbitration
 
-A half-duplex radio channel permits **at most one active speaker** at any instant. Rather than trusting clients to release locks politely, floor ownership uses atomic lease-backed state transitions (`IDLE`, `TRANSMITTING`, `SOS_PREEMPTED`):
+In a half-duplex radio net, **at most one speaker owns the floor** on a channel at any moment. Letting client browsers coordinate floor ownership politely fails under packet loss and concurrent key-ups. Instead, a centralized atomic floor arbitrator manages deterministic transitions across three states (`IDLE`, `TRANSMITTING`, `SOS_PREEMPTED`):
+
+```mermaid
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> TRANSMITTING : "acquireRadioFloor() grants lockId + leaseExpiresAt"
+    TRANSMITTING --> IDLE : "releaseRadioFloor(lockId) or now > leaseExpiresAt"
+    TRANSMITTING --> TRANSMITTING : "DISPATCHER_OVERRIDE preempts activeSpeakerId"
+    IDLE --> SOS_PREEMPTED : "acquireRadioFloor(SOS_10_33)"
+    TRANSMITTING --> SOS_PREEMPTED : "SOS_10_33 preempts active speaker immediately"
+    SOS_PREEMPTED --> IDLE : "Dispatcher/Admin calls resolveRadioSos()"
+```
+
+### Multi-Actor Contention & Preemption Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant A as Guard A (Mobile)
-    participant B as Guard B (Mobile)
-    participant API as Floor Arbitrator
-    participant D as Dispatch Console
+    participant A as Officer A (Mobile)
+    participant B as Officer B (Mobile)
+    participant ARB as Floor Arbitrator (Atomic Lease)
+    participant DISP as Dispatch Console
 
-    A->>API: acquireRadioFloor(SITE_TAC)
-    API-->>A: permitted: true (lockId, leaseExpiresAt)
+    A->>ARB: acquireRadioFloor(SITE_TAC)
+    ARB-->>A: permitted: true (lockId, leaseExpiresAt)
     Note over A: Plays PTT_TALK_PERMIT chirp
 
-    B->>API: acquireRadioFloor(SITE_TAC)
-    API-->>B: permitted: false (FLOOR_BUSY)
+    B->>ARB: acquireRadioFloor(SITE_TAC)
+    ARB-->>B: permitted: false (FLOOR_BUSY, activeSpeaker: Officer A)
     Note over B: Plays PTT_BUSY_BONK tone
 
-    D->>API: acquireRadioFloor(preempt: true, DISPATCHER_OVERRIDE)
-    API-->>D: permitted: true (preemptedPreviousSpeakerId: Guard A)
-    Note over A,D: Plays PTT_PREEMPT_TONE
+    DISP->>ARB: acquireRadioFloor(preempt: true, DISPATCHER_OVERRIDE)
+    ARB-->>DISP: permitted: true (preemptedPreviousSpeakerId: Officer A)
+    Note over A,DISP: Broadcasts PTT_PREEMPT_TONE; Officer A tx closes
 
-    A->>API: acquireRadioFloor(preempt: true, SOS_10_33)
-    API-->>A: permitted: true (sosActive: true, floorStatus: SOS_PREEMPTED)
-    Note over API: Rejects routine traffic with SOS_ACTIVE until Dispatch resolves
+    A->>ARB: acquireRadioFloor(preempt: true, reason: SOS_10_33)
+    ARB-->>A: permitted: true (sosActive: true, floorStatus: SOS_PREEMPTED)
+    Note over ARB: Rejects non-SOS requests with SOS_ACTIVE until Dispatch resolves
 ```
 
-### Key Floor Invariants
-- **Auto-Expiring Leases (`leaseDurationMs`):** If an officer drops LTE signal or loses phone power while holding the mic, the channel never wedges permanently. Once `now > leaseExpiresAt`, the next valid `acquireRadioFloor` request reclaims the floor cleanly.
-- **Deterministic Denials:** Contending callers receive explicit machine-readable reasons (`FLOOR_BUSY`, `SOS_ACTIVE`, `PERMISSION_DENIED`) so UI and audio cues react deterministically.
-- **Role-Gated Overrides vs. `10-33 SOS`:** Only `DISPATCHER`, `SUPERVISOR`, `ADMIN`, or `OWNER` roles may invoke `DISPATCHER_OVERRIDE` to interrupt routine traffic. Any authenticated field officer, however, can trigger **`SOS_10_33`**, which preempts any active speaker immediately, flags `isEmergencySos: true` and `preemptedFloor: true` on the audit transmission, and locks out non-SOS transmissions until dispatch explicitly invokes `resolveRadioSos`.
+### Four Floor Arbitration Invariants
+1. **Auto-Expiring Floor Leases (`leaseDurationMs`):** Every granted talk permit stamps a unique `lockId`, `lockAcquiredAt`, and `leaseExpiresAt`. If a mobile officer loses cellular signal or battery power mid-sentence without issuing `releaseRadioFloor`, the channel never permanently locks. Once `now > leaseExpiresAt`, the next valid `acquireRadioFloor` request automatically reclaims the expired lease.
+2. **Explicit Machine-Readable Denials (`RadioFloorDeniedReason`):** Contending callers never spin blindly; failed acquisitions return deterministic reasons (`FLOOR_BUSY`, `SOS_ACTIVE`, `PERMISSION_DENIED`) driving immediate audio/haptic cues.
+3. **Strict Override Hierarchy (`DISPATCHER_OVERRIDE` vs. `SOS_10_33`):**
+   - Standard `OFFICER` accounts are rejected (`PERMISSION_DENIED`) if they attempt non-emergency overrides against an active speaker.
+   - `DISPATCHER`, `SUPERVISOR`, `ADMIN`, and `OWNER` roles may invoke **`DISPATCHER_OVERRIDE`**, cleanly recording `preemptedPreviousSpeakerId` and `preemptedById` for audit traceability.
+   - Any authenticated field officer can key **`SOS_10_33`**, which preempts active traffic unconditionally, stamps `isEmergencySos: true` and `preemptedFloor: true` on the audit transmission, activates a flashing CAD duress banner, and rejects routine transmissions (`SOS_ACTIVE`) until Dispatch explicitly executes `resolveRadioSos`.
+4. **Lock-Owner Release Guard:** `releaseRadioFloor` verifies matching `lockId` and speaker identity (or Dispatch override) so a stale timeout packet from an older speaker cannot release a newer speaker's active lock.
 
 ---
 
-## 2. Channel Archetypes & `CLIENT_VIEWER` Isolation
+## 2. Channel Archetypes, Zod Refinements & `CLIENT_VIEWER` Exclusion
 
-Radio channels span five operational types:
-- `DISPATCH_ALL_CALL`: Org-wide dispatch broadcast channel.
-- `SITE_TAC`: Site-scoped patrol tactical channel.
-- `SUPERVISOR_COMMAND`: Restricted management channel.
-- `DIRECT_HAIL`: Point-to-point participant-scoped hail.
-- `EMERGENCY_SOS`: High-priority duress channel.
+Arclight models five distinct channel types (`DISPATCH_ALL_CALL`, `SITE_TAC`, `SUPERVISOR_COMMAND`, `DIRECT_HAIL`, `EMERGENCY_SOS`) governed identically by runtime Zod validation (`RadioChannelSchema`) and database security rules:
 
-Two non-negotiable security boundaries are validated both in **Zod schema refinements (`superRefine`)** and in **Firestore security rules**:
-1. **`CLIENT_VIEWER` Total Exclusion:** Client property managers can inspect live patrols and approved incident reports in the Client Portal, but `CLIENT_VIEWER` is strictly forbidden from channel `allowedRoles`, `activeSpeakerRole`, token issuance, and radio UI docks.
-2. **Command Channel Guard:** `SUPERVISOR_COMMAND` rejects `OFFICER` and `HR_PAYROLL` membership at schema validation time, while `DIRECT_HAIL` validates explicit `participantIds`.
+```typescript
+export const RadioChannelSchema = z
+  .object({
+    id: nonEmptyString(),
+    orgId: nonEmptyString(),
+    type: RadioChannelTypeSchema,
+    name: nonEmptyString(),
+    siteId: nonEmptyString().optional(),
+    participantIds: z.array(nonEmptyString()).optional(),
+    liveKitRoomName: nonEmptyString(),
+    allowedRoles: z.array(RoleSchema).min(1),
+    floorStatus: RadioFloorStatusSchema.default('IDLE'),
+    activeLockId: nonEmptyString().optional(),
+    lockExpiresAt: isoDateTime().optional(),
+    sosActive: z.boolean().default(false),
+    // ...
+  })
+  .superRefine((data, ctx) => {
+    if (data.allowedRoles.includes('CLIENT_VIEWER')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['allowedRoles'],
+        message: 'CLIENT_VIEWER is strictly prohibited from radio channel allowedRoles',
+      });
+    }
+    if (data.activeSpeakerRole === 'CLIENT_VIEWER') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['activeSpeakerRole'],
+        message: 'CLIENT_VIEWER cannot hold active radio floor',
+      });
+    }
+    const expectedRoomName = `${data.orgId}:${data.id}`;
+    if (data.liveKitRoomName !== expectedRoomName) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['liveKitRoomName'],
+        message: `liveKitRoomName must equal "${expectedRoomName}"`,
+      });
+    }
+    if (
+      data.type === 'SUPERVISOR_COMMAND' &&
+      (data.allowedRoles.includes('OFFICER') || data.allowedRoles.includes('HR_PAYROLL'))
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['allowedRoles'],
+        message: 'SUPERVISOR_COMMAND channels cannot allow OFFICER or HR_PAYROLL roles',
+      });
+    }
+  });
+```
+
+### Why Multi-Layer `CLIENT_VIEWER` Exclusion Matters
+Client property managers need live patrol transparency, yet tactical dispatch audio routinely contains unverified suspect descriptions, employee phone numbers, and confidential duress dispatches. Enforcing `CLIENT_VIEWER` exclusion across **four independent layers**—Zod schema validation, Firestore/Storage security rules (`/radioChannels`, `/radioTransmissions`), LiveKit token auth guards, and hiding `GlobalRadioDock` in the web client—guarantees zero cross-role audio leakage.
 
 ---
 
-## 3. Synthesized Radio Chirps & Hardware Collision Defense
+## 3. Motorola-Style Web Audio Chirps & Scanner Hotkey Guards
 
-Two-way radio operators rely on muscle-memory audio cues without staring at screens. Our browser synthesizer generates four distinct `AudioContext` profiles directly in code—zero audio asset downloads required:
-- **`PTT_TALK_PERMIT`:** Ascending confirmation chirp scheduled once the server grants the floor lock.
-- **`PTT_ROGER_BEEP`:** Clean end-of-transmission confirmation tone when releasing the mic.
-- **`PTT_BUSY_BONK`:** Immediate low rejection buzz when hitting `FLOOR_BUSY` or `SOS_ACTIVE`.
-- **`PTT_PREEMPT_TONE`:** High-contrast alert tone signaling `DISPATCHER_OVERRIDE` or `SOS_10_33`.
+Field personnel judge radio readiness by **ear**, never by watching spinners on a phone screen while inspecting doors or checking vehicles.
 
-### Preventing Spacebar PTT vs. Barcode Scanner Collisions
-In a dispatch room or armory desk, an operator holds **Spacebar** to talk while also scanning officer badges and firearm barcodes via a USB HID scanner wedge. A naive `keydown` listener would key up the radio microphone every time a barcode contained a space or punctuation burst.
+### Synthesized `AudioContext` Signal Profiles
+Instead of fetching external `.mp3` clips that break under strict CSP/CORS rules or dead zones, Arclight synthesizes four distinct radio cues procedurally via oscillators:
+- **`PTT_TALK_PERMIT`:** Ascending multi-tone confirmation chirp scheduled only *after* `acquireRadioFloor` returns `permitted: true`, preventing officers from speaking before the mic channel opens.
+- **`PTT_ROGER_BEEP`:** Short crisp end-of-transmission chirp played cleanly on floor release.
+- **`PTT_BUSY_BONK`:** Immediate low buzz played when hitting `FLOOR_BUSY` or `SOS_ACTIVE`.
+- **`PTT_PREEMPT_TONE`:** Urgent high-contrast alert signal notifying operators when `DISPATCHER_OVERRIDE` or `SOS_10_33` claims the floor.
 
-Our `isPttHotkeyAllowed` guard rejects Spacebar activation whenever:
-- The event arrives inside a `<35ms` hardware barcode scanner keystroke burst.
-- The key event is an auto-repeat (`event.repeat === true`), inside an IME composition (`isComposing` / `keyCode === 229`), focused on an editable input/textarea/select, or inside an open `<dialog>` modal.
+All synthesis honors persistent mute state (`localStorage` with sandboxed in-memory fallback), auto-resumes suspended contexts inside user interactions, and disconnects audio nodes deterministically in `onended`.
 
-On ruggedized Android field phones, mobile hardware integration binds physical **`KEYCODE_PTT`** down/up events for hold-to-talk and Bluetooth earpiece **`MEDIA_BUTTON_PRESS`** toggles for hands-free patrol use.
+### Protecting Spacebar PTT Against `<35ms` Barcode Scanners
+In an operations desk or armory window, dispatchers use **Spacebar** for hold-to-talk while scanning officer badges and weapon serial barcodes via USB HID scanner wedges. Without active timing isolation, rapid scanner bursts containing spaces or Enter keys key up the radio mic accidentally mid-checkout.
+
+Our **`isPttHotkeyAllowed`** guard explicitly rejects Spacebar PTT activation whenever:
+- Inter-keystroke intervals match a **`<35ms`** hardware scanner burst.
+- The key event is an OS auto-repeat (`event.repeat === true`).
+- Focus resides inside any `<input>`, `<textarea>`, `<select>`, `[contenteditable="true"]`, active IME composition (`isComposing` / `keyCode === 229`), or an open `<dialog>` modal:
+
+```typescript
+export function isPttHotkeyAllowed(
+  e: KeyboardEvent,
+  lastPrintableKeyDeltaMs: number,
+): boolean {
+  if (e.code !== "Space" || e.repeat || e.isComposing || e.keyCode === 229) return false;
+  if (lastPrintableKeyDeltaMs > 0 && lastPrintableKeyDeltaMs < 35) return false;
+  const target = e.target as HTMLElement | null;
+  if (
+    target &&
+    (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(target.tagName) || target.isContentEditable)
+  ) {
+    return false;
+  }
+  return !document.querySelector("dialog[open]");
+}
+```
+
+On ruggedized Android handsets (`Sonim`, `CAT`, `Samsung XCover`), mobile hardware layers bind physical **`KEYCODE_PTT`** down/up hooks directly to hold-to-talk lifecycles and Bluetooth remote speaker-mic / earpiece **`MEDIA_BUTTON_PRESS`** toggles for hands-free patrol communications alongside required Android foreground audio service permissions.
+
+### Database Security Rules Parity for Radio Nets
+Because tactical channels carry active guard locations and emergency calls, `firestore.rules` duplicates the exact role exclusion enforced inside Zod:
+
+```javascript
+match /orgs/{orgId}/radioChannels/{channelId} {
+  allow read: if isOrgMember(orgId)
+    && !isClientViewer(orgId)
+    && hasAnyRole(resource.data.allowedRoles);
+  allow write: if false; // Mutations restricted exclusively to Cloud Function floor arbitrator
+}
+```
+
+Dispatchers and officers read channel status directly, yet floor lock acquisitions (`acquireRadioFloor`) and releases (`releaseRadioFloor`) pass strictly through authenticated Cloud Functions so contending clients can never forge arbitrary lock timestamps.
 
 ---
 
-## 4. Hybrid LiveKit WebRTC SFU & Dead-Zone Store-and-Forward
+## 4. Hybrid LiveKit WebRTC SFU + Dead-Zone Store-and-Forward
 
-Urban concrete basements, elevators, and parking structures break pure live VoIP streams. Arclight bridges both regimes through dual transport modes:
-- **`LIVEKIT_SFU` (Online):** Authenticated callers exchange short-lived scoped tokens tied to deterministic room names (`{orgId}:{channelId}`), streaming low-latency Opus audio with live `AnalyserNode` waveform telemetry and optional archival recording.
-- **`STORE_AND_FORWARD` (RF / LTE Dead Zones):** When `FieldStore` detects an offline partition (`syncStatus: 'OFFLINE'`), holding the PTT bar records a local compressed voice clip (`Opus` or `AAC`) into the offline queue with `queuedOffline: true`. Crucially, the queued entry preserves the original **`recordedAt`** timestamp separately from **`uploadedAt`** upon reconnect and stamps a deterministic **`idempotencyKey`** so flaky network retries never duplicate transmissions in the channel history.
+Concrete parking structures, elevator shafts, and subterranean mechanical rooms break continuous VoIP calls silently. Arclight bridges live dispatch and dead-zone resilience using dual transport modes (`RadioTransportMode`):
+
+| Transport Mode | Network Condition | Audio Pipeline & Evidence Guarantees |
+| :--- | :--- | :--- |
+| **`LIVEKIT_SFU`** | Online LTE / Wi-Fi | Exchanges scoped JWT room tokens (`orgId:channelId`, `canPublish`, `canSubscribe`), streams low-latency Opus WebRTC audio via SFU, drives live `AnalyserNode` waveform meters, and logs Cloud Storage recordings. |
+| **`STORE_AND_FORWARD`** | Offline Partition / Dead Zone | Captures local compressed Opus/AAC voice clips (`<15 MB`) into `FieldStore` marked `queuedOffline: true`. |
+
+### Dead-Zone Replay & Timestamp Guarantees
+1. **True Event Chronology (`recordedAt` vs. `uploadedAt`):** When an officer keys the mic inside an offline garage at `T0`, the mobile store records the exact `recordedAt: T0` timestamp locally. Once cellular coverage returns at `T1` and `FieldStore.syncQueue()` drains, server persistence stamps `uploadedAt >= T1` **without mutating `recordedAt`**—preserving accurate timelines during incident reconstruction.
+2. **Idempotent Retry Replay (`idempotencyKey`):** Each offline voice clip hashes payload + timestamp into a deterministic `idempotencyKey`. If LTE cuts out mid-upload after Cloud Functions already recorded the metadata, replaying the queue item deduplicates cleanly without creating duplicate audio entries.
+
+---
+
+## Tier-1 13-Suite PTT Verification Coverage
+
+The PTT architecture is verified end-to-end across 13 automated Tier-1 TDD suites (`f01` through `f13`) covering:
+- **Contracts & Security (`f01`–`f02`):** Zod schema refinements, composite indexes, and `CLIENT_VIEWER` Firestore/Storage denial tests.
+- **Floor & Preemption (`f03`–`f05`):** Idle lease grants, `FLOOR_BUSY` rejection, stale `leaseDurationMs` expiration, `DISPATCHER_OVERRIDE`, `10-33 SOS` lockouts, and immutable audit flags (`isEmergencySos`, `preemptedFloor`).
+- **Transport, Audio & UI (`f06`–`f10`):** LiveKit scoped token issuance, oscillator lifecycle & mute suppression, `<35ms` scanner-burst Spacebar exclusion, `AnalyserNode` Opus capture, `GlobalRadioDock` `CLIENT_VIEWER` hiding, and live CAD SOS banner alerts.
+- **Mobile Rugged & Dead-Zone (`f11`–`f13`):** Mobile hold-to-talk UI bars, Android audio/Bluetooth permissions, `MEDIA_BUTTON_PRESS` toggles, `KEYCODE_PTT` down/up lifecycles, and offline dead-zone `enqueueRadioClip` replay preserving `recordedAt`.
