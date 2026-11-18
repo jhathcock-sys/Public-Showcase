@@ -7,20 +7,20 @@ tags:
   - ai-systems
   - architecture
   - hathcock-labs
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # Engineering & Product Documentation — Hathcock Labs
 
-Most software failures in regulated operations, clinical education, and physical floor tooling do not happen because a UI framework lacked animations. They happen because someone left statutory licensing rules in a PDF binder instead of TypeScript evaluators, let cold-start mobile devices overwrite live database records, trusted an unconstrained LLM to verify its own clinical claims, or shipped a mobile web layout without testing how iOS Safari handles `<dialog>` and `AudioContext`.
+Most software failures in regulated operations, clinical education, programmatic media rendering, and physical floor tooling do not happen because a UI framework lacked animations. They happen because someone left statutory licensing rules in a PDF binder instead of TypeScript evaluators, let cold-start mobile devices overwrite live database records, trusted an unconstrained LLM to verify its own clinical claims, or shipped a mobile web layout without testing how iOS Safari handles `<dialog>` and `AudioContext`.
 
-At **Hathcock Labs**, every codebase and AI engineering workflow follows one core standard: **human-directed, verification-first craftsmanship**.
+At **Hathcock Labs**, every codebase and AI engineering workflow follows one core standard: **human-directed, verification-first craftsmanship** orchestrated across **12 repositories** under **`Halcyon` (XO & Flight Director)**, **18 specialized roles**, and external adversarial auditor **`Muse`**.
 
 ```mermaid
 flowchart LR
-    Human["Human Architect\nScope · Risk Tolerances · Sign-Off"] --> AI["AI Cognitive Stack\n18 Specialists · <=2,000-Token Contexts · Hybrid RRF Memory"]
-    AI --> Verify["Verification Stack\nAdversarial Auditor · Secret/Lint Hooks · Typecheck · Playwright DOM/WCAG"]
-    Verify --> Products["Production Systems\nTri-State Security ERP · iOS Board Prep · Floor PWAs · Parametric CAD"]
+    Human["Human Architect\nScope · Risk Tolerances · Sign-Off"] --> AI["AI Cognitive Stack\nHalcyon XO + 18 Specialists · <=2,000-Token Contexts · Hybrid RRF"]
+    AI --> Verify["Verification Stack\nAdversarial Auditor · <5ms Hooks · 24/24 Pro Rulesets · Playwright WCAG"]
+    Verify --> Products["Production Systems (12 Repos)\nSecurity ERP + PTT · iOS Board Prep · Video Engine · PWAs · CAD"]
 ```
 
 ---
@@ -59,9 +59,10 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 ## Verified Quantitative Snapshot
 
-- **Arclight Security (`v0.3`):** `5/5` workspace packages typecheck clean; `25/25` test suites (`205/205` unit & integration tests passing); `0` visual/WCAG defects across `1440×900` and `375×812`.
+- **Arclight Security (`v0.4.0` PTT Live):** `5/5` workspace packages typecheck clean; **`433/433` unit tests** & **`164/164` E2E specs** across 10 adversarial rounds; **all `19` Cloud Functions v2 (`nodejs22`)** live via `esbuild`; `457.24 kB` max chunk; `0` visual/WCAG defects across `1440×900` and `375×812`.
 - **SonoPrep Pro (`iOS`):** `421` audited RVT/SPI questions, `132` SVGs, `18` interactive hotspots, `34/34` unit/App Store compliance tests, `15/15` E2E stages, `0` `oxlint` warnings, `<500 KB` bundles.
-- **Cognitive Tooling:** `<1.5 ms` Optane FTS5 search, `93%` blackboard initialization token drop (`8` active slots), `100%` `768d` embedding cache parity, `<3.5s` parallel 22-invariant cross-node verification.
+- **Deterministic Video Engine (`v0.1.0`):** `4/4` packages typecheck clean; **`33/33` pipeline unit tests**; `17/17` seeded episodes clearing the 9-rule Grade `6.6–9.0` anti-slop voice gate; `1080×1920` `60fps` H.264 + `-14 LUFS` AAC stereo; `<35 KB` companion bio hubs.
+- **Cognitive Tooling & Fleet Governance:** `1.29 ms` Optane FTS5 search (`996/996` vector parity), `93%` blackboard initialization token drop (`8` active slots), `32.5M`/`195M` live `/usage` fixed-bucket telemetry, **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, and **`23/23 PASS` (`0.55s`)** 3-node drift verification.
 
 ---
 
@@ -69,27 +70,28 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 | Node Role | Hardware Profile | Dedicated Workloads | Endurance & Protection Model |
 | :--- | :--- | :--- | :--- |
-| **Workstation Node** | 4C/8T Laptop · `12 GB` RAM + `11.4 GB` zram · **Optane NVMe Scratch** | Interactive development, `memory.db` WAL FTS5 (`<1.5 ms`), `ccache`/Rust/Node caches, `inotify` dispatch triggers | `vm.vfs_cache_pressure=50`, `[none]` I/O scheduler, `earlyoom` `--avoid` protection |
-| **Inference & Backup Node** | Always-On Unified-Memory **Apple Silicon M1 Max (`32 GB`)** | `squad-local` 5-model lineup (`nomic-embed-text`, `hermes3:8b` `01_Dispatch/` triage, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`), container stack, 4-step DR verification | `launchd` container & `300s` vector watchdogs; `0` cloud tokens burned locally |
+| **Workstation Node** | 4C/8T Laptop · `12 GB` RAM + `11.4 GB` zram · **Optane NVMe Scratch** | Optane `fleet wt` worktrees, `memory.db` WAL FTS5 (`1.29 ms`), `ccache`/Rust/Node caches, `inotify` dispatch triggers | `vm.vfs_cache_pressure=50`, `[none]` I/O scheduler, `earlyoom`, 24/7 no-sleep & Wi-Fi `power_save=0` |
+| **Inference & Backup Node** | Always-On Unified-Memory **Apple Silicon M1 Max (`32 GB`)** | `squad-local` 5-model lineup (`nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`), containers, iOS builds, 4-step DR verification | `launchd` container & `300s` vector watchdogs; `0` cloud tokens burned locally |
 | **Edge Network Node** | `8 GB` **ARM SBC** | Primary network DNS filter + unified plain-English control telemetry HUD | Volatile RAM `journald`, `noatime,commit=60` mount, `300s` SQLite flush batching |
 
 ---
 
-## Complete Documentation Map
+## Complete Documentation Map (`19` Chapters)
 
-### 01 · Shipped Products & Hardware Systems
-- [Arclight Security ERP & CAD](01_Products/Arclight-Security-ERP.md) — Replacing the 4-vendor contract security stack across Maryland, Delaware, and Pennsylvania.
+### 01 · Shipped Products & Hardware Systems (`5`)
+- [Arclight Security ERP & CAD](01_Products/Arclight-Security-ERP.md) — Replacing the 4-vendor contract security stack + live `v0.4.0` half-duplex PTT across Maryland, Delaware, and Pennsylvania.
 - [SonoPrep Pro (iOS)](01_Products/SonoPrep-iOS.md) — Commercial ARDMS RVT/SPI vascular board prep with a 100% On-Device Study Vault and live Doppler physics simulation.
-- [High-Velocity Retail Floor & Asset PWAs](01_Products/Retail-Operations-PWAs.md) — Single-handed mobile custody and coaching planners built for `<35ms` barcode wedges and instant NFC cold starts.
+- [Deterministic Programmatic Video Production Engine](01_Products/Deterministic-Video-Production-Engine.md) — Multi-channel `1080×1920` `60fps` Remotion composition, `-14 LUFS` FFmpeg mastering, Grade `6.6–9.0` anti-slop voice gate, and idempotent publishing.
+- [High-Velocity Retail Floor & Asset PWAs](01_Products/Retail-Operations-PWAs.md) — Single-handed mobile custody and execution tooling built for `<35ms` barcode wedges and instant NFC cold starts.
 - [Parametric Additive CAD & Hardware Fixtures](01_Products/Additive-CAD-and-Hardware-Fixtures.md) — OpenSCAD CSG mounts, cantilever snap-fits, and pause-at-layer embedded RFID/NFC enclosures.
 
 ### 02 · AI Systems Architecture (7-Chapter Flagship Series)
-- [00 · Cognitive Architecture Overview](02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md) — Solving single-context decay across our 3-node heterogeneous compute topology.
-- [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Individual profiles of all 18 engineering roles, inter-agent seams, zero-mention routing, and tiered audits.
+- [00 · Cognitive Architecture Overview](02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md) — Why single-context coding collapses and how `Halcyon` (XO) orchestrates 18 specialists across 3 compute nodes.
+- [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Full profiles of all 18 roles, `4-Wave` OOM-safe execution doctrine, `Tier A1/A2/B/C/D` audits, read-only statutory vetoes, and inter-agent seams.
 - [02 · Five-Tier Memory & Hybrid RRF Retrieval](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) — Structural repo maps, `fcntl.flock` rolling blackboards, FTS5 BM25 + 14-day recency, and `k = 60` Reciprocal Rank Fusion.
-- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, 8-step trim ladder, anti-dump detectors, mandatory frontier locks, and live HUD math.
+- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, `Gemini 4 Hydrogen` + `Orchestrator` dual routing, and `32.5M`/`195M` fixed `/usage` gauges.
 - [04 · Adversarial Verification & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) — Two-node adversarial research (`Scout` ↔ `Muse`) and schema-locked, raw-transcript-preserving production AI.
-- [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Pre-commit secret/lint gates, workspace pre-push `tsc` + `vitest`, Playwright WCAG visual gates, 22-check drift doctor, and DR restores.
+- [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Optane `fleet wt` worktrees, `<5ms` blob/secret hooks, **`24/24` zero-bypass Pro Rulesets** across `12` repos, **`23/23` drift doctor (`0.55s`)**, and DR restores.
 - [06 · Ambient Mobile Dispatch & Local Inference](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) — Zero-RAM `inotify` inbox triggers, automatic `hermes3:8b` JSON dispatch triage, and 5-model `squad-local` offloading.
 
 ### 03 · Systems & UI Deep Dives

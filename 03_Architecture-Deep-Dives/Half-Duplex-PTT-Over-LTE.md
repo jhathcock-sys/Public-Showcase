@@ -8,17 +8,17 @@ tags:
   - web-audio
   - offline-first
   - security-erp
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # Half-Duplex Push-to-Talk Over LTE
 
 Physical two-way tactical radios (P25 / DMR / LMR handsets) cost **`$800–$1,500` per unit**, depend on line-of-sight FCC repeaters, and fail completely when contract security agencies manage dozens of dispersed sites across state lines. Yet naive VoIP apps or full-duplex conference rooms perform poorly in active patrol operations: officers talk over each other ("doubling"), interrupt emergency duress calls, burn cellular bandwidth continuously, and lose critical audio inside subterranean parking decks or concrete stairwells.
 
-Inside [Arclight Security](../01_Products/Arclight-Security-ERP.md), we architected a **half-duplex Push-to-Talk (PTT) communications layer** bringing strict two-way radio discipline to web dispatch consoles and rugged mobile guard handsets over LTE and Wi-Fi.
+Inside [Arclight Security](../01_Products/Arclight-Security-ERP.md), we engineered and deployed a **half-duplex Push-to-Talk (PTT) communications layer (`v0.4.0`)** bringing strict two-way radio discipline to web dispatch consoles (`GlobalRadioDock.tsx`, `457.24 kB` max chunk) and rugged mobile guard handsets (`HoldToTalkBar.tsx` `76pt` min-height bar, `bluetoothPttService.ts`, `radioAudioService.ts`) over LTE and Wi-Fi.
 
 > [!NOTE]
-> **Implementation Status:** Arclight's PTT domain contracts, Zod channel/role refinements, Firestore channel and transmission security rules, Motorola-style Web Audio tones, `<35ms` scanner-safe hotkey filters, and a **13-suite Tier-1 E2E architectural test specification** are landed in the repository, driving full Web Command and Mobile Guard rollout.
+> **Production Status (`v0.4.0` Shipped Live):** Complete half-duplex PTT floor arbitration (`IDLE` / `TRANSMITTING` / `SOS_PREEMPTED`), HS256 LiveKit token minting (`livekitAdapter.ts`), all **19 Cloud Functions v2 (`nodejs22`)** staged cleanly via `esbuild`, immutable append-only audio logs, **`433/433` unit tests**, **`164/164` E2E specs across 10 adversarial rounds**, and `0` `oxlint` warnings across `108` files are live in production.
 
 ---
 
@@ -203,16 +203,17 @@ Concrete parking structures, elevator shafts, and subterranean mechanical rooms 
 | **`LIVEKIT_SFU`** | Online LTE / Wi-Fi | Exchanges scoped JWT room tokens (`orgId:channelId`, `canPublish`, `canSubscribe`), streams low-latency Opus WebRTC audio via SFU, drives live `AnalyserNode` waveform meters, and logs Cloud Storage recordings. |
 | **`STORE_AND_FORWARD`** | Offline Partition / Dead Zone | Captures local compressed Opus/AAC voice clips (`<15 MB`) into `FieldStore` marked `queuedOffline: true`. |
 
-### Dead-Zone Replay & Timestamp Guarantees
-1. **True Event Chronology (`recordedAt` vs. `uploadedAt`):** When an officer keys the mic inside an offline garage at `T0`, the mobile store records the exact `recordedAt: T0` timestamp locally. Once cellular coverage returns at `T1` and `FieldStore.syncQueue()` drains, server persistence stamps `uploadedAt >= T1` **without mutating `recordedAt`**—preserving accurate timelines during incident reconstruction.
+### Dead-Zone Replay, Timestamp Guarantees & Wiretap Consent Carve-Out
+1. **True Event Chronology (`recordedAt` vs. `uploadedAt`):** When an officer keys the mic inside an offline garage at `T0`, the mobile store records the exact `recordedAt: T0` timestamp locally (bridging `<50ms` dead-man cutover and dual ring-buffer basement capture cleanly). Once cellular coverage returns at `T1` and `FieldStore.syncQueue()` drains, server persistence stamps `uploadedAt >= T1` **without mutating `recordedAt`**—preserving accurate timelines during incident reconstruction.
 2. **Idempotent Retry Replay (`idempotencyKey`):** Each offline voice clip hashes payload + timestamp into a deterministic `idempotencyKey`. If LTE cuts out mid-upload after Cloud Functions already recorded the metadata, replaying the queue item deduplicates cleanly without creating duplicate audio entries.
+3. **MD & PA Two-Party Wiretap Consent (`10-33 SOS` `recordAudio: false` Carve-Out):** Both Maryland (`MD Cts. & Jud. Proc. § 10-402`) and Pennsylvania (`18 Pa. C.S. § 5703`) are **two-party (all-party) wiretap consent jurisdictions** with criminal and civil penalties for unconsented ambient audio capture. Routine archived channel transmissions enforce explicit documented acknowledgment/banner consent prior to recording (`livekitAdapter.ts` / `logRadioTransmission`), while emergency **`SOS_10_33`** duress interrupts activate an immediate **live-dispatch life-safety listen mode with `recordAudio: false`**—allowing dispatchers to hear threats in real time while preventing covert third-party ambient wiretapping violations.
 
 ---
 
-## Tier-1 13-Suite PTT Verification Coverage
+## Verified `v0.4.0` Live PTT Verification Coverage
 
-The PTT architecture is verified end-to-end across 13 automated Tier-1 TDD suites (`f01` through `f13`) covering:
-- **Contracts & Security (`f01`–`f02`):** Zod schema refinements, composite indexes, and `CLIENT_VIEWER` Firestore/Storage denial tests.
-- **Floor & Preemption (`f03`–`f05`):** Idle lease grants, `FLOOR_BUSY` rejection, stale `leaseDurationMs` expiration, `DISPATCHER_OVERRIDE`, `10-33 SOS` lockouts, and immutable audit flags (`isEmergencySos`, `preemptedFloor`).
-- **Transport, Audio & UI (`f06`–`f10`):** LiveKit scoped token issuance, oscillator lifecycle & mute suppression, `<35ms` scanner-burst Spacebar exclusion, `AnalyserNode` Opus capture, `GlobalRadioDock` `CLIENT_VIEWER` hiding, and live CAD SOS banner alerts.
-- **Mobile Rugged & Dead-Zone (`f11`–`f13`):** Mobile hold-to-talk UI bars, Android audio/Bluetooth permissions, `MEDIA_BUTTON_PRESS` toggles, `KEYCODE_PTT` down/up lifecycles, and offline dead-zone `enqueueRadioClip` replay preserving `recordedAt`.
+The shipped PTT layer passes **`433/433` unit tests** and **`164/164` E2E tests** verified across 10 white-box adversarial rounds (`tests/e2e/tier1..tier4`) with all **19 Cloud Functions v2 (`nodejs22`)** running via `esbuild` monorepo bundling (`issueLiveKitRadioToken`, `acquireRadioFloor`, `releaseRadioFloor`, `logRadioTransmission`, `resolveRadioSos`):
+- **Contracts, Rules & Token Minting (`f01`–`f02`, `f06`):** Zod schema refinements, composite indexes, `100%` `CLIENT_VIEWER` Firestore/Storage denial tests, and HS256 JWT issuance.
+- **Floor Arbitration & Preemption (`f03`–`f05`):** Idle lease grants, `FLOOR_BUSY` rejection, stale `leaseDurationMs` expiration, `DISPATCHER_OVERRIDE`, `10-33 SOS` lockouts with `recordAudio: false` carve-out, and immutable audit flags (`isEmergencySos`, `preemptedFloor`).
+- **Audio, Hotkeys & UI (`f07`–`f10`):** Oscillator lifecycle & mute suppression, `<35ms` scanner-burst Spacebar exclusion (`GlobalRadioDock.tsx`, `457.24 kB` max chunk), `AnalyserNode` Opus capture, `CLIENT_VIEWER` UI hiding, and live CAD SOS banner alerts.
+- **Mobile Rugged & Dead-Zone (`f11`–`f13`):** `HoldToTalkBar.tsx` (`76pt` min-height), Android foreground audio/Bluetooth permissions, `MEDIA_BUTTON_PRESS` toggles, `KEYCODE_PTT` down/up lifecycles, and offline dead-zone `enqueueRadioClip` replay preserving `recordedAt`.

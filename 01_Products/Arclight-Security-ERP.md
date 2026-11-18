@@ -8,7 +8,7 @@ tags:
   - erp
   - cad
   - multi-tenant
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # Arclight Security ERP & Computer-Aided Dispatch
@@ -46,13 +46,16 @@ Every tenant organization lives strictly under `/orgs/{orgId}/**`, gated by JWT 
 
 ## 1. Tri-State Statutory Compliance Enforcement
 
-Regulatory oversight across Maryland, Delaware, and Pennsylvania spans three incompatible state police regimes. Arclight encodes all statutory gates inside a shared zero-dependency package (`@arclight/compliance-engine`) enforced at **three operational boundaries**: shift assignment (`assignOfficerToShift`), geofence clock-in (`clockInOutGeofence`), and armory checkout.
+Regulatory oversight across Maryland, Delaware, and Pennsylvania spans three incompatible state police regimes. Arclight encodes all statutory gates inside a shared zero-dependency package (`@arclight/compliance-engine`) audited independently under **Read-Only Primary-Statute Veto Power** and enforced at **three operational boundaries**: shift assignment (`assignOfficerToShift`), geofence clock-in (`clockInOutGeofence`), and armory checkout.
+
+### Zero State-Portal Scrapers: Cryptographic Document Verification
+Headless scraping against state licensing portals invites IP bans, brittle CAPTCHA breakage, and stale compliance state. Instead, Arclight verifies officer credentials deterministically via **cryptographic `SHA-256` document hashing** of uploaded state cards and training certificates paired with **hard automatic midnight expiration lockouts**, advisory expiration warnings, and **two-person HR sign-off** before armed credentials transition to `VERIFIED`.
 
 | Jurisdiction | Regulatory Authority | Enforced Statutes, Training & Watchdogs |
 | :--- | :--- | :--- |
-| **Maryland (MD)** | Maryland State Police (MSP) | Active MSP Guard Card, **MD SB 760** training certification (`12h` initial / `8h` renewal), **Wear & Carry Permit (`16h`)** on armed posts, plus an automated **48-hour MSP Use-of-Force reporting watchdog** (`forceReportDeadline: ISO`) with live countdown banner and printable courtroom addendum. |
+| **Maryland (MD)** | Maryland State Police (MSP) | Active MSP Guard Card, **MD SB 760** training certification (`12h` initial / `8h` renewal), **Wear & Carry Permit (`16h`)** on armed posts, an automated **48-hour MSP Use-of-Force reporting watchdog** (`forceReportDeadline: ISO`), and **"AI-Assisted" PDF evidentiary disclosure** whenever `polishedNarrative` accompanies immutable `rawOfficerTranscript`. |
 | **Delaware (DE)** | Delaware State Police (DSP) | **Title 24 Ch. 13** bifurcation between **Yellow Card** (`16h` unarmed, 5-year cycle) and **Red Card** (`40h` armed firearm endorsement, strict annual Dec 31 expiration + 3-shoot qualification rule). Active Red Cards legally supersede Yellow Cards on unarmed posts. Enforces **19 Del. C. § 707** lone-worker fully paid 30-minute meal periods. |
-| **Pennsylvania (PA)** | Pennsylvania State Police (PSP) | **Act 235 (`22 P.S. § 41`)** Lethal Weapons certification (`40h` training + physical/psychological clearance, strict 5-year hard expiration) gating armed shifts and armory issuance of **firearms, TASER CEWs, and expandable batons (`18 Pa. C.S. § 908`)**. |
+| **Pennsylvania (PA)** | Pennsylvania State Police (PSP) | **Act 235 (`22 P.S. § 41`)** Lethal Weapons certification (`40h` training + physical/psychological clearance, strict 5-year hard expiration) gating armed shifts and armory issuance of **firearms, TASER CEWs, and expandable batons (`18 Pa. C.S. § 908`)**, alongside **`34 Pa. Code § 231.43(d)(2)`** multi-rate weighted-average overtime (*Chevalier* `0.5x` FWW banned). |
 
 *Deep dive:* [Statutory Compliance as Deterministic Code](../03_Architecture-Deep-Dives/Statutory-Compliance-As-Code.md)
 
@@ -160,7 +163,7 @@ export function rankBackfillCandidates(
 }
 ```
 
-- **Half-Duplex PTT Tactical Radio:** Lease-backed floor locks, `10-33 SOS` hot-mic preemption, Motorola-style chirps, `<35ms` scanner hotkey isolation, and dead-zone store-and-forward audio queuing ([Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md)).
+- **Half-Duplex PTT Tactical Radio (`v0.4.0` Shipped Live):** Complete hybrid tactical communications layer (`GlobalRadioDock.tsx` with Spacebar PTT + `HoldToTalkBar.tsx` `76pt` min-height mobile bar + Bluetooth RSM hooks) powered by HS256 LiveKit token minting, atomic floor leases, MD/PA two-party wiretap consent with explicit **`10-33 SOS` life-safety `recordAudio: false` carve-out**, and dead-zone `STORE_AND_FORWARD` replay ([Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md)).
 
 ### Live Daylight Command Surfaces Implemented
 The command-center web application avoids dark generic dashboards in favor of six dense Daylight Operations views paired with a three-page scoped Client Transparency Portal (`/client` overview, `/client/reports` filtered DARs & non-draft incidents, `/client/invoices` formal print-ready sheets):
@@ -169,15 +172,15 @@ The command-center web application avoids dark generic dashboards in favor of si
 - **Payroll Margin & Policy Read-Receipt Matrices:** Live gross/overtime/local-tax previews and timestamped SOP acknowledgement audits.
 
 ### Planned Production Financial & Field Expansions
-Arclight's unified domain core is architected cleanly around upcoming v1.0 enterprise integrations without rewriting schema boundaries:
-- **Earned Wage Access (EWA) & QuickBooks Online OAuth 2.0 + PKCE:** Zero-cost instant payout caps synced directly from verified clocked geofence shifts alongside one-click encrypted chart-of-accounts invoice/journal synchronization.
-- **Bluetooth Low Energy (BLE) & NFC Checkpoints + Accelerometer Man-Down:** Hardware beacon proof-of-presence alongside `>2.8 G` spike + `<0.15 G` 90-second stillness detection escalating into automatic `10-33` distress dispatch after a 30-second audible cancellation window.
+Arclight's unified domain core is architected cleanly around upcoming enterprise integrations without rewriting schema boundaries:
+- **Earned Wage Access (EWA) & QuickBooks Online OAuth 2.0 + PKCE:** Zero-cost instant payout caps synced directly from verified clocked geofence shifts alongside balanced (`debits === credits`) chart-of-accounts invoice/payroll journal synchronization.
+- **Bluetooth Low Energy (`-78 dBm`) Checkpoints & Accelerometer Man-Down:** Hardware beacon proof-of-presence alongside `>2.8 G` spike + `<0.15 G` 90-second stillness detection escalating into automatic `10-33` distress dispatch after a 30-second audible cancellation window.
 
 ---
 
-## Verified v0.3 Engineering Benchmarks
+## Verified v0.4.0 Production & Sprint 1 PTT Benchmarks
 
-- **Monorepo Type Safety:** `5/5` workspace packages passing strict TypeScript (`0` errors).
-- **Automated Test Coverage:** `25/25` test suites (**`205/205` unit and integration tests passing**) across `@arclight/domain` (`38`), `@arclight/compliance-engine` (`27`), `@arclight/functions` (`57`), `@arclight/mobile-guard` (`38`), and `@arclight/web-command` (`45`).
-- **Daylight Enterprise Visual Gate & Build:** Built in `2.39s` with all Vite chunks `<500 KB` (`11 KB – 378 KB`), `0` blocking and `0` advisory layout/WCAG defects across `1440×900` and `375×812`.
+- **Monorepo Type Safety & Lint Hygiene:** `5/5` workspace packages passing strict TypeScript (`0` errors) and **`0` `oxlint` warnings across `108` files**.
+- **Automated Test & Adversarial Coverage:** **`433/433` unit tests** passing across domain, compliance, functions, mobile field store, and web command, plus **`164/164` E2E integration tests** verified across `10` white-box adversarial QA rounds.
+- **Production Cloud Deployment:** Web Command live with **`457.24 kB` maximum Vite chunk** (`<500 KB` budget enforced), `0` blocking/advisory visual defects across `1440×900` and `375×812`, and **all `19` Cloud Functions v2 (`nodejs22`)** live via `esbuild` monorepo staging (`issueLiveKitRadioToken`, `acquireRadioFloor`, `releaseRadioFloor`, `logRadioTransmission`, `resolveRadioSos`, shift/armory/payroll callables, and SLA watchdogs).
 - **Cross-Cutting Deep Dives:** [Statutory Compliance as Code](../03_Architecture-Deep-Dives/Statutory-Compliance-As-Code.md) · [Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md) · [Anti-Slop UI Engineering](../03_Architecture-Deep-Dives/Anti-Slop-UI-Engineering.md)

@@ -8,14 +8,20 @@ tags:
   - typescript
   - tri-state
   - flsa
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # Statutory Compliance as Deterministic Code
 
 In contract security, software defects are never merely cosmetic bugs. Assigning a guard whose state license expired at midnight onto an armed post, issuing an expandable baton without lethal-weapons certification, subtracting unlawful meal breaks from a lone Delaware guard's pay, or miscalculating blended overtime across uneven hourly rates creates immediate state police audit risk, DOL back-wage liability, and client SLA penalties.
 
-Rather than leaving regulatory rules inside HR PDFs or trusting client-side toast warnings, [Arclight Security](../01_Products/Arclight-Security-ERP.md) implements all jurisdictional eligibility rules, FLSA overtime calculations, and SLA invoice math inside **pure, zero-dependency TypeScript modules** (`@arclight/compliance-engine` and `@arclight/domain`) executed identically across every layer of the platform.
+Rather than leaving regulatory rules inside HR PDFs, building brittle headless state-portal scrapers, or trusting client-side toast warnings, [Arclight Security](../01_Products/Arclight-Security-ERP.md) implements all jurisdictional eligibility rules, FLSA / state overtime calculations, and SLA invoice math inside **pure, zero-dependency TypeScript modules** (`@arclight/compliance-engine` and `@arclight/domain`) audited under **Read-Only Primary-Statute Veto Power** and executed identically across every layer of the platform.
+
+### Zero State-Portal Scrapers & Two-Person Cryptographic Document Proof
+Automating headless scrapers against state licensing portals invites IP blocks, CAPTCHA bypass hazards, and fragile HTML selectors. Instead, compliance ingestion locks around **deterministic artifact provenance**:
+1. **SHA-256 Document Fingerprinting:** Uploaded state guard cards and firearms certifications store an immutable `SHA-256` binary digest alongside normalized issuer metadata.
+2. **Hard Midnight Expiry Lockouts:** Missing or expired certifications trigger automatic `BLOCKING` denials deterministically on `evaluateShiftEligibility` and armory checkout without scraping remote portals.
+3. **Two-Person HR Sign-Off & Evidentiary PDF Disclosure:** Sensitive armed designations (`MD_WEAR_CARRY`, `DE_RED_CARD`, `PA_ACT_235`) require independent second-reviewer verification (`twoPersonVerifiedBy`), while any courtroom-facing PDF rendering an AI-punctuated report stamps **`"AI-Assisted"` disclosure metadata** explicitly beside verbatim immutable `rawOfficerTranscript`.
 
 ---
 
@@ -135,9 +141,9 @@ export function applyDelawareMealBreakRule(shiftHours: number, siteIsSolitaryPos
 
 ---
 
-## 2. FLSA `29 C.F.R. § 778.115` Blended Overtime Math (Worked Example)
+## 2. FLSA `29 C.F.R. § 778.115` & PA `34 Pa. Code § 231.43(d)(2)` Blended Overtime Math
 
-Security guards routinely work varying post pay rates within one 7-day workweek. Under federal law (**FLSA `29 C.F.R. § 778.115`**) and Pennsylvania Minimum Wage Act precedent (*Chevalier v. GNC*, barring salaried `0.5x` fluctuating-workweek shortcuts), overtime **must** calculate against the **weighted-average regular rate** across all hours worked.
+Security guards routinely work varying post pay rates within one 7-day workweek. Under federal law (**FLSA `29 C.F.R. § 778.115`**), Pennsylvania regulation (**`34 Pa. Code § 231.43(d)(2)`** defaulting multi-rate hourly workweeks to weighted-average calculation unless pre-agreed prior to work), and Pennsylvania Supreme Court precedent (*Chevalier v. GNC*, barring salaried `0.5x` fluctuating-workweek shortcuts under PMWA), overtime calculates strictly against the **integer-cents weighted-average regular rate** across all hours worked.
 
 ### Integer-Cents Formulation (`calculateBlendedOvertimeAndMargin`)
 

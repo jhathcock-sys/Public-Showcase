@@ -7,19 +7,19 @@ tags:
   - cognitive-systems
   - infrastructure
   - verification
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # 00 · Cognitive Architecture Overview
 
-Software engineered for regulated security operations, clinical board examinations, and physical floor hardware collapses quickly under naive AI-assisted workflows. When a developer opens a single generalist chat session and asks a large language model to architect, implement, style, test, and deploy a multi-package product inside one continuously growing conversation window, four failure modes reliably emerge:
+Software engineered for regulated security operations, clinical board examinations, programmatic media rendering, and physical floor hardware collapses quickly under naive AI-assisted workflows. When a developer opens a single generalist chat session and asks a large language model to architect, implement, style, test, and deploy a multi-package product inside one continuously growing conversation window, four failure modes reliably emerge:
 
 1. **Context Pollution & Lost-in-the-Middle Decay:** Stuffing entire source files, compiler traces, and exploratory searches into one `100k+`-token thread dilutes attention over early architectural invariants. By turn 15, the model forgets tenant isolation rules it helped establish at turn 3 and introduces permissive database fallbacks just to silence an error.
 2. **Domain Unawareness & Subtle Hallucinations:** A generalist prompt juggling CSS grid spacing, Firebase SDK initialization, and React hooks will casually guess domain truths when pressed—misquoting a 48-hour police use-of-force reporting deadline, inverting a Doppler ultrasound angle equation above `60°`, or inventing a nonexistent Safari dialog attribute.
 3. **Homogenized "AI-Slop" Visual Clones:** Left unguided, frontier models converge on the exact same visual template regardless of industry: dark `#07090e` backgrounds, neon cyan borders, four identical-height KPI stat boxes bolted across the top of every screen, decorative placeholder badges, and custom `<div class="modal-overlay">` popups that shatter keyboard focus traps and iOS viewport scrolling.
 4. **Contextual Monoculture & Confirmation Bias:** Asking the same conversation context that generated an architectural claim or library choice to "audit itself" produces polite rationalization rather than genuine falsification. Without an isolated external verifier, stale library assumptions and vendor marketing fluff propagate straight into production code.
 
-At **Hathcock Labs**, we treat AI-assisted software engineering as a **governed distributed systems discipline**, not conversational prompting. Rather than trusting one giant omniscient agent, we separate concerns across **18 focused specialist roles**, back them with a **5-tier sub-millisecond memory engine**, cap every subagent dispatch at **`<= 2,000` differential tokens**, cross-examine claims via an **independent adversarial auditor**, and execute workloads across a **3-node heterogeneous compute topology** locked behind deterministic Git hooks, compilers, and headless browser gates.
+At **Hathcock Labs**, we treat AI-assisted software engineering as a **governed distributed systems discipline**, not conversational prompting. At the orchestration apex sits **`Halcyon` (Executive Officer / XO & Flight Director)**—never a yes-man, allergic to empty praise, and engineered to push back directly on flawed trade-offs—coordinating **18 narrow domain specialists** alongside independent external auditor **`Muse`**. Work executes across a **3-node heterogeneous compute topology** backed by a **5-tier sub-millisecond memory engine**, strict **`<= 2,000`-token** differential dispatches, a **4-Wave Hardware-Aware OOM-Safe Execution Doctrine**, zero-bypass GitHub Pro Rulesets, and deterministic browser/typecheck gates.
 
 ---
 
@@ -27,17 +27,17 @@ At **Hathcock Labs**, we treat AI-assisted software engineering as a **governed 
 
 ```mermaid
 flowchart TB
-    Human["Human Architect\nProduct Scope · Risk Boundaries · Final Release Sign-Off"] --> MC["Mission Controller\nZero-Mention Intent Routing · File-Scope Partitioning"]
+    Human["Human Architect\nProduct Scope · Risk Boundaries · Final Release Sign-Off"] --> MC["Halcyon (XO & Flight Director)\nPushback · Intent Routing · 4-Wave Scope Partition"]
 
-    Memory["5-Tier Hybrid Memory Engine\n<1.5ms FTS5 BM25 + 768d Cosine RRF (k=60)"] --> Context["Differential Context Compiler\n<= 2,000 Tokens · <= 35L Symbol Slices · Guardrail Locks"]
+    Memory["5-Tier Hybrid Memory Engine\n<1.5ms FTS5 BM25 + 768d Cosine RRF (k=60)"] --> Context["Differential Context Compiler\n<= 2,000 Tokens · <= 35L Symbol Slices · Pro Locks"]
     MC --> Context
 
-    Context --> Squad["18 Domain Specialists\nIsolated Write Scopes · Lazy SKILL.md Runbooks"]
-    Squad <-->|"0-Token Vectors · squad-local · Verified DR"| Node2["Secondary Apple Silicon Node (M1 Max)\n5-Model Local Inference · Containers"]
+    Context --> Squad["18 Domain Specialists\nIsolated Write Scopes · Dual-Model Hydrogen/Orchestrator · Lazy SKILL.md"]
+    Squad <-->|"0-Token Vectors · squad-local (5 Models) · Verified DR"| Node2["Secondary Apple Silicon Node (M1 Max)\nLocal Inference · Containers · iOS Builds"]
     Squad <-->|"Sanitized Async Git Dropzone"| Auditor["External Adversarial Auditor (Muse)\nZero Shared Context · Primary-Source Audit"]
 
-    Squad --> Gates["Deterministic Verification Gates\nPre-Commit Secret/Lint · Pre-Push tsc/vitest · Playwright Visual/WCAG"]
-    Gates --> Prod["Shipped Systems\nSecurity ERP · iOS Clinical Prep · Floor PWAs · OpenSCAD Fixtures"]
+    Squad --> Gates["2-Layer Verification & Ruleset Gates\n<5ms Pre-Commit · Pre-Push · 24/24 Pro Rulesets · Visual/WCAG"]
+    Gates --> Prod["Shipped Systems (12 Repos)\nSecurity ERP · iOS Clinical · Short-Form Video · Floor PWAs · OpenSCAD"]
 ```
 
 ---
@@ -46,12 +46,13 @@ flowchart TB
 
 | Dimension | Naive Monolithic AI Coding | Hathcock Labs Governed Cognitive Stack |
 | :--- | :--- | :--- |
+| **Orchestration Apex** | Unstructured single-chat prompt cheering every assumption | **`Halcyon` (XO & Flight Director)** pushing back on weak assumptions, enforcing read-only statute vetoes & routing 4 hardware-safe waves |
 | **Context Window Diet** | Full raw files + multi-turn chat dumps (`50k–150k` tokens/turn) | Strict **`<= 2,000`-token** differential prompt with `<1.5 KB` `REPO_MAP.md` & `<= 35`-line symbol slices |
 | **Institutional Memory** | Re-reads giant Markdown logs every session or forgets past bugs | Sub-`1.5 ms` SQLite **FTS5 BM25 + 14-day recency** fused via **RRF (`k = 60`)** with local `768d` vectors |
-| **Safety-Critical Reasoning** | Same model/tier used for CSS tweaks and clinical/security checks | Programmatic **`pro [MANDATORY]`** locks on clinical (`Echo`), rules (`Vault`), auth (`Apex`), sync (`Nexus`), IAM (`Sentinel`) |
-| **Verification Discipline** | Agent inspects its own reasoning inside the same biased context | External **Two-Node Adversarial Auditor (`Scout` ↔ `Muse`)** + deterministic hooks + headless Playwright gate |
-| **Concurrency & Collisions** | Multiple edits overwrite shared files or clobber handoff logs | Explicit per-file write partitioning + **POSIX `fcntl.flock`** locked blackboard (`8` active missions, lossless archive) |
-| **Token & Hardware Cost** | Burns frontier quota on summarization, linting, and blind searches | `~85–90%` mechanical work on `0.20x` fast tier (`0.55x` medium / `0.08x` lite); embeddings & local inference offloaded to Apple Silicon (`0` cloud tokens) |
+| **Safety-Critical Reasoning** | Same model/tier used for CSS tweaks and clinical/security checks | Programmatic **`pro [MANDATORY]`** locks (`Gemini 4 Hydrogen`) on clinical (`Echo`), math (`Cipher`), rules (`Vault`), auth (`Apex`), sync (`Nexus`), IAM (`Sentinel`) |
+| **Verification Discipline** | Agent inspects its own reasoning inside the same biased context | External **Two-Node Adversarial Auditor (`Scout` ↔ `Muse`)** + deterministic hooks + **`24/24` zero-bypass GitHub Pro Rulesets** + Playwright gate |
+| **Concurrency & Collisions** | Multiple edits overwrite shared files or thrash 12 GB laptop RAM | Optane `fleet wt` worktrees + **4-Wave OOM-Safe Doctrine** + **POSIX `fcntl.flock`** locked blackboard (`8` active slots) |
+| **Token & Hardware Cost** | Burns frontier quota on summarization, linting, and blind searches | `Orchestrator (Argon/Carbon)` + `Hydrogen` (`-24%` quota), `~85–90%` mechanical work on `0.20x` tier, and `32.5M`/`195M` live `/usage` lock |
 
 ---
 
@@ -113,7 +114,7 @@ flowchart LR
     N1 <-->|"Local RPC: 768d Embeddings & 5-Bullet Summaries (0 Cloud Tokens)"| N2
     N1 -->|"Daily Hot SQLite .backup() + Round-Trip Restore Audit"| N2
     N3 <-->|"15-Min Allow/Blocklist Lockstep Replication"| N2
-    N1 -->|"Parallel SSH/HTTP 22-Invariant Drift Doctor (<3.5s)"| N2
+    N1 -->|"Parallel SSH/HTTP 23-Invariant Drift Doctor (0.55s)"| N2
     N1 -->|"Parallel SSH/HTTP Health & Wear Checks"| N3
 ```
 
@@ -251,9 +252,9 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 | :--- | :--- | :--- |
 | **Secondary Apple Silicon Node Offline** | `squad-memory query` times out cleanly after `1.5s` and falls back seamlessly to local Optane FTS5 BM25 (`<1.5 ms`) without blocking subagents. | Stale `section_embeddings` rows stay NULL in SQLite; `squad_vector_worker` drains backlog automatically once Node 2 returns. |
 | **Subagent Prompt Exceeds `2,000` Tokens** | `squad-context build` steps down 8 deterministic trim profiles; manual prompts `>2,000` tokens or `>80` code lines fail `squad-context validate` with `exit 1`. | Every dispatch attempt (pass/warn/fail, profile applied, model tier) writes atomically to `dispatch_audit.jsonl`. |
-| **7-Day Rolling Quota Reaches `70%` / `90%`** | Live HUD flashes yellow warning / red critical badges; summarization and triage remain pinned exclusively to local Apple Silicon inference. | `squad-live-telemetry` recalculates 5-hour and 7-day weighted burn live with millisecond ANSI cell stability. |
-| **Memory Spike During Concurrent Builds** | `11.4 GB` `zstd` `zram` buffers bursts; `earlyoom` reclaims runaway build workers while explicitly `--avoid`-protecting compositor and orchestrator processes. | Subagent writes remain safely on disk; work resumes without session loss. |
-| **Local Container or Sync Drift Across Nodes** | `launchd` watchdog on Node 2 restarts crashed containers cleanly; 15-minute `nebula-sync` heals DNS list drift automatically. | `squad-doctor` probes `22` invariants across all `3` hosts in parallel in `< 3.5s`. |
+| **7-Day Rolling Quota Reaches `70%` / `90%`** | Live HUD flashes yellow warning / red critical badges; summarization and triage remain pinned exclusively to local Apple Silicon inference. | `squad-live-telemetry` calibrates against live `/usage` headers (`XX% LIVE`) and isolates Claude/GPT-OSS pool rows from Gemini buckets. |
+| **Memory Spike During Concurrent Builds** | `11.4 GB` `zstd` `zram` buffers bursts; `earlyoom` reclaims runaway build workers while explicitly `--avoid`-protecting compositor and orchestrator processes. | 4-Wave OOM-Safe Doctrine strictly bans concurrent `vite build`, Chromium, or Expo Metro processes on 12 GB workstation RAM. |
+| **Local Container or Sync Drift Across Nodes** | `launchd` watchdog on Node 2 restarts crashed containers cleanly; 15-minute `nebula-sync` heals DNS list drift automatically. | `squad-doctor` probes `23` invariants across all `3` hosts (`0.55s`–`<3.5s`), including 24/7 no-sleep & Wi-Fi `power_save=off` persistence. |
 
 ---
 
@@ -262,12 +263,12 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 Reliability in a multi-agent system requires closing the loop between runtime behavior and architectural invariants so silent degradation cannot linger undetected:
 
 1. **Dispatch Audit Trail (`dispatch_audit.jsonl`):** Every invocation compiled or validated by `squad-context` appends an `fcntl.flock`-guarded JSON line containing timestamp, specialist codename, selected model tier (`pro` vs. `flash`), mandatory-guardrail enforcement status, estimated token count, symbol slice count, and validation exit status. Regressions in prompt hygiene show up as measurable token inflation rather than vague "the AI feels sluggish" complaints.
-2. **Dual-Window Burn & Live Terminal HUD:** Rather than discovering quota exhaustion mid-sprint, a sideband terminal multiplexer pane continuously tail-parses token usage across a `100,000,000`-token `5-hour` rolling envelope (computing a **25%-load rolloff countdown**) and a `500,000,000`-token `7-day` weekly ceiling—applying model-tier weights (`1.0x` pro, `0.55x` medium, `0.20x` flash, `0.08x` flash-lite) with `4.0x` output and `0.025x` cache-read scaling plus syntax-validated (`compile()`) zero-flicker `os.execv()` live reloads.
-3. **22-Invariant Cross-Node Fleet Doctor:** On demand or after OS upgrades, `squad-doctor` opens parallel probe threads across all three nodes (`< 3.5s` end-to-end) to assert Optane I/O scheduler lock (`[none]`), `vfs_cache_pressure=50`, `earlyoom` active protection, SQLite WAL & FTS5 integrity, `0600` credential permissions, Git hook symlinks, `squad-local` CLI & 5-model M1 Max Ollama availability, verified off-box backup timestamps, and Node 3 volatile flash-wear settings.
+2. **Fixed-Bucket Dual-Window Telemetry & Dual-Model Routing:** Rather than discovering quota exhaustion mid-sprint, a sideband multiplexer pane continuously tail-parses fixed `5-hour` buckets (`32,500,000` weighted tokens initiated on first post-expiry request, anchored cleanly to server-side `/usage` `[quota]` headers as `XX% LIVE`) alongside a `195,000,000`-token `7-day` weekly ceiling—isolating secondary Claude/GPT-OSS pool consumption (`Cld:XX%`), applying tier weights (`1.0x` pro, `0.55x` medium, `0.20x` flash, `0.08x` lite) with `4.0x` output and `0.025x` cache-read scaling, and logging syntax-validated (`compile()`) zero-flicker `os.execv()` live reloads. Meanwhile, pairing **`Orchestrator (Argon / Carbon)`** planning with **`Gemini 4 Hydrogen`** coding execution (`57%` Terminal-Bench 4.1) slashes weighted quota burn **`-24%`** and wall-clock execution time **`-19%`**.
+3. **23-Invariant Cross-Node Fleet Doctor (`0.55s`–`<3.5s`):** On demand or after OS upgrades, `squad-doctor` opens parallel probe threads across all three nodes to assert Optane I/O scheduler lock (`[none]`), `vfs_cache_pressure=50`, `earlyoom` active protection, 24/7 workstation no-sleep & Wi-Fi always-on persistence, SQLite WAL & FTS5 integrity, `0600` credential permissions, `33/33` + `3/3` Git hook symlinks across `12` repos, `squad-local` 5-model Apple Silicon availability, verified off-box backup timestamps, and Node 3 volatile flash-wear settings.
 4. **Hot SQLite Backups With Proof-of-Restore:** Instead of blind `rsync` copies that risk torn WAL frames, daily DR snapshots execute SQLite's online `.backup()` API over SSH to Apple Silicon and immediately unpack, query FTS5 row counts, and assert parity on a temporary copy before marking the backup `VERIFIED_OK`.
 
 > [!IMPORTANT]
-> The unifying rule across all four mechanisms is **closed-loop mechanical truth**: no subsystem trusts "fire-and-forget" logs, self-reported agent claims, or unverified backups. Every guarantee—from CSS luminance to SQLite durability—has a deterministic verifier attached to it.
+> The unifying rule across all four mechanisms is **closed-loop mechanical truth**: no subsystem trusts "fire-and-forget" logs, self-reported agent claims, or unverified backups. Every guarantee—from CSS luminance to zero-bypass GitHub Pro rulesets and SQLite durability—has a deterministic verifier attached to it.
 
 ---
 
@@ -277,7 +278,7 @@ Before any specialist reads source code or opens an architectural search, it rea
 
 ```markdown
 # REPO_MAP (<project-name>)
-Generated: 2026-11-17T08:00:00Z | Guarded Cap: 1536 bytes
+Generated: 2026-11-18T08:00:00Z | Guarded Cap: 1536 bytes
 ## Entrypoints
 - apps/web-command/src/main.tsx        # Dispatch command SPA bootstrap
 - apps/mobile-guard/src/main.tsx       # Field officer PWA bootstrap
@@ -285,7 +286,7 @@ Generated: 2026-11-17T08:00:00Z | Guarded Cap: 1536 bytes
 - functions/src/index.ts               # Trigger & callable API surface
 ## Core Services & Symbol Anchors
 - packages/domain/src/payroll.ts       # FLSA blended overtime + shift invoice math
-- apps/mobile-guard/src/store/fieldStore.ts # Offline Dexie + anti-spoof telemetry
+- apps/mobile-guard/src/store/fieldStore.ts # Offline FIFO outbox + anti-spoof telemetry
 ```
 
 Rather than relying on vague guidelines, the entire stack enforces hard numerical bounds directly in tool code:
@@ -296,8 +297,9 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 | **Max Symbol Slice Length** | `35` lines/symbol (`80` contiguous max) | Symbol Extractor / Validator | Raw full-file transcript dumping |
 | **Active Blackboard Window** | `8` recent missions (FIFO archive older) | Memory Engine (`flock`) | Unbounded startup read growth |
 | **Hybrid RRF Constant & Weights** | `k = 60`, `BM25(5.0, 2.0, 1.0)` + `14d` decay | Memory Query Engine | Keyword misses & semantic drift |
-| **Dual-Window Quota Ceilings** | `100,000,000` (5h, 25%-rolloff) / `500,000,000` (7d), `0.025x` cache | Live Telemetry HUD | Unplanned mid-sprint rate stops |
-| **Vector Rpc Grace Timeout** | `1.5 s` failover to FTS5 BM25 | Hybrid Query Pipeline | LAN outages blocking dev velocity |
+| **Fixed Dual-Window Quotas** | `32,500,000` (5h fixed bucket) / `195,000,000` (7d cap) | Live Telemetry HUD | Bucket drift & surprise rate caps |
+| **Repository & Ruleset Parity** | `12` repos · `24/24` zero-bypass Pro rulesets | `Chronos` / `Sentinel` Gate | Accidental force-push / tag clobber |
+| **Vector RPC Grace Timeout** | `1.5 s` failover to FTS5 BM25 | Hybrid Query Pipeline | LAN outages blocking dev velocity |
 | **Hardware Scanner Burst Cut** | `< 35 ms` keystroke cadence threshold | Retail & Armory Wedges | Focus hijacking & partial barcode reads |
 | **Runtime AI Determinism** | `temperature = 0.0` + Zod `responseSchema` | Product AI Endpoints | Invented statutory citations or JSON drift |
 
@@ -309,5 +311,5 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 - **Chapter 2 — [Five-Tier Memory & Hybrid RRF Retrieval](02-Five-Tier-Memory-and-Hybrid-RRF.md):** SQLite WAL DDL, FTS5 triggers, re-entrant `fcntl.flock` locking, CTE BM25 + 14-day recency math, `768d` BLOB packing, and worked Reciprocal Rank Fusion (`k = 60`).
 - **Chapter 3 — [Differential Context & Quota Governance](03-Differential-Context-and-Quota-Governance.md):** The `<= 2,000`-token compiler, 8-step trim ladder, AST symbol slicing, anti-dump detectors, mandatory `pro` locks, dual-window quota math, and the Unicode-safe live HUD.
 - **Chapter 4 — [Adversarial Verification & Fact-Locked AI](04-Adversarial-Verification-and-Fact-Locked-AI.md):** Breaking confirmation bias via the two-node `Scout` ↔ `Muse` Git dropzone and locking regulated runtime AI with `temperature: 0`, Zod `responseSchema` contracts, and immutable raw testimony.
-- **Chapter 5 — [Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md):** Sub-50ms secret/lint pre-commit hooks, workspace-aware pre-push type/test chains, deterministic Playwright DOM/WCAG gating, 22-invariant 3-node drift verification, and round-trip verified DR restores.
+- **Chapter 5 — [Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md):** Sub-`5ms` secret/blob/media pre-commit hooks, Optane worktrees (`fleet wt`), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, Playwright WCAG gating, **23-invariant** 3-node drift doctor (`0.55s`), and round-trip verified DR restores.
 - **Chapter 6 — [Ambient Mobile Dispatch & Local Inference](06-Ambient-Mobile-Dispatch-and-Local-Inference.md):** Kernel `inotify` wakeups, automatic `hermes3:8b` JSON dispatch triage, crash-safe atomic writes, and the 5-model `squad-local` M1 Max zero-token CLI.

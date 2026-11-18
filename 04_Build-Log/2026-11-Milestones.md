@@ -7,12 +7,23 @@ tags:
   - releases
   - verification
   - benchmarks
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # November 2026 Engineering Milestones
 
 An engineering log of verified capabilities, architectural shifts, and quality benchmarks shipped across Hathcock Labs repositories through November 2026.
+
+---
+
+## 2026-11-18 — Arclight `v0.4.0` PTT Shipped, `24/24` Zero-Bypass Rulesets & Video Engine `v0.1.0`
+
+Completed a fleet-wide hardening and deployment sprint across **12 repositories**, shipping live half-duplex tactical PTT in Arclight alongside trunk/tag immutability and a new programmatic media pipeline:
+- **Arclight Security `v0.4.0` (Sprint 1 PTT Live in Production):** Shipped complete hybrid PTT across Web Command (`GlobalRadioDock.tsx` `Spacebar` hold-to-talk, **`457.24 kB` max Vite chunk**) and Mobile Guard (`HoldToTalkBar.tsx` `76pt` touch target, `bluetoothPttService.ts`, `radioAudioService.ts`, dead-zone `STORE_AND_FORWARD` outbox), backed by **`433/433` unit tests**, **`164/164` E2E specs across 10 adversarial rounds**, `0` `oxlint` warnings across `108` files, live Hosting, and **all 19 Cloud Functions v2 (`nodejs22`)** staged cleanly via `esbuild`.
+- **Statutory Hardening & Life-Safety Carve-Outs:** Enforced MD/PA two-party wiretap consent controls alongside an explicit **`10-33 SOS` `recordAudio: false` life-safety carve-out**, retired portal scrapers completely in favor of SHA-256 certificate hashing + hard expiry locks + two-person HR sign-off, locked `34 Pa. Code § 231.43(d)(2)` weighted-average overtime (*Chevalier* FWW ban), and stamped `"AI-Assisted"` PDF disclosures beside immutable `rawOfficerTranscript`.
+- **Optane Worktrees, `24/24` Pro Rulesets & `23/23` Drift Doctor (`0.55s`):** Deployed `fleet wt {new|list|land|prune}` (`fcntl.flock` + POSIX hardlink deps), upgraded `squad-pre-commit` (`<5ms`, `>2 MB` blob / `.mp4` / `.sqlite` / expanded secret + Air-Gap guards, `13/13` specs) and `squad-pre-push` (`5/5` specs), activated **`24/24` zero-bypass GitHub Pro `trunk-immutable` & `tags-immutable` Rulesets** across all `12/12` repositories, rolled out `<5s` linear-forward `fleet release` / `fleet rollback`, and reached **`23/23 PASS` (`0.55s`)** on `squad-doctor` with 24/7 workstation no-sleep & Wi-Fi `power_save=0` locks (`996/996` vector parity, `1.29 ms` FTS5).
+- **Fixed `32.5M`/`195M` Quota Telemetry & Dual-Model Coding Routing:** Replaced sliding telemetry estimates with calibrated **`32.5M` fixed 5-hour buckets** / **`195M` 7-day rolling caps** locked live to server `/usage` headers (`XX% LIVE`), isolated Claude/GPT-OSS pool totals (`Cld:XX%`), formalized `Halcyon` (XO) + `Tier A1/A2/B/C/D` audits + `4-Wave` OOM-safe execution, and adopted `Orchestrator (Argon/Carbon)` + `Gemini 4 Hydrogen` (`57%` Terminal-Bench 4.1) routing (**`-24%` quota, `-19%` latency**).
+- **Deterministic Video Production Engine (`v0.1.0`, Repo #12):** Shipped 4-package TypeScript monorepo ([product overview](../01_Products/Deterministic-Video-Production-Engine.md)) achieving `0` TS errors, **`33/33` unit tests**, **`17/17` seeded episodes passing the 9-rule Grade `6.6–9.0` anti-slop gate**, `ffprobe`-verified `1080×1920` `60fps` H.264 + `-14 LUFS` stereo AAC outputs, `<35 KB` bio hubs, and `dry-run` worktree isolation.
 
 ---
 
@@ -48,7 +59,7 @@ Completed cross-fleet browser audit establishing deterministic Safari/WKWebView 
 Shipped major architectural upgrades across our [AI Systems Architecture](../02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md):
 - **Hybrid FTS5 + `k = 60` Vector RRF (`squad-memory`):** Extended Optane NVMe SQLite FTS5 (`<1.5 ms` BM25 + 14-day recency) with asynchronous `768d` `nomic-embed-text` vectors computed on Apple Silicon (`0` cloud tokens), `content_hash` embedding preservation across refreshes, `--auto-hybrid` zero-hit rescue, and POSIX `fcntl.flock` re-entrant locking over rolling 8-entry blackboards.
 - **Differential Context Compiler (`squad-context`):** Enforced strict `<= 2,000`-token subagent dispatches via an 8-stage progressive trim ladder, AST-like raw file-dump detection (`>80` contiguous code lines), chat-log rejection, mandatory frontier reasoning locks (`Echo`, `Vault`, `Apex`, `Nexus`, `Sentinel`), and locked JSONL audit telemetry.
-- **Dual-Window Telemetry HUD, `squad-local` 5-Model CLI & 3-Node Drift Doctor:** Upgraded live quota monitoring to track both a 5-hour rolling envelope (`100M` weighted tokens with a 25%-load rolloff countdown) and a 7-day rolling weekly cap (`500M` weighted tokens, `0.025x` cache, `0.55x` medium, `0.20x` flash, `0.08x` flash-lite) with Unicode grapheme-width ANSI layout math and compile-guarded `os.execv` hot-reload; shipped the `squad-local` 5-model M1 Max zero-token CLI (`nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`) with automatic `hermes3:8b` JSON triage on unstructured `01_Dispatch/` notes; and deployed parallel `<3.5s` 22-check 3-node drift verification plus mandatory 4-step round-trip SQLite DR restore verification.
+- **Dual-Window Telemetry HUD, `squad-local` 5-Model CLI & 3-Node Drift Doctor:** Shipped initial dual-window quota monitoring (`0.025x` cache, `0.55x` medium, `0.20x` flash, `0.08x` flash-lite—later calibrated to exact `32.5M` fixed 5-hour buckets / `195M` 7-day rolling limits on `2026-11-18`) with Unicode grapheme-width ANSI layout math and compile-guarded `os.execv` hot-reload; deployed the `squad-local` 5-model Apple Silicon CLI (`nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`) with automatic JSON inbox triage; and launched parallel `<3.5s` 3-node drift probes (expanded to `23` checks w/ no-sleep & Wi-Fi guards on `2026-11-18`) plus mandatory 4-step SQLite DR restore verification.
 - **Grouped Renovate Supply-Chain Presets:** Deployed shared dependency update rules enforcing 3-day package release age buffers, Monday morning off-peak windows, and patch/digest-only automerge across active repositories.
 
 ---
@@ -65,13 +76,13 @@ Completed full multi-loop verification for [SonoPrep Pro (iOS)](../01_Products/S
 
 | Product / Subsystem | Verification Mechanism Executed | Quantified Result | Bundle / Latency Bounds |
 | :--- | :--- | :--- | :--- |
-| **Arclight Security ERP (`v0.3`)** | Workspace `tsc --noEmit` + Vitest (`5` packages) | **`25/25` suites (`205/205` tests passing)** | Vite `2.39s`; chunks `11–378 KB` (`<500 KB`) |
+| **Arclight Security ERP (`v0.4.0`)** | Workspace `tsc --noEmit` + Vitest + 10-round E2E | **`433/433` unit; `164/164` E2E; `19` Blaze functions** | **`457.24 kB` max chunk**; `0` lint warns (`108` files) |
 | **Arclight Web Command & Client Portal** | Headless Playwright DOM & WCAG visual gate | **`0` blocking / `0` advisory defects** | Checked at `1440×900` & `375×812` |
-| **Arclight PTT Radio Architecture** | Tier-1 deterministic E2E harness (`f01`–`f13`) | **`13/13` planned TDD specs landed** | Lease expiration, `10-33`, `<35ms` Space guard |
+| **Deterministic Video Engine (`v0.1.0`)** | Workspace `tsc` + Vitest + Anti-Slop + `ffprobe` | **`33/33` unit; `17/17` Grade `6.6–9.0` episodes** | `1080×1920` `60fps` `-14 LUFS`; `<35 KB` bio hubs |
 | **SonoPrep Pro (`iOS`)** | Vitest + Playwright Free/Pro + `oxlint` + `xcodebuild` | **`34/34` unit; `15/15` E2E; `0` lint warns** | All chunks `<500 KB`; native Release build |
-| **Cognitive Memory (`squad-memory`)** | Live Optane WAL query & atomic lock benchmarks | **`0.63–1.50 ms` lexical; `5.85–16.16 ms` write** | `<300` returned tokens (`~99%` drop vs files) |
-| **Context Compiler (`squad-context`)** | Static `<=2,000`-token & anti-dump firewall | **`8` trim tiers + locked JSONL telemetry** | `exit 1` on `>80` code lines / raw logs |
-| **Fleet Readiness (`squad-doctor`)** | Concurrent 4-worker 3-node invariant probe | **`22/22` system & DR checks passing** | Completes end-to-end in `< 3.5 seconds` |
+| **Cognitive Memory (`squad-memory`)** | Live Optane WAL query & atomic lock benchmarks | **`0.63–1.29 ms` lexical; `996/996` vector parity** | `<300` returned tokens (`~99%` drop vs files) |
+| **DevOps Hooks & Pro Rulesets (`12` Repos)** | Isolated hook tests + GitHub Pro zero-bypass API audit | **`13/13` pre-commit; `5/5` pre-push; `24/24` Rulesets** | `<5 ms` commit gate; `<5s` linear-forward `fleet rollback` |
+| **Fleet Readiness (`squad-doctor`)** | Concurrent 4-worker 3-node invariant probe | **`23/23 PASS` (incl. 24/7 no-sleep & Wi-Fi lock)** | Completes end-to-end in **`0.55s`–`<3.5s`** |
 
 ---
 
@@ -88,8 +99,8 @@ Rather than shipping quick patches, core failure classes observed across enginee
 | **2026-11** | Concurrent `pnpm` monorepo installs halting on unapproved transitive lifecycle scripts | Pre-approved `allowBuilds` manifests + centralized Optane package cache warm-ups pre-wave |
 | **2026-11** | Generic dark `#07090e` 4-KPI-card layouts appearing on daytime operational dashboards | Domain-adaptive Daylight Enterprise / Clinical Calm archetypes verified by Playwright DOM/WCAG gate |
 | **2026-11** | Mobile Safari `<dialog>` scrollbar transitions flickering (WebKit Bug 311752) | Global `:user-invalid` + explicit `aria-invalid="false"` sync + ban on `scrollbar-color` transitions |
-| **2026-11** | Hidden 7-day weekly quota exhaustion surprising sprints while 5-hour gauge looked clear | Dual-window weighted burn telemetry (`100M` 5h w/ 25%-load rolloff + `500M` 7d, `0.025x` cache, `0.55x` medium) with Unicode-safe ANSI live HUD |
-| **2026-11** | Silent unverified DR snapshots or node configuration drift after OS package updates | `sqlite3.backup()` + 4-step sandbox round-trip restore verifier + `<3.5s` 22-check `squad-doctor` |
+| **2026-11** | Sliding quota bucket drift & mixed pool bleed hiding remaining Gemini runway | Fixed `32.5M` 5h bucket + `195M` 7d cap locked live to `/usage` (`XX% LIVE`), isolated `Cld:XX%`, & Hydrogen/Orchestrator routing |
+| **2026-11** | Silent unverified DR snapshots, repo force-push hazards, or sleep/Wi-Fi drift | `sqlite3.backup()` 4-step restore verifier, **`24/24` Pro Rulesets**, & **`23/23` `squad-doctor` (`0.55s`)** w/ no-sleep + Wi-Fi guards |
 
 ---
 

@@ -7,44 +7,44 @@ tags:
   - governance
   - release-engineering
   - orchestration
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # 01 · The 18-Specialist Squadron
 
 Asking a single monolithic AI prompt to optimize Tailwind CSS tokens, author multi-tenant Firestore security rules, audit ARDMS Doppler ultrasound criteria, and tune Linux kernel sysctls inside one rolling window guarantees role collision. Visual shortcuts leak into database permissions; clinical rigor gets diluted by build boilerplate; and massive system instructions drown out task-level constraints.
 
-Hathcock Labs eliminates role interference by partitioning engineering labor across **18 narrow domain specialists**, coordinated by a central **Mission Controller** under strict file-write isolation, lazy procedural runbooks, and risk-scoped release sign-offs.
+Hathcock Labs eliminates role interference by placing **`Halcyon` (Executive Officer / XO & Flight Director)** at the orchestration apex over **18 narrow domain specialists**—alongside zero-shared-context external auditor **`Muse`**—under strict file-write isolation, lazy procedural runbooks, a **4-Wave Hardware-Aware OOM-Safe Execution Doctrine**, and **Tier `A1/A2/B/C/D` risk-scoped release sign-offs**.
 
 ---
 
-## Orchestration: Explicit Invocation vs. Zero-Mention Intent Routing
+## Orchestration: `Halcyon` XO Governance & Zero-Mention Intent Routing
 
-The Mission Controller routes work without forcing the human architect to memorize rigid CLI wrappers:
+`Halcyon` operates as an engineering Flight Director—challenging flawed assumptions, holding mandatory frontier model locks over critical paths, and routing work without forcing humans to memorize rigid CLI invocations:
 
 1. **Named Specialist Invocation:** Explicitly delegates to a specialist (*"Have `Vault` lock down client portal read paths"* or *"Ask `Vanguard` to stress-test the `<35ms` scanner wedge"*).
-2. **Zero-Mention Autonomous Intent Routing:** Even when no agent is named, the Mission Controller classifies target files, domain terminology, and operational blast radius to select the right specialist(s) automatically:
+2. **Zero-Mention Autonomous Intent Routing:** Even when no agent is named, `Halcyon` classifies target files, domain terminology, and operational blast radius to select the right specialist(s) and wave ordering automatically:
 
 | Problem Signal / Engineering Trigger | Auto-Dispatched Specialist(s) | Mandatory Guardrail / Notes |
 | :--- | :--- | :--- |
-| TypeScript strictness, `oxlint`, dead code, circular deps, React 19 patterns | `Aegis` | Deep reasoning on circular refactors & complex generics |
-| ARDMS / RVT vascular criteria, Doppler hemodynamics, clinical rationales | `Echo` | **Read-only access; mandatory `pro` clinical lock** |
-| Dirty CSV/ODS schedules, E.164 phone formats, roster ETL normalization | `Cipher` | `flash_lite` for row/header scans; `flash` for transforms |
-| Real-time `onSnapshot`, offline IndexedDB, multi-device sync races | `Nexus` | **Mandatory `pro` distributed-sync lock** |
-| Barcode scanners (`<35ms`), Web NFC NDEF tags, procedural Web Audio | `Beacon` | Deep tier for NDEF payloads & audio lookahead math |
-| Linux kernel tuning, `zram`/`earlyoom`, NVMe I/O, containers, ARM edge wear | `Torque` | Runs sysctl/service diagnostics & 3-node drift checks |
-| Git status/commits, merge conflicts, Renovate hygiene, DR backups, deploys | `Chronos` | Owns clean-tree staging & production Hosting deploys |
-| Visual hierarchy, `OKLCH` palettes, typography, eliminating AI layout clones | `Prism` | Pairs with `Forge` across explicit UI/packaging seam |
+| TypeScript strictness, `oxlint`, dead code, circular deps, React 19 patterns | `Aegis` | Deep reasoning (`pro`) on circular refactors & complex generics |
+| ARDMS / RVT vascular criteria, Doppler hemodynamics, clinical rationales | `Echo` | **Strictly Read-Only; mandatory `pro` clinical lock** |
+| Integer-cent payroll/invoices, FLSA/PA `34 Pa. Code` OT, Dark-Hours SLA, dirty CSV ETL, QBO GL | `Cipher` | **Mandatory `pro` financial/payroll lock**; `flash_lite` for raw CSV scans |
+| Real-time `onSnapshot`, offline `FieldStore`/`CommandContext`, FIFO outboxes, sync races | `Nexus` | **Mandatory `pro` distributed-sync lock** |
+| Client LiveKit Opus PTT (`<50ms`), dual ring-buffer cutover, BLE `-78dBm`, Man-Down DSP, `<35ms` wedges, Web Audio | `Beacon` | Deep tier for RTC lookahead & accelerometer DSP math |
+| Linux kernel tuning, `zram`/`earlyoom`, no-sleep/Wi-Fi guards, NVMe I/O, containers | `Torque` | Runs sysctl/service diagnostics & 23-invariant 3-node drift audits |
+| Git status/worktrees (`fleet wt`), GitHub Pro Rulesets, DR backups, linear-forward `fleet release` | `Chronos` | Owns clean trunks, `24/24` rulesets, verified DR & Hosting deploys |
+| Visual hierarchy, `OKLCH` palettes, typography, eliminating AI layout clones | `Prism` | Pairs cleanly with `Forge` across explicit UI/packaging seam |
 | Firestore/Storage security rules, composite indexes, atomic transactions | `Vault` | **Mandatory `pro` security & transaction lock** |
-| W3C/WCAG/RFC specs, breaking changes, playbooks, `Muse` dropzone audits | `Scout` | Pairs externally with independent adversarial node |
+| W3C/WCAG/RFC specs, state statutes, playbooks, `Muse` adversarial audits | `Scout` | **Read-Only Primary-Statute Veto Power** (`0` write access to app code/rules) |
 | Vitest suites, headless Playwright E2E, burst stress tests, visual gate | `Vanguard` | Bans arbitrary `waitForTimeout` in E2E specifications |
-| Cloud Functions v2, Hono/Express APIs, JWT/HMAC auth, webhooks | `Apex` | **Mandatory `pro` auth & webhook idempotency lock** |
-| Gemini `responseSchema`, Optane FTS5/RRF memory, context compiler, HUD | `Synapse` | Governs `<=2,000`-token harness & fact-locked AI |
-| Mobile `100dvh`/safe-area physics, PWA manifests, Rollup `manualChunks` | `Forge` | Enforces `<500 KB` chunks & thumb-zone ergonomics |
-| Mobile dispatch inbox triage, knowledge graph hygiene, session learnings | `Hermes` | Compiles daily 5-part retrospectives alongside `Scout` |
+| Cloud Functions v2, Hono/Express APIs, LiveKit JWT minting, `.pkpass`, KMS, webhooks, wiretap carve-outs | `Apex` | **Mandatory `pro` auth, cryptography & webhook lock** |
+| Gemini `responseSchema`, Optane FTS5/RRF memory, context compiler, `32.5M`/`195M` telemetry HUD | `Synapse` | Governs `<=2,000`-token harness, live `/usage` anchor & fact-locked AI |
+| Vite `<500 KB` PWAs, Capacitor 8 Swift/StoreKit 2, Expo RN New Architecture, Play Integrity/App Attest | `Forge` | Enforces off-duty sensor teardown (`shift.status !== 'IN_PROGRESS'`) |
+| Private mobile capture triage, personal vault graph hygiene, daily session retrospectives | `Hermes` | **100% Private Vault Only** (strictly excluded from public repositories) |
 | Parametric OpenSCAD CSG modeling, FDM tolerances, pause-print RFID cavities | `Vulcan` | Enforces `0.20mm` snap-fit & `+0.40mm` pocket rules |
-| Executive documentation, 70/20/10 plans, SBI/GROW coaching, whitepapers | `Scribe` | Enforces grounded metrics & zero corporate buzzwords |
-| Zero-trust secret scans, `0600` file modes, CVE triage, `dist/` bundle leaks | `Sentinel` | **Mandatory `pro` IAM/OAuth boundary lock** |
+| Air-gapped public engineering docs/whitepapers vs. private coaching/operational docs | `Scribe` | **Strict Context Skill Split**: loads *only* `public-technical-publications` on public repos |
+| Zero-trust secret scans, `0600` key modes, per-function KMS SAs, CVE triage, 5-Cat Air-Gap, `dist/` leaks | `Sentinel` | **Mandatory `pro` IAM/OAuth/air-gap boundary lock** |
 
 ---
 
@@ -76,11 +76,11 @@ The Mission Controller routes work without forcing the human architect to memori
 - **Explicit Non-Goal:** Does not alter hardware scanner timing thresholds (`Beacon`) or weaken security rules (`Vault`).
 - **Tool Access & Tier Split:** Read/write. Hard-locked to **`pro [MANDATORY]`** on sync races, offline partitions, and conflict merging.
 
-#### 5. `Cipher` (`Retail-Data-Wrangler`) — ETL & Dirty Data Wrangling Specialist
-- **Primary Mandate:** Build fault-tolerant ingestion pipelines for messy multi-sheet CSV/ODS schedules and HR exports, heuristic header aliases, E.164 phone standardization, badge ID canonicalization, and interactive import preview validators.
-- **Failure Mode Prevented:** Stops ambiguous `"Last, First"` vs. `"First Last"` name formats or quoted RFC-4180 cells from corrupting employee rosters or silently dropping shifts.
-- **Explicit Non-Goal:** Does not run destructive production database wipes during imports; enforces idempotent pre-flight diffs.
-- **Tool Access & Tier Split:** Read/write + SQLite. Uses **`0.08x` (`flash_lite`)** for column regex scans and row counts; `0.20x` (`flash`) for batch parsers.
+#### 5. `Cipher` (`Fleet-ETL-And-Financial-Ledger-Specialist`) — Fleet Data ETL & Deterministic Financial Ledger Specialist
+- **Primary Mandate:** Own deterministic integer-cents payroll and invoicing engines (`payroll.ts`, `invoice.ts`), FLSA `29 C.F.R. § 778.115` + PA `34 Pa. Code § 231.43(d)` rate-in-effect hourly overtime, Dark-Hours SLA breach credits, `debits === credits` QBO GL double-entry journals, dirty CSV/ODS schedule ingestion, and quantitative collectibles valuation math.
+- **Failure Mode Prevented:** Eliminates floating-point penny drift, illegal `0.5x` Pennsylvania fluctuating-workweek overtime shortcuts, unbalanced accounting entries, and `"Last, First"` roster import corruptions.
+- **Explicit Non-Goal:** Does not run destructive database wipes during imports or emit fractional-cent rounded totals.
+- **Tool Access & Tier Split:** Read/write + SQLite. Hard-locked to **`pro [MANDATORY]`** on financial, payroll, overtime, tax, or ledger math; uses `0.08x` (`flash_lite`) for raw column regex scans.
 
 ---
 
@@ -89,20 +89,20 @@ The Mission Controller routes work without forcing the human architect to memori
 #### 6. `Prism` (`Interface-Artisan`) — Domain-Adaptive Visual & Interface Artisan
 - **Primary Mandate:** Craft intentional domain visual archetypes (Daylight Enterprise, Clinical Calm, Thumb-Zone Utility), `OKLCH` + `color-mix()` tokens, `clamp()` fluid typography, `tabular-nums` telemetry alignment, structural `150ms`/`250ms` motion, and Canvas/SVG visualizers (e.g., spectral Doppler envelopes).
 - **Failure Mode Prevented:** Eliminates generic dark-slate clones, 4-KPI-box filler rows, muddy opacity contrast failures, and broken modal focus handling.
-- **Explicit Non-Goal:** Does not touch Rollup bundle splitting (`Forge`) or write E2E browser assertions (`Vanguard`).
-- **Tool Access & Tier Split:** Read/write + Playwright. Fast tier (`0.20x`) for spacing/token adjustments; deep tier (`1.0x`) for complete design systems, shaders, and anti-slop overhauls.
+- **Explicit Non-Goal:** Does not alter Vite/Rollup chunk splitting or Expo native manifests (`Forge`).
+- **Tool Access & Tier Split:** Read/write + Playwright. Fast tier (`0.20x`) for spacing/token adjustments; deep tier (`1.0x`) for design systems, shaders, and anti-slop overhauls.
 
-#### 7. `Forge` (`Phone-Packaging-Architect`) — Mobile Viewport & PWA Packaging Architect
-- **Primary Mandate:** Enforce phone-only thumb-zone ergonomics (`100dvh`, `viewport-fit=cover`, Dynamic Island/Home Indicator safe-area insets), `>=44×44px` touch targets, PWA manifests/precaching, Capacitor iOS Xcode bridging, and Rollup `manualChunks` keeping every JS bundle `<500 KB`.
-- **Failure Mode Prevented:** Prevents iOS Safari toolbars from burying primary checkout actions, multi-megabyte bundles from stalling on cellular links, and App Store binary rejections.
-- **Explicit Non-Goal:** Does not redefine visual brand aesthetics (`Prism`) or bypass iOS StoreKit/privacy compliance checks.
-- **Tool Access & Tier Split:** Read/write + Playwright. Deep tier for Rollup splitting, service worker precache lifecycles, and Safari viewport geometry.
+#### 7. `Forge` (`Mobile-And-Native-Runtime-Packaging-Architect`) — Mobile & Native Runtime Packaging Architect
+- **Primary Mandate:** Architect Vite `<500 KB` PWAs, Capacitor 8 Swift/StoreKit 2 iOS apps, and Expo React Native New Architecture field clients (`app.json`, `Info.plist`, AndroidManifest entitlements, Play Integrity / App Attest), enforcing thumb-zone `100dvh` safe areas and hard GPS/sensor teardown whenever `shift.status !== 'IN_PROGRESS'`.
+- **Failure Mode Prevented:** Prevents off-duty background GPS battery drain/privacy violations, over-limit Cellular JS bundles, broken notch safe areas, and App Store binary rejections.
+- **Explicit Non-Goal:** Does not redefine UI color/typography tokens (`Prism`) or bypass StoreKit/privacy compliance gates.
+- **Tool Access & Tier Split:** Read/write + Playwright + native Xcode offload (`M1 Max`). Deep tier for Rollup splitting, native plugins, and App Attest packaging.
 
-#### 8. `Beacon` (`Retail-Hardware-Integrator`) — Hardware Sensors, Scanners & Web Audio Engineer
-- **Primary Mandate:** Implement `<35ms` HID keyboard-wedge barcode/RFID listeners, ISO/IEC 15424 AIM symbology stripping, Web NFC (`NDEFReader`) payload parsing, procedural Web Audio synthesis (CAD chimes, scan beeps, Motorola-style PTT chirps, Doppler acoustic flow), and rugged `KEYCODE_PTT` / Bluetooth headset hooks.
-- **Failure Mode Prevented:** Stops human search typing from firing asset checkouts, stops barcode bursts from triggering Spacebar PTT hotkeys, and recovers iOS WebKit `'interrupted'` audio contexts.
-- **Explicit Non-Goal:** Does not rely on brittle remote `.mp3` CDN fetches for critical operational audio feedback.
-- **Tool Access & Tier Split:** Read/write. Deep tier (`1.0x`) for NDEF parsing, lookahead audio buffer scheduling, and wedge state machines; `0.20x` for frequency/debounce tuning.
+#### 8. `Beacon` (`Field-Hardware-Sensors-And-Client-RTC-Engineer`) — Field Hardware, Sensors & Client RTC Media Engineer
+- **Primary Mandate:** Engineer client-side LiveKit Opus PTT capture, `<50ms` dead-man cutover, dual ring-buffer dead-zone audio queuing, Bluetooth RSM hardware triggers, BLE `-78dBm` checkpoint beacons, Accelerometer Man-Down DSP (`>2.8 G` -> `<0.15 G` 90s -> `30s` cancel window), PDF417/LPR capture, `<35ms` HID keyboard-wedge barcode listeners (`]C1`/`]e0`/`]Q1`/`]d2` stripping), Web NFC NDEF parsing, and procedural Web Audio synthesis.
+- **Failure Mode Prevented:** Stops barcode scanner bursts from keying Spacebar PTT mics, preserves underground garage radio clips via `recordedAt`, and recovers iOS WebKit `'interrupted'` audio contexts.
+- **Explicit Non-Goal:** Does not mint server LiveKit JWTs or enforce server floor arbitrator locks (`Apex`), and never polls hardware sensors off-duty.
+- **Tool Access & Tier Split:** Read/write. Deep tier (`1.0x`) for RTC capture buffering, Man-Down DSP thresholds, NDEF parsing, and `<35ms` state machines.
 
 #### 9. `Vulcan` (`Additive-Fabricator`) — Parametric CAD & Additive Fabrication Specialist
 - **Primary Mandate:** Design parametric OpenSCAD CSG models, calibrate FDM `0.4mm` tolerances (`0.20mm` snap-fit clearances, `0.08–0.12mm` press-fits, `4.0mm` M3 insert bosses), architect pause-at-layer RFID/magnet cavities (`+0.40mm` XY, `+0.20mm` Z), and tune Bambu/Orca slicing profiles.
@@ -119,39 +119,37 @@ The Mission Controller routes work without forcing the human architect to memori
 - **Failure Mode Prevented:** Catches inverted Doppler cosine error warnings, misstated carotid/visceral stenosis cutoffs, and ambiguous "trap-word" board distractors before students see them.
 - **Permissions & Explicit Non-Goal:** **Strictly Read-Only + Web Search** (`Write` disabled so verification remains independent from authoring); never guesses clinical values without primary citation. Hard-locked to **`pro [MANDATORY]`** whenever clinical terms appear.
 
-#### 11. `Scout` (`Research-Director`) — Research Director & Adversarial Co-Investigator
-- **Primary Mandate:** Synthesize primary technical standards (W3C, WCAG 2.2, React RFCs, WebKit Bugzilla), evaluate breaking dependency shifts, research state statutes, author living engineering playbooks, and partner asynchronously with external auditor `Muse`.
-- **Failure Mode Prevented:** Stops teams from shipping deprecated HTML/CSS primitives, trusting vendor marketing hype, or overlooking regional statutory traps.
-- **Explicit Non-Goal:** Does not treat summary blog posts as authoritative when official RFCs, statutes, or browser bug trackers exist.
-- **Tool Access & Tier Split:** Read + targeted playbook/dropzone write + web search. Deep tier (`1.0x`) for RFC evaluation and adversarial verification.
+#### 11. `Scout` (`Research-Director`) — Research Director & Read-Only Primary-Statute Veto Power
+- **Primary Mandate:** Synthesize primary standards (W3C, WCAG 2.2, React RFCs, WebKit Bugzilla), exercise **Read-Only Primary-Statute Veto Power** over multi-state legal compliance implementations (e.g., banning unverified portal scrapers or `0.5x` PA overtime shortcuts), author living engineering playbooks, and partner asynchronously with external auditor **`Muse`**.
+- **Failure Mode Prevented:** Stops code authors from rationalizing unverified legal interpretations or shipping deprecated WebKit primitives.
+- **Permissions & Explicit Non-Goal:** Holds **zero write access to `packages/**`, `apps/**`, `services/**`, or `*.rules`**—can strictly block via primary-source statutory veto without editing application runtime code.
 
-#### 12. `Scribe` (`Executive-Wordsmith`) — Technical & Operational Author
-- **Primary Mandate:** Author grounded engineering documentation, product whitepapers, SBI/GROW performance feedback records, 70/20/10 development plans, and executive briefings in a direct, human operational voice.
-- **Failure Mode Prevented:** Eliminates generic AI buzzword slop, fabricated baseline metrics, and vague coaching feedback that fails HR or operational scrutiny.
-- **Explicit Non-Goal:** Never invents unverified metrics, fake case numbers, or boilerplate corporate filler.
-- **Tool Access & Tier Split:** Read/write. Fast tier (`0.20x`) for polishing bullets; deep tier (`1.0x`) for full whitepapers and formal coaching plans.
+#### 12. `Scribe` (`Executive-Wordsmith`) — Dual-Skill Technical & Operational Author
+- **Primary Mandate:** Maintain a hard runbook firewall across two isolated writing modes: **`public-technical-publications`** (authoring sanitized architecture books, whitepapers, and public showcases) versus strictly private internal operational documentation.
+- **Failure Mode Prevented:** Prevents cross-contamination of private operational notes, store numbers, or personnel contexts into public GitHub repositories, while eliminating corporate buzzwords and ungrounded claims.
+- **Explicit Non-Goal:** Explicitly banned from loading private coaching skills (`70-20-10-coaching-authoring`) or accessing private Obsidian vaults during any public documentation mission.
+- **Tool Access & Tier Split:** Read/write. Fast tier (`0.20x`) for copy edits; deep tier (`1.0x`) for multi-chapter architecture whitepapers.
 
-#### 13. `Hermes` (`Chief-Archivist`) — Knowledge Archivist & Mobile Dispatch Custodian
-- **Primary Mandate:** Triage mobile markdown notes and transcribed voice memos, enforce Obsidian YAML frontmatter and wikilink hygiene, synthesize briefings, and compile mandatory 5-part session retrospectives alongside `Scout`.
-- **Failure Mode Prevented:** Stops field-captured ideas from disappearing into unindexed folders and prevents operational lessons from being forgotten between sprints.
-- **Explicit Non-Goal:** Never discards un-transcribed mobile audio captures when offline; always preserves raw recordings cleanly.
-- **Tool Access & Tier Split:** Read/write. Deep tier (`1.0x`) for executive briefings, voice memo routing, and knowledge graph audits.
+#### 13. `Hermes` (`Chief-Archivist`) — Private Knowledge Vault Custodian *(Public-Banned)*
+- **Primary Mandate:** Maintain strict hygiene strictly inside private local knowledge graphs, triage incoming mobile dispatches and audio transcripts, validate Dataview schemas, and compile daily 5-part session retrospectives alongside `Scout`.
+- **Hard Isolation Firewall:** **`Hermes` is strictly forbidden inside all public repositories** (`Public-Showcase`, open-source tooling) so private mobile captures and personal retrospectives never cross public air-gaps.
+- **Tool Access & Tier Split:** Read/write strictly confined to private vault paths. Deep tier (`1.0x`) for briefings and knowledge graph maintenance.
 
 ---
 
 ### Wing IV · Infrastructure, Cognitive Telemetry, QA, Security & Release
 
 #### 14. `Torque` (`Workstation-Optimizer`) — OS, Kernel & Hardware Systems Mechanic
-- **Primary Mandate:** Tune Linux kernel `sysctl` parameters, Optane/NVMe `[none]` I/O scheduling, `zram` & `earlyoom` rules, ARM microSD flash-wear mitigation, and Apple Silicon container watchdogs; execute 22-invariant 3-node drift audits.
-- **Failure Mode Prevented:** Prevents workstation OOM lockups under parallel compilation, network mount boot stalls, and premature flash burnout on always-on edge nodes.
-- **Explicit Non-Goal:** Does not leave ad-hoc manual `/proc` tweaks undocumented outside version-controlled `/etc/sysctl.d` or `/etc/udev` configs.
+- **Primary Mandate:** Tune Linux kernel `sysctl` parameters, Optane/NVMe `[none]` I/O scheduling, `zram` & `earlyoom` rules, 24/7 workstation no-sleep & Wi-Fi `power_save=0` locks, ARM microSD flash-wear mitigation, and Apple Silicon container watchdogs; execute **23-invariant 3-node drift audits (`squad-doctor`)**.
+- **Failure Mode Prevented:** Prevents workstation OOM lockups under parallel compilation, idle desktop sleeps killing active background pipelines, and premature flash burnout on always-on edge nodes.
+- **Explicit Non-Goal:** Does not leave ad-hoc manual `/proc` tweaks undocumented outside version-controlled `/etc/sysctl.d`, `/etc/systemd/`, or `/etc/udev` configs.
 - **Tool Access & Tier Split:** Read/write + system diagnostics. Deep tier (`1.0x`) for kernel sysctls, udev rules, deadlock analysis, and profiling.
 
 #### 15. `Synapse` (`AI-Cognitive-Optimizer`) — AI Cognitive & Memory Infrastructure Architect
-- **Primary Mandate:** Maintain the Optane SQLite FTS5 + Hybrid RRF (`k = 60`) engine, the `<= 2,000`-token differential context compiler, the dual-window rolling quota HUD, the 5-model `squad-local` M1 Max zero-token CLI, and `temperature: 0.0` `responseSchema` hardening in production apps.
-- **Failure Mode Prevented:** Eliminates context rot, token runaway, concurrent blackboard corruption, and unconstrained LLM outputs inside regulated applications.
-- **Explicit Non-Goal:** Never drops fallback resilience when local vector endpoints go offline.
-- **Tool Access & Tier Split:** Read/write + `fetch`. Deep tier (`1.0x`) for retrieval architecture, vector fusion, and anti-hallucination schemas.
+- **Primary Mandate:** Maintain the Optane SQLite FTS5 + Hybrid RRF (`k = 60`) engine, the `<= 2,000`-token differential context compiler, the `32.5M`/`195M` fixed-bucket live telemetry HUD with platform `/usage` header calibration, the 5-model `squad-local` Apple Silicon CLI, Dual-Model Hydrogen/Orchestrator tier routing, and `temperature: 0.0` `responseSchema` contracts.
+- **Failure Mode Prevented:** Eliminates context rot, quota bucket drift across mixed model pools, concurrent blackboard corruption, and unconstrained LLM prose inside legal/clinical apps.
+- **Explicit Non-Goal:** Never removes local FTS5 fallback resilience when remote inference nodes drop offline.
+- **Tool Access & Tier Split:** Read/write + `fetch`. Deep tier (`1.0x`) for retrieval architecture, quota algebra, and anti-hallucination schemas.
 
 #### 16. `Vanguard` (`QA-Test-Architect`) — Automated QA & Visual Gate Architect
 - **Primary Mandate:** Author deterministic Vitest suites, headless Playwright E2E fixtures (explicitly prohibiting flaky `waitForTimeout` sleeps and mandating `data-testid` / role locators), `<35ms` scanner burst stress tests, offline partition simulations, and DOM/WCAG visual gates.
@@ -159,17 +157,17 @@ The Mission Controller routes work without forcing the human architect to memori
 - **Explicit Non-Goal:** Never weakens test assertions or skips failing cases just to force a green build.
 - **Tool Access & Tier Split:** Read/write + Playwright execution. Deep tier (`1.0x`) for E2E harnesses, partition mocks, and concurrency stress tests.
 
-#### 17. `Sentinel` (`Security-IAM-Auditor`) — Zero-Trust Security & IAM Sentinel
-- **Primary Mandate:** Own staged diff secret scanning, `0600` credential permissions, compiled `dist/` JavaScript bundle audits, Dependabot/Renovate CVE triage, public documentation air-gap firewalls, and IAM/OAuth/PKCE boundaries.
-- **Failure Mode Prevented:** Stops plaintext API keys, private certs, internal hostnames, or vulnerable packages from reaching public repositories or production CDNs.
-- **Explicit Non-Goal:** Never grants broad wildcard permissions or permits `.env` files in version control.
-- **Tool Access & Tier Split:** Hard-locked to **`pro [MANDATORY]`** for IAM, auth boundaries, PKCE, and rotation design; `0.20x` for regex sweeps and mechanical patch CVE PRs.
+#### 17. `Sentinel` (`Security-IAM-Auditor`) — Zero-Trust Security, Air-Gap & IAM Sentinel
+- **Primary Mandate:** Audit `>2 MB`/media/secret pre-commit fireguards, `0600` credential modes, per-function least-privilege KMS service accounts, App Attest / Play Integrity checks, CJIS/FCRA/OSHA data retention lifecycles, compiled `dist/` JavaScript leak scans, Dependabot/Renovate CVE triage, and the **5-Category Public Air-Gap Firewall**.
+- **Failure Mode Prevented:** Stops plaintext API keys, internal LAN topology, personal/employee names, vulnerable dependencies, or cross-tenant permission holes from shipping.
+- **Explicit Non-Goal:** Never grants broad wildcard permissions or approves bypass exceptions on public-facing commits.
+- **Tool Access & Tier Split:** Hard-locked to **`pro [MANDATORY]`** for IAM, auth boundaries, PKCE, and rotation architecture; `0.20x` for regex sweeps and patch CVE updates.
 
-#### 18. `Chronos` (`Git-Fleet-Sentry`) — Version Control, DR Backups & Release Sentry
-- **Primary Mandate:** Enforce clean Git working trees, atomic conventional commits across 11 repositories, lockfile integrity, daily off-box verified DR backups, and Firebase Hosting/Rules/Functions production releases.
-- **Failure Mode Prevented:** Eliminates unpushed work, dirty release builds, broken merge resolutions, and untested backups that silently fail during recovery.
-- **Explicit Non-Goal:** Never force-pushes history rewrites or bypasses pre-push type/test verification without explicit human override.
-- **Tool Access & Tier Split:** Read/write + Git/GitHub + Firebase CLI. Runs ~90% of daily commits/hosting deploys at `0.20x`; escalates complex rebases or production rule migrations to `1.0x`.
+#### 18. `Chronos` (`Git-Fleet-Sentry`) — Worktrees, Immutability Rulesets, DR Backups & Release Sentry
+- **Primary Mandate:** Maintain pristine `main`/`master` trunks across all **12 repositories**, manage Optane NVMe feature worktrees (`fleet wt {new|list|land|prune}`), enforce **`24/24` zero-bypass GitHub Pro `trunk-immutable` & `tags-immutable` Rulesets**, run `<5s` linear-forward `fleet release` / `fleet rollback`, verify daily off-box DR restores, and ship Cloud Hosting / Cloud Functions v2 builds.
+- **Failure Mode Prevented:** Eliminates dangling experimental branches on trunk, force-pushed tag overwrites, torn SQLite backups, and dirty release deployments.
+- **Explicit Non-Goal:** Never force-pushes history rewrites or disables pre-push / ruleset checks to force an unverified tag.
+- **Tool Access & Tier Split:** Read/write + Git/GitHub CLI + Firebase CLI. Operates routine commits/worktree lands at `0.20x`; deep `1.0x` for complex releases or infrastructure migrations.
 
 ---
 
@@ -187,24 +185,22 @@ Clearly defined **seams** prevent two capable specialists from stepping on each 
 
 ---
 
-## Wave Sequencing, Parallel Isolation & Lazy Runbooks
+## 4-Wave Hardware-Aware OOM-Safe Execution Doctrine
 
-Complex multi-surface releases execute in **ordered waves** where Wave 1 locks shared contracts before Wave 2 fans out concurrently across isolated file paths:
+Running parallel headless Chromium suites, concurrent Vite bundlers, and React Native Metro compilers simultaneously on a **`12 GB` RAM mobile workstation** causes swap thrash and OOM kills. Rather than launching unbounded parallel fan-outs, `Halcyon` executes multi-package releases under a strict **4-Wave Hardware-Aware Doctrine** paired with our **M1 Max Apple Silicon offload node**:
 
 ```mermaid
 flowchart LR
-    W1["Wave 1 · Contracts & Rules\nVault (Schemas, Indexes & Rules)"] --> W2A["Wave 2a · Prism\nUI Components & Views"]
-    W1 --> W2B["Wave 2b · Apex\nCloud Functions & Guards"]
-    W1 --> W2C["Wave 2c · Beacon & Forge\nHardware Wedge & Mobile Shell"]
-    W1 --> W2D["Wave 2d · Vanguard\nE2E & Integration Suites"]
-    W2A --> W3["Wave 3 · Verification & Release\nSentinel (Audit) -> Vanguard (Visual Gate) -> Chronos (Release)"]
-    W2B --> W3
-    W2C --> W3
-    W2D --> W3
+    W0["Wave 0 · Apple Silicon Pre-Flight\nSingle-14B Local Sanity (No Multi-14B VRAM Thrash)"] --> W1["Wave 1 · Sequential Contracts & Rules\nVault / Cipher Schemas · Rules · KMS · Scout Statute Veto"]
+    W1 --> W2["Wave 2 · Disjoint Low-RSS Authoring\nPrism · Beacon · Nexus · Forge · Scribe (Zero Concurrent Bundlers)"]
+    W2 --> W3["Wave 3 · Serialized Heavy Builds + Apple Silicon Offload\n1-at-a-Time vite/tsc/Playwright · M1 Max Xcode · Sentinel -> Chronos"]
 ```
 
-- **Zero Shared Write Targets:** Two concurrent subagents never receive write permission to the same file path in one wave. If Wave 2 discovers an unexpected shared contract type gap, the discovering specialist halts cleanly rather than editing Wave 1 contracts out of band; Wave 1 (`Vault` / `Aegis`) merges the type atomically before Wave 2 resumes.
-- **Lazy `SKILL.md` Injection:** Rather than injecting 18 lengthy manuals (`~2,200–3,000` tokens each, or `>42,000` startup tokens combined) into every base prompt, domain runbooks (`clinical-verification-rvt`, `openscad-additive-cad`, `scanner-burst-qa`, `firestore-zero-clobber-sync`, `phone-pwa-packaging`, `cloud-backend`, `premium-component-scaffold`, `playwright-authoring`) stay archived on disk until the specialist explicitly engages that workflow.
+- **Wave 0 (Single-Model Local Pre-Flight):** Runs sanity checks and exploratory structural scans on Apple Silicon (`squad-local` pinned to **one 14B model at a time**, eliminating concurrent multi-14B VRAM swap thrashing).
+- **Wave 1 (Sequential Shared Contracts & Read-Only Veto):** `Vault`, `Cipher`, and `Apex` lock shared Zod schemas, Firestore security rules, and KMS boundaries sequentially while `Scout` applies read-only statutory veto validation **before** implementation spreads.
+- **Wave 2 (Disjoint Parallel Low-RSS Authoring):** Fans out non-overlapping file write globs across authoring specialists (`Prism`, `Beacon`, `Nexus`, `Forge`, `Scribe`) with a **hard ban on concurrent `vite build`, headless Chromium/Playwright, or Expo Metro processes** on 12 GB workstation memory. Two concurrent subagents never write to the same file path in one wave.
+- **Wave 3 (Serialized Heavy Verification & Native Offload):** Runs heavy compilation and headless browser suites (`vite build`, `tsc --noEmit`, Playwright `squad-visual-gate`) strictly **one process at a time** on the workstation, offloads heavy native Capacitor/Xcode iOS archive builds to Apple Silicon, then gates release through `Sentinel` and `Chronos`.
+- **Lazy `SKILL.md` Injection & Context Firewall:** Eighteen domain runbooks (`~2,200–3,000` tokens each, `>42,000` startup tokens if pre-loaded) stay archived on disk until needed, with **`public-technical-publications`** enforcing a hard firewall banning private coaching skills from ever entering public repository runs.
 
 ---
 
@@ -212,15 +208,15 @@ flowchart LR
 
 Privilege separation is enforced mechanically rather than merely suggested:
 
-| Wing & Specialists | File Write Scope | External / Network Tools | Clinical / Security Sign-Off Power |
+| Wing & Specialists | File Write Scope | External / Network Tools | Clinical / Statute / Security Sign-Off Power |
 | :--- | :--- | :--- | :--- |
-| **Wing I** (`Aegis`, `Vault`, `Apex`, `Nexus`, `Cipher`) | App code, schemas, rules, functions, ETL scripts | `Vault` (SQLite), `Apex` (`fetch`) | `Vault` + `Apex` mandatory `pro` on IAM/auth/rules |
-| **Wing II** (`Prism`, `Forge`, `Beacon`, `Vulcan`) | Views, CSS tokens, manifests, hardware/audio hooks, `.scad` | `Prism`/`Forge` (Playwright), `Vulcan` (`openscad`) | `Forge` blocks >`500 KB` bundles; `Beacon` owns `<35ms` QA |
-| **Wing III** (`Echo`, `Scout`, `Scribe`, `Hermes`) | **Echo: Strictly Read-Only**; others scoped docs/vault | `Echo` & `Scout` (`fetch` / primary-source web search) | `Echo` can veto any medical item independently of authors |
-| **Wing IV** (`Torque`, `Synapse`, `Vanguard`, `Sentinel`, `Chronos`) | Sys configs, cognitive scripts, tests, hooks, deploys | `Torque` (SSH/sysctl), `Chronos` (Git/Firebase), `Sentinel` (CVE/audit) | `Sentinel` blocks release on leaks; `Chronos` owns DR proof |
+| **Wing I** (`Aegis`, `Vault`, `Apex`, `Nexus`, `Cipher`) | App code, schemas, rules, functions, ledger/ETL math | `Vault` (SQLite), `Apex` (`fetch`) | `Vault`, `Apex`, `Nexus` & `Cipher` math hard-locked `pro` |
+| **Wing II** (`Prism`, `Forge`, `Beacon`, `Vulcan`) | Views, CSS tokens, manifests, hardware/audio/RTC, `.scad` | `Prism`/`Forge` (Playwright), `Vulcan` (`openscad`) | `Forge` blocks >`500 KB` & off-duty sensors; `Beacon` owns `<35ms` QA |
+| **Wing III** (`Echo`, `Scout`, `Scribe`, `Hermes`) | **`Echo` & `Scout`: App Code Strictly Read-Only**; `Hermes` Private-Only | `Echo` & `Scout` (`fetch` / primary-source search) | `Echo` clinical veto; `Scout` statutory veto; `Scribe` isolated skill firewall |
+| **Wing IV** (`Torque`, `Synapse`, `Vanguard`, `Sentinel`, `Chronos`) | Sys configs, cognitive scripts, tests, hooks, worktrees/deploys | `Torque` (SSH/sysctl), `Chronos` (Git/GH/Firebase), `Sentinel` (CVE/audit) | `Sentinel` blocks leaks & air-gap breaches; `Chronos` enforces `24/24` rulesets |
 
-### Why Read-Only Verification (`Echo` & External `Muse`) Eliminates Confirmation Bias
-When the same agent that authored a Doppler exam question or drafted a multi-tenant rule is allowed to "fix its own mistakes," it almost always edits surrounding wording to justify its initial premise. By keeping `Echo` **strictly read-only** (unable to silently rewrite the question file it audits) and pairing `Scout` with a zero-shared-history external node (`Muse`), verification remains genuinely adversarial: falsified claims return structured citations and pass/fail verdicts rather than rationalized patches.
+### Why Read-Only Verification (`Echo`, `Scout` & External `Muse`) Eliminates Confirmation Bias
+When the same agent that authored a Doppler exam question, payroll calculator, or multi-tenant security rule is allowed to "fix its own mistakes," it frequently tweaks surrounding wording to justify its initial premise. Keeping **`Echo`** clinically read-only, enforcing **Read-Only Primary-Statute Veto Power on `Scout`** (zero write permission inside `packages/**`, `apps/**`, `services/**`, or `*.rules`), and cross-examining claims asynchronously through zero-shared-context **`Muse`** guarantees independent verification rather than rationalized patches.
 
 ---
 
@@ -253,21 +249,23 @@ Upon finishing, the specialist logs a structured 2–4 line entry via `squad-mem
 
 Routing `~85–90%` of mechanical tasks onto `0.20x` fast-tier execution (`flash`) only works safely if specialists know precisely when **not** to guess:
 
-1. **Pre-Flight Lock Check:** If the task touches clinical facts (`Echo`), Firestore rules or atomic transactions (`Vault`), cryptographic signatures or OAuth (`Apex`), multi-device conflict merges (`Nexus`), or key/bundle auditing (`Sentinel`), the context compiler promotes the invocation unconditionally to `pro [MANDATORY]` before the model ever runs.
-2. **Mid-Task Boundary Stop:** If a fast-tier `Aegis` sweep uncovers a subtle auth claim mismatch or `Prism` spots a race inside an offline IndexedDB store, the specialist **stops editing outside its partition**, documents the exact file/line anchor in a blocker handoff entry, and lets the Mission Controller spin up `Apex` or `Nexus` at `1.0x` depth cleanly.
+1. **Pre-Flight Lock Check:** If the task touches clinical facts (`Echo`), payroll/ledger math (`Cipher`), Firestore rules or atomic transactions (`Vault`), cryptographic signatures or OAuth (`Apex`), multi-device conflict merges (`Nexus`), or key/bundle/air-gap auditing (`Sentinel`), the context compiler promotes the invocation unconditionally to `pro [MANDATORY]` before the model ever runs.
+2. **Mid-Task Boundary Stop:** If a fast-tier `Aegis` sweep uncovers a subtle auth claim mismatch or `Prism` spots a race inside an offline IndexedDB store, the specialist **stops editing outside its partition**, documents the exact file/line anchor in a blocker handoff entry, and lets `Halcyon` spin up `Apex` or `Nexus` at `1.0x` depth cleanly.
 3. **Unambiguous Acceptance Tests:** No Wing I or Wing II task closes on prose summary alone; every handoff cites exact command exits (`tsc --noEmit`, `vitest run`, `oxlint`, or headless Playwright spec counts).
 
 ---
 
-## Risk-Based Tiered Pre-Release Audit Matrix
+## Risk-Based Tiered Pre-Release Audit Matrix (`Tier A1 / A2 / B / C / D`)
 
-Applying all 18 specialists to a small CSS patch wastes quota and delays iteration; running too few on clinical or multi-tenant apps invites major risk. Release audits scale strictly to domain consequence:
+Applying all 18 specialists to a small CSS patch or documentation update wastes quota; running too few on multi-tenant ERP or clinical apps invites major risk. Release audits scale strictly to domain blast radius:
 
 | Audit Tier | Target Domain | Required Sign-Offs | Mandatory Pre-Release Verification Scope |
 | :--- | :--- | :---: | :--- |
-| **Tier A · Regulated & Commercial** | Medical Board Prep (`SonoPrep`), Multi-Tenant Security ERP (`Arclight`) | **9** (`Echo` or `Apex`, `Aegis`, `Prism`, `Vanguard`, `Vault`, `Forge`, `Scout`, `Sentinel`, `Chronos`) | Clinical criteria or backend auth guards, zero-leak rules, `<500 KB` bundles & iOS safe areas, full E2E + visual gate, `dist/` secret scan, clean release tag. |
-| **Tier B · High-Velocity Floor PWAs** | Hardware Custody & Retail Floor Operations PWAs | **8** (`Aegis`, `Cipher`, `Nexus`, `Beacon`, `Prism`, `Vanguard`, `Sentinel`, `Chronos`) | Strict TS/lint hygiene, messy CSV ETL parsing, transaction zero-clobber sync, `<35ms` scanner & Web Audio recovery tests, mobile visual gate, secret scan. |
-| **Tier C · Infrastructure & Daemons** | Compute Nodes, Edge DNS Shield, Cognitive Tooling | **5** (`Torque`, `Vault`, `Vanguard`, `Sentinel`, `Chronos`) | 22-invariant 3-node drift doctor, SQLite integrity & DR restore verification, LAN DOM contrast check, `0600` credential hygiene, clean sync. |
+| **Tier A1 · Commercial / Clinical** | iOS Medical Board Prep (`SonoPrep`) | **9** (`Echo`, `Aegis`, `Prism`, `Vanguard`, `Vault`, `Forge`, `Scout`, `Sentinel`, `Chronos`) | Read-only `Echo` clinical audit, StoreKit 2 + `PrivacyInfo.xcprivacy`, `<500 KB` bundles & iOS safe areas, full unit/E2E + visual gate, `dist/` scan, clean release tag. |
+| **Tier A2 · Multi-Tenant ERP & Field** | Multi-Tenant Security ERP (`Arclight`) | **Core 9** (`Apex`, `Aegis`, `Prism`, `Vanguard`, `Vault`, `Forge`, `Scout` [statute veto], `Sentinel`, `Chronos`) + **Path-Conditional** (`Cipher`, `Beacon`, `Nexus`, `Synapse`) | Adds `Cipher` on `payroll`/`invoice`/`tax`/`gl`/`sla`, `Beacon` on `radio`/`sensor`/`ble`/`ptt`/`armory`, `Nexus` on `fieldStore`/`outbox`/`sync`, `Synapse` on `gemini`/`incidentPolish`/`ai`. |
+| **Tier B · High-Velocity Floor PWAs** | Hardware Custody & Floor Execution PWAs | **8** (`Aegis`, `Cipher`, `Nexus`, `Beacon`, `Prism`, `Vanguard`, `Sentinel`, `Chronos`) | Strict TS/lint hygiene, messy CSV ETL parsing, transaction zero-clobber sync, `<35ms` scanner & Web Audio recovery tests, mobile visual gate, secret scan. |
+| **Tier C · Infrastructure & Tools** | Compute Nodes, Edge DNS Shield, Cognitive Tooling, Video Engine | **5** (`Torque`, `Vault`, `Vanguard`, `Sentinel`, `Chronos`, plus domain lock e.g. `Cipher` for valuation math or `Echo` for clinical) | 23-invariant 3-node drift doctor, SQLite integrity & DR restore proof, DOM contrast check, `0600` key hygiene, `dry-run` worktree publish isolation. |
+| **Tier D · Public Air-Gap** | Public Documentation (`Public-Showcase`), Shared Renovate Presets | **4** (`Scribe` [`public-technical-publications`], `Scout`, `Sentinel` [5-Cat Air-Gap Firewall], `Chronos`; **`Hermes` Banned**) | Hard ban on private skills/vaults, 5-Category zero-leak regex & semantic audit, zero broken Markdown links, zero untracked `.env*`, signed ruleset merge. |
 | **Tier 1 · Constitutional** | System-wide topology, global rules, major framework migrations | **All 18 Specialists** | Full cross-fleet review and updated architecture documentation. |
 
 ### Tier Execution Order (Zero Deadlocks)

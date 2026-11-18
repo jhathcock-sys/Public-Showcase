@@ -7,7 +7,7 @@ tags:
   - token-budgets
   - telemetry
   - model-routing
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 
 # 03 · Differential Context & Quota Governance
@@ -152,13 +152,14 @@ Throwing deep frontier reasoning at `git status` or spacing adjustments wastes q
 flowchart TD
     Req["Dispatch Inputs\nAgent · Task · Criteria · Files · Symbols"] --> Mand{"Safety-Critical\nDomain Match?"}
     Mand -->|"Echo + Clinical/ARDMS/Doppler"| Lock["pro [MANDATORY]\nClinical Accuracy Guardrail"]
+    Mand -->|"Cipher + Payroll/Invoice/Tax/GL"| Lock
     Mand -->|"Vault + Rules/Permissions/Transactions"| Lock
     Mand -->|"Apex + Auth/Crypto/HMAC/Webhooks"| Lock
     Mand -->|"Nexus + Sync/Race/Offline/Merge"| Lock
     Mand -->|"Sentinel + IAM/OAuth/PKCE/Rotation"| Lock
     Mand -->|"No"| Arch{"Architectural Complexity Trigger?"}
-    Arch -->|"Yes (Design System, Kernel, CSG, 100dvh, RFC)"| Pro["pro (1.0x)\nDeep Architectural Reasoning"]
-    Arch -->|"No"| Lite{"Cipher Regex or Row Count Scan?"}
+    Arch -->|"Yes (Design System, Kernel, CSG, Packaging, RFC)"| Pro["pro (1.0x — Gemini 4 Hydrogen)\nHigh-Velocity Deep Coding"]
+    Arch -->|"No"| Lite{"Cipher CSV Regex or Row Scan?"}
     Lite -->|"Yes"| FL["flash_lite (0.08x)\nLightweight Scan"]
     Lite -->|"No"| F["flash (0.20x)\nFast Execution (~85-90% of Daily Ops)"]
 ```
@@ -168,27 +169,38 @@ flowchart TD
 | Specialist / Rule | Mandatory / Deep-Tier (`1.0x`) Triggers | Fast / Lightweight Bypass (`0.20x` / `0.08x`) |
 | :--- | :--- | :--- |
 | **`Echo`** *(Mandatory)* | Unconditional unless pure formatting (`json format`, `syntax check`, `indent`) with **zero** clinical/ultrasound/doppler terms | Syntax-only JSON prettification (`0.20x`) |
+| **`Cipher`** *(Mandatory)* | `payroll`, `invoice`, `overtime`, `flsa`, `pa act`, `tax`, `qbo`, `gl`, `journal`, `sla`, `arbitrage` (integer-cents ledger math) | Dirty CSV header regex & row scans (`0.08x`) |
 | **`Vault`** *(Mandatory)* | `firestore.rules`, `security`, `permission`, `auth`, `iam`, `transaction`, `atomic`, `rollback`, `batch`, `dexie`, `composite cost` | Mock seed JSON or routine field stubs (`0.20x`) |
 | **`Apex`** *(Mandatory)* | `auth`, `crypto`, `hmac`, `signature`, `webhook`, `idempoten`, `jwt`, `oauth`, `concurrency`, `pubsub`, `middleware` | Routine endpoint boilerplate (`0.20x`) |
 | **`Nexus`** *(Mandatory)* | `race`, `sync`, `clobber`, `merge`, `hydration`, `indexeddb`, `offline`, `conflict`, `multi-device`, `onsnapshot`, `atomic` | Basic state-shape audit (`0.20x`) |
-| **`Sentinel`** *(Mandatory)* | `iam`, `oauth`, `pkce`, `jwt`, `privilege`, `escalation`, `rotation architecture`, `auth boundary`, `supply-chain compromise` | Regex secret sweeps & patch CVEs (`0.20x`) |
-| **Architectural Triggers (`pro`)** | `Aegis` (`circular`, `refactor`, `react 19 compiler`), `Prism` (`design system`, `shader`, `anti-slop overhaul`), `Forge` (`manualchunks`, `rollup`, `100dvh`, `safari`), `Beacon` (`ndef`, `lookahead`, `wedge protocol`), `Torque` (`kernel`, `sysctl`, `udev`, `deadlock`), `Vanguard` (`scanner burst`, `partition`, `stress`), `Vulcan` (`csg`, `cantilever`, `pause-at-layer`) | Standard component edits, lint fixes, tests, commits (`0.20x`; `0.55x` medium); `Cipher` `regex` / `row count` scans (`0.08x`) |
+| **`Sentinel`** *(Mandatory)* | `iam`, `oauth`, `pkce`, `jwt`, `privilege`, `escalation`, `rotation architecture`, `auth boundary`, `air-gap`, `supply-chain compromise` | Regex secret sweeps & patch CVEs (`0.20x`) |
+| **Architectural Triggers (`pro`)** | `Aegis` (`circular`, `refactor`, `react 19 compiler`), `Prism` (`design system`, `shader`, `anti-slop overhaul`), `Forge` (`manualchunks`, `rollup`, `100dvh`, `expo`, `capacitor`), `Beacon` (`ndef`, `lookahead`, `man-down`, `ptt`, `wedge`), `Torque` (`kernel`, `sysctl`, `udev`, `deadlock`), `Vanguard` (`scanner burst`, `partition`, `stress`), `Vulcan` (`csg`, `cantilever`, `pause-at-layer`) | Standard component edits, lint fixes, tests, commits (`0.20x`; `0.55x` medium) |
+
+### Dual-Model Coding Routing (`Gemini 4 Hydrogen` + `Orchestrator`)
+Auditing underlying agent execution transcripts and model routing profiles exposed an asymmetrical split between planning/coordination models and heavy code execution engines:
+
+| Execution Pattern | Model Architecture | Role & Measured Performance Characteristics |
+| :--- | :--- | :--- |
+| **Worker Coding Executor (`Model="pro"`)** | **`Gemini 4 Hydrogen`** (`tiered-high` / `tiered-xhigh`) | Achieves **`57%` on Terminal-Bench 4.1**, serving all deep subagent refactoring, rules hardening, and multi-file edits cleanly at minimal wall-clock drift. |
+| **Hybrid Plan-Then-Execute Pair** | **`Orchestrator (Argon / Carbon)`** + `Hydrogen` | Pairs deep read-only `Argon` / `Carbon` architectural synthesis with `Hydrogen` execution—delivering **`-24%` lower weighted quota burn** and **`-19%` faster completion latency** than monolithic `pro` sessions. |
+| **Tier Normalization Guard (`_classify_model_tier`)** | Strict string normalization (`carbon-high`, `hydrogen-*`, `medium`, `flash`, `lite`) | Prevents `carbon-high` planner turns or legacy descriptors from falling into wrong billing buckets, keeping telemetry gauges calibrated across upgrades. |
 
 ---
 
-## 3. Dual-Window Rolling Quota & Live HUD Telemetry
+## 3. Fixed-Bucket Dual Quota Calibration & Live HUD Telemetry
 
-AI provider plans frequently enforce **overlapping rolling limits**: a fast 5-hour burst window alongside a 7-day weekly ceiling. Reaching the weekly cap unexpectedly mid-sprint stalls shipping even when the 5-hour meter looks empty. Our live terminal HUD (`squad-live-telemetry.py`) reads real transcript logs every 2 seconds to monitor both windows simultaneously.
+Earlier telemetry assumed a simple sliding 5-hour window (`oldest + 5h`). Analyzing wake-window boundary traces (`15:15:13 -> 20:15:13`) proved the provider actually enforces a **fixed 5-hour bucket** initiated by the first request after the previous bucket expires (`bucket_end = bucket_start + 5h`), alongside a **separate quota pool** for non-Gemini (Claude / GPT-OSS) sessions that must never dilute Gemini burn totals.
 
-### Unified Weighted Token Formula
-Transcript log parsing reads native uncached `input_tokens`, `output_tokens`, and `cache_read_tokens` directly (applying a `0.15 / 0.85` split fallback only on legacy multi-turn rows missing explicit cache counts) and weights usage by **model tier** (`1.0x` pro/high, `0.55x` medium, `0.20x` flash, `0.08x` flash-lite), `4.0x` output cost, and **`0.025x` prompt-cache read weight**:
+### Unified Weighted Token Formula & Calibrated Pool Constants
+Transcript log parsing isolates native Gemini turns from non-Gemini pool entries (`Cld:XX%`), reads uncached `input_tokens`, `output_tokens`, and `cache_read_tokens` directly (using `0.15 / 0.85` fallback splitting strictly on legacy rows), and applies empirically tuned weights:
 
 $$\text{Weighted Tokens} = \sum_{\text{tier}} w_{\text{tier}} \times \Big(\text{Input}_{\text{uncached}} + (4.0 \times \text{Output}) + (0.025 \times \text{Cache}_{\text{read}})\Big)$$
 
 where $w_{\text{tier}} \in \{1.0_{\text{pro}},\, 0.55_{\text{medium}},\, 0.20_{\text{flash}},\, 0.08_{\text{lite}}\}$.
 
-- **5-Hour Estimated Rolling Envelope (`~100,000,000` weighted tokens, no turn-count cap):** Tracks trailing `18,000`-second burn and computes a **25%-load rolloff countdown (`Rst: XhXXm`)**—scanning active steps chronologically until `25%` of current weighted load crosses the oldest aging boundary (`rolloff_ep + 18000 - now`), showing exactly when meaningful capacity frees up rather than waiting on a single small initial turn.
-- **7-Day Estimated Rolling Weekly Cap (`~500,000,000` weighted tokens, `~5.0x` full burst windows):** Displays green `[~7d: X% OK]` below `70%`, yellow `[WARN: ~7d CAP X%]` from `70%–89%`, and red `[CRIT: ~7d CAP X%]` at `>= 90%`, alongside live prompt cache hit percentage (`Cache: X%`). Exhausting the weekly ceiling supersedes the 5-hour reset countdown.
+- **Fixed 5-Hour Bucket (`SQUAD_5H_QUOTA = 32,500,000`):** Calibrated empirically from observed consumption vs. remaining server header percentages (`27.36M / 0.84 = 32.57M`). Rather than drifting endlessly on sliding steps, a bucket starts cleanly on the first post-expiry request and resets cleanly at `bucket_start + 5h` (`Rst: XhXXm` or `Ready`).
+- **7-Day Rolling Weekly Ceiling (`SQUAD_WEEKLY_QUOTA = 195,000,000`, `~6.0x` 5h buckets):** Displays green `[7d: X% OK]` below `70%`, yellow `[WARN: 7d CAP X%]` from `70%–89%`, and red `[CRIT: 7d CAP X%]` at `>= 90%`.
+- **Automatic `/usage` Ground-Truth Lock (`XX% LIVE` + `Cld:XX%`):** Whenever the Flight Director invokes model roster introspection at session boundaries or sprint milestones (`0` worker spawns), exact server-side `quota_remaining` and `quota_resets` payloads write straight to transcripts—anchoring the HUD cleanly as **`84% LIVE`** across the entire `0%–100%` spectrum rather than guessing blind estimates until low-quota warnings fire.
 
 ### Terminal Systems Engineering Inside the HUD
 Rendering dense multi-column ANSI dashboards inside split terminal multiplexers (Zellij / COSMIC Terminal) hits subtle rendering traps that shatter naive Python `len()` alignment:
@@ -253,25 +265,25 @@ def fit_line(s: str, max_w: int) -> str:
 In production inside a side-by-side terminal workspace split, the HUD distills system telemetry into a single non-scrolling dashboard frame every 2 seconds:
 
 ```text
- SQUADRON LIVE TELEMETRY · 5h: ~18% est (18.4M / 100M) · Rst: 3h14m · [~7d: 41% OK] · Cache: 88.4%
+ SQUADRON LIVE TELEMETRY · 5h: 84% LIVE (27.3M / 32.5M) · Cld:100% · Rst: 3h11m · [7d: 41% OK] · Cache: 88.4%
 ──────────────────────────────────────────────────────────────────────────────────────────────────
  ◈ Aegis     [IDLE] Clean TS/Lint       ◈ Vault     [PRO]  Rules & Schema    ◈ Apex     [PRO]  Guards & HMAC
- ◈ Nexus     [PRO]  Sync & IndexedDB    ◈ Cipher    [IDLE] ETL & Schedules   ◈ Prism    [ACTV] Tokens OKLCH
- ◈ Forge     [IDLE] 100dvh & Chunks     ◈ Beacon    [IDLE] <35ms & Audio     ◈ Vulcan   [IDLE] CSG Fixtures
- ◈ Echo      [PRO]  Clinical Read-Only  ◈ Scout     [IDLE] RFC & Dropzone    ◈ Scribe   [ACTV] Docs Authoring
- ◈ Hermes    [IDLE] Vault Triage        ◈ Torque    [IDLE] Kernel & Nodes    ◈ Synapse  [IDLE] RRF & Compiler
- ◈ Vanguard  [ACTV] E2E Visual Gate     ◈ Sentinel  [PRO]  IAM & Leaks       ◈ Chronos  [IDLE] Git & Releases
+ ◈ Nexus     [PRO]  Sync & IndexedDB    ◈ Cipher    [PRO]  Ledger & ETL      ◈ Prism    [ACTV] Tokens OKLCH
+ ◈ Forge     [IDLE] 100dvh & Native     ◈ Beacon    [IDLE] <35ms & RTC       ◈ Vulcan   [IDLE] CSG Fixtures
+ ◈ Echo      [PRO]  Clinical Read-Only  ◈ Scout     [IDLE] Veto & Dropzone   ◈ Scribe   [ACTV] Air-Gap Docs
+ ◈ Hermes    [IDLE] Private Vault Only  ◈ Torque    [IDLE] 23/23 & Kernel    ◈ Synapse  [IDLE] RRF & Compiler
+ ◈ Vanguard  [ACTV] E2E Visual Gate     ◈ Sentinel  [PRO]  IAM & Air-Gap     ◈ Chronos  [IDLE] 24/24 Rulesets
 ──────────────────────────────────────────────────────────────────────────────────────────────────
- WORKSPACE FLEET: arclight [clean] · sonoprep [clean] · retail-pwa [clean] · docs [2 modified]
+ WORKSPACE FLEET (12): arclight [clean] · sonoprep [clean] · video-engine [clean] · docs [worktree]
 ```
 
 ### Automated Action Thresholds on Dual Quota Gauges
 
 | Gauge Threshold | Operational State Transition |
 | :--- | :--- |
-| **`5h < 70%` and `7d < 70%`** | Standard dynamic routing: `~85–90%` tasks on `0.20x` fast tier (`0.55x` medium / `0.08x` lite); mandatory + architectural specialists at `1.0x`. |
-| **`5h >= 75%`** *(25%-rolloff `Rst:` < 90m)* | Pause non-critical documentation sweeps; prioritize only open verification gates (`Vanguard`, `Sentinel`, `Chronos`). |
+| **`5h > 25% remaining` and `7d < 70%`** | Standard dynamic routing: `~85–90%` mechanical tasks on `0.20x` fast tier (`0.55x` / `0.08x`); mandatory + architectural coding specialists on `Gemini 4 Hydrogen` (`1.0x`) & `Orchestrator` plan-execute pairs. |
+| **`5h <= 25% remaining`** *(Fixed `Rst:` < 90m)* | Pause non-critical documentation sweeps; prioritize only open verification gates (`Vanguard`, `Sentinel`, `Chronos`) or spill overflow cleanly onto isolated Claude/GPT-OSS pools (`Cld:XX%`). |
 | **`7d >= 70%`** *(Yellow Alert)* | Disable optional deep formatting sweeps; offload triage, digests, code review, and sanity checks strictly to Node 2 via `squad-local` (`hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`). |
-| **`7d >= 90%`** *(Red Critical)* | **Emergency Freeze on Exploratory Sweeps:** Allow strictly `pro [MANDATORY]` correctness gates (`Echo`, `Vault`, `Apex`, `Nexus`, `Sentinel`) and final `Chronos` releases. |
+| **`7d >= 90%`** *(Red Critical)* | **Emergency Freeze on Exploratory Sweeps:** Allow strictly `pro [MANDATORY]` correctness gates (`Echo`, `Cipher`, `Vault`, `Apex`, `Nexus`, `Sentinel`) and final `Chronos` releases. |
 
 By surfacing both rolling counters before exhaustion hits, teams preserve deep reasoning headroom specifically for high-consequence security, synchronization, and clinical verification passes.
