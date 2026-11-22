@@ -7,7 +7,7 @@ tags:
   - ai-systems
   - portfolio
   - hathcock-labs
-updated: 2026-11-18
+updated: 2026-11-22
 ---
 
 # Hathcock Labs — Engineering & Product Documentation Showcase
@@ -22,8 +22,8 @@ Welcome to the public engineering knowledgebase for **Hathcock Labs** (**19 chap
 ## Engineering Highlights at a Glance
 
 - **`Halcyon` XO + 18 Partitioned Domain Specialists (`02_AI-Systems-Architecture/`):** Explicit boundary seams (`Prism` OKLCH aesthetics vs. `Forge` PWA/Capacitor/Expo native packaging; read-only `Echo` clinical & `Scout` statutory veto power; `Hermes` private-vault-only isolation vs. `Scribe` air-gap skill firewall), **`Tier A1/A2/B/C/D` audit matrices**, and a **`4-Wave` OOM-safe execution doctrine** preventing concurrent bundler/Chromium swaps on `12 GB` RAM.
-- **Sub-`1.5 ms` Optane Memory & Hybrid RRF (`k = 60`):** Replaces `50k+`-token file dumps with `<1.5 KB` `REPO_MAP.md` structural navigation, `fcntl.flock` rolling `8`-entry blackboards (`93%` init reduction), Optane SQLite WAL FTS5 BM25 + 14-day recency (`996/996` vector parity), and `768d` vectors + 5-model `squad-local` inference at **`0` cloud tokens** on Apple Silicon.
-- **Dual-Model Routing & Fixed-Bucket Quota Governance:** Enforces `<= 2,000`-token subagent dispatches (`8`-step trim ladder + unfenced code-dump rejection), pairs `Orchestrator (Argon/Carbon)` with `Gemini 4 Hydrogen` (`57%` Terminal-Bench 4.1, `-24%` quota, `-19%` latency), and monitors calibrated **`32.5M` fixed 5-hour buckets** / **`195M` 7-day rolling caps** anchored to live `/usage` headers (`XX% LIVE`, isolated `Cld:XX%`).
+- **Sub-`1.5 ms` Optane Memory & `<24 KB` Rule Hygiene:** Deduplicated global rules from **`40.7 KB` → `20.4 KB`** (safely under the `24 KB` per-file injection cap so zero guardrails truncate on session boot) via a unified 18-agent roster table, `<1.5 KB` `REPO_MAP.md` maps, `fcntl.flock` rolling `8`-entry blackboards (`93%` init reduction), Optane SQLite WAL FTS5 BM25 + 14-day recency (**`1,015/1,015` embedded sections**), and `768d` vectors + 5-model `squad-local` inference at **`0` cloud tokens** on Apple Silicon.
+- **27-Model Dual-Pool Routing & Calibrated Telemetry:** Enforces `<= 2,000`-token subagent dispatches (`8`-step trim ladder + unfenced code-dump rejection) across **27 live models** (`20` Pool 1 Gemini incl. **Gemini 4 Neon** & **Orchestrator Neon** + Hydrogen/Carbon/Argon/3.8 Flash; `7` Pool 2 Claude 5.5 + sunsetting GPT-OSS 120B). Combines runtime delegation (`inherit` → Neon High; `pro`/`flash` → Hydrogen `tiered-xhigh`/`tiered-high`) with explicit `/swarm` pinning (`gemini-4-neon-xhigh` & selective Pool 2 release gates), monitored via **`32.5M` fixed 5-hour buckets** / **`325M` 7-day rolling heuristics** (suppressing false alarms while Pool 1 is unthrottled), live `/usage` header locks (`XX% LIVE`), Pool 2 countdowns (`Cld:XX%/XdXXh`), child-transcript model tracking, and `0.35x` `Gemini 4 Low` tiering.
 - **Optane Worktrees, `24/24` Zero-Bypass Rulesets & `23/23` Drift Readiness:** Isolates active development inside `fleet wt` worktrees, gates every commit under `<5 ms` (`>2 MB` blob / media / SQLite / secret + 5-Category Air-Gap Firewall), locks **12 repositories** under **`24/24` zero-bypass GitHub Pro `trunk-immutable` & `tags-immutable` Rulesets**, ships `<5s` linear-forward `fleet release` / `fleet rollback`, and audits **`23/23`** 3-node invariants in **`0.55s`**.
 - **Production Systems Across Regulated & Media Domains:** Tri-State security ERP + live PTT (`v0.4.0`: `433/433` unit, `164/164` E2E, `19` Blaze functions, `457.24 kB` max chunk), App Store-ready iOS vascular board prep (`421` items, `34/34` unit + `15/15` E2E), programmatic `1080×1920` `60fps` `-14 LUFS` short-form video engine (`33/33` unit, Grade `6.6–9.0`), `<35ms` floor hardware PWAs, and parametric OpenSCAD NFC enclosures.
 
@@ -36,7 +36,7 @@ If you came for how we avoid LLM context rot, hallucinations, and runaway token 
 1. [00 · Cognitive Architecture Overview](02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md) — Why single-context chat coding collapses and how our 3-node heterogeneous topology separates compute cleanly.
 2. [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Profiles of all 18 domain roles, inter-agent seams, zero-mention intent routing, lazy `SKILL.md` loading, and tiered release audits.
 3. [02 · Five-Tier Memory & Hybrid RRF Retrieval](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) — `<1.5 ms` Optane SQLite FTS5 BM25 + 14-day recency fused via Reciprocal Rank Fusion (`k = 60`) with `768d` local vectors.
-4. [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, `Gemini 4 Hydrogen` + `Orchestrator` routing, and calibrated `32.5M`/`195M` fixed `/usage` gauges.
+4. [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, 27-model `Gemini 4 Neon` + `Hydrogen` + `/swarm` routing, `<24 KB` rule hygiene, and calibrated `32.5M`/`325M` `/usage` telemetry.
 5. [04 · Adversarial Verification & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) — Two-node adversarial research (`Scout` ↔ `Muse`) and temperature-zero schema-locked production AI.
 6. [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Optane worktrees (`fleet wt`), `<5ms` blob/secret hooks, **`24/24` zero-bypass Pro Rulesets** across `12` repos, **`23/23` `squad-doctor` (`0.55s`)**, and verified DR restores.
 7. [06 · Ambient Mobile Dispatch & Local Inference](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) — Zero-RAM kernel `inotify` triggers, automatic `hermes3:8b` JSON dispatch triage, and the 5-model `squad-local` M1 Max zero-token CLI.
@@ -74,7 +74,7 @@ Explore the real-world systems built with this toolchain:
 
 | Reader Focus | Suggested Path | What You Will Find |
 | :--- | :--- | :--- |
-| **AI Systems Architects & Tool Builders** | `02_AI-Systems-Architecture/00` through `06` | `Halcyon` XO + `4-Wave` orchestration, Optane FTS5/RRF retrieval, `32.5M`/`195M` `/usage` telemetry, `24/24` GitHub Pro rulesets, and `squad-local` offloading. |
+| **AI Systems Architects & Tool Builders** | `02_AI-Systems-Architecture/00` through `06` | `Halcyon` XO + `4-Wave` orchestration, Optane FTS5/RRF (`1,015` sections), 27-model Neon/Hydrogen routing, `32.5M`/`325M` `/usage` telemetry, `<24 KB` rules, `24/24` Pro rulesets, and `squad-local`. |
 | **Enterprise & Regulated Product Engineers** | `01_Products/Arclight-Security-ERP.md` + `03_Architecture-Deep-Dives/*` | Multi-tenant Firestore boundaries, FLSA / `34 Pa. Code § 231.43(d)(2)` integer-cents math, SHA-256 license checks, and live WebRTC PTT with wiretap carve-outs. |
 | **Mobile, Media, Clinical & Hardware Developers** | `SonoPrep-iOS.md`, `Deterministic-Video-Production-Engine.md`, `Retail-Operations-PWAs.md`, `Additive-CAD-and-Hardware-Fixtures.md` | App Store StoreKit 2 manifests, `-14 LUFS` Remotion rendering, `<35ms` HID scanner isolation, iOS WebKit audio lock recovery, and pause-print CAD tolerances. |
 
@@ -92,8 +92,9 @@ Explore the real-world systems built with this toolchain:
 | System Pillar | Benchmark / Constraint | Mechanism Behind Guarantee |
 | :--- | :--- | :--- |
 | **Specialist Dispatch** | `<= 2,000` tokens / `<= 35` lines/slice | Deterministic `squad-context` compiler + `8`-step trim ladder |
-| **Optane Knowledge Search** | `1.29 ms` lexical / `996/996` vector parity | SQLite WAL FTS5 BM25 (`5:2:1`) + `14d` recency + `k=60` RRF |
-| **Quota & Dual-Model Coding** | `32.5M` 5h / `195M` 7d · `-24%` burn / `-19%` time | `Orchestrator (Argon/Carbon)` + `Gemini 4 Hydrogen` + `/usage` live lock |
+| **Constitutional Rule Budget** | `20.4 KB` (`<24 KB` cap; down from `40.7 KB`) | Unified 18-agent roster table + Optane memory offload; `0` boot truncation |
+| **Optane Knowledge Search** | `1.29 ms` lexical / `1,015/1,015` vector parity | SQLite WAL FTS5 BM25 (`5:2:1`) + `14d` recency + `k=60` RRF |
+| **27-Model Routing & Telemetry** | `32.5M` 5h / `325M` 7d est · `Cld:XX%/XdXXh` | `Gemini 4 Neon` + `Hydrogen` + `/swarm` pinning + child-transcript `/usage` lock |
 | **Local Open-Weight Offload** | `0` cloud tokens (`5`-model M1 Max CLI) | `squad-local`: `nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b` |
 | **Pre-Commit, Rulesets & Releases** | `< 5 ms` hook · `24/24` Pro Rulesets (`12` repos) | Blob/media/secret guard (`13/13`), `pre-push` (`5/5`), `<5s` `fleet release` / `rollback` |
 | **Infrastructure Health** | **`23/23` invariants in `0.55s`** | Parallel 3-node probe (incl. 24/7 no-sleep & Wi-Fi lock) + 4-step DR restore proof |

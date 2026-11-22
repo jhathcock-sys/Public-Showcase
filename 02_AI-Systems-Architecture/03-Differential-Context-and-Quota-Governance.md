@@ -1,13 +1,13 @@
 ---
 title: Differential Context & Quota Governance
-description: Deterministic <=2,000-token differential context compilation, 8-step progressive trimming, AST symbol slicing, anti-dump static detectors, mandatory frontier locks, dual-window quota math, and Unicode-safe live HUD engineering.
+description: Deterministic <=2,000-token differential context compilation, <24 KB constitutional rule-file hygiene, 8-step progressive trimming, AST symbol slicing, 27-model Neon/Hydrogen + /swarm routing, calibrated 32.5M/325M dual-pool telemetry, and Unicode-safe live HUD engineering.
 tags:
   - ai-architecture
   - context-engineering
   - token-budgets
   - telemetry
   - model-routing
-updated: 2026-11-18
+updated: 2026-11-22
 ---
 
 # 03 · Differential Context & Quota Governance
@@ -142,65 +142,72 @@ Consider dispatching `Apex` to lock down a Cloud Function billing webhook using 
 
 Even on a tight multi-file patch, critical acceptance criteria (`Section 1`) and targeted line ranges (`file#Lstart-Lend`) are **never truncated**—only secondary surrounding context steps back cleanly.
 
+### Constitutional Rule-File Hygiene (`<24 KB` Per-File Injection Cap)
+Subagent dispatch budgets mean nothing if the host runtime silently truncates the global system constitution on session boot. Many agentic IDE runtimes enforce a hard per-file rule injection cap of **`24,000` bytes (`<24 KB`)**: once a global rules file drifts past that ceiling, trailing guardrails—such as release immutability rules, model routing locks, or air-gap firewalls—quietly vanish from active context without raising an error.
+
+To eliminate silent boot truncation permanently, Hathcock Labs refactored its global rules from **`40.7 KB` → `20.4 KB`** (`-49.9%` footprint, preserving `~3.6 KB` of headroom below the `24 KB` cap):
+- **Unified 18-Agent Roster Table:** Collapsed repetitive multi-paragraph per-agent descriptions into a single compact routing matrix encoding domain triggers, mandatory runtime tiers, skill mappings, and tool boundaries.
+- **Optane FTS5/Vector Offload (`1,015/1,015` Embedded Sections):** Moved deep procedural playbooks, historical failure traces, and extended specialist dossiers out of always-injected boot rules and into Optane SQLite WAL FTS5 + `768d` vector memory, retrieving them on demand in `<1.5 ms` with **zero boot truncation**.
+
 ---
 
-## 2. Dynamic Task-Tier Routing & Mandatory Safety Locks
+## 2. Dynamic Task-Tier Routing, 27-Model Catalog & Mandatory Safety Locks
 
-Throwing deep frontier reasoning at `git status` or spacing adjustments wastes quota; routing database rules or clinical fact-checking through fast lightweight models invites dangerous regressions. `recommend_model()` resolves routing deterministically:
+Throwing deep frontier reasoning at `git status` or spacing adjustments wastes quota; routing database rules, statutory vetoes, or clinical fact-checking through lightweight models invites dangerous regressions. `recommend_model()` and explicit `/swarm` orchestration resolve routing deterministically across our **27-model dual-pool catalog**:
 
 ```mermaid
 flowchart TD
     Req["Dispatch Inputs\nAgent · Task · Criteria · Files · Symbols"] --> Mand{"Safety-Critical\nDomain Match?"}
-    Mand -->|"Echo + Clinical/ARDMS/Doppler"| Lock["pro [MANDATORY]\nClinical Accuracy Guardrail"]
-    Mand -->|"Cipher + Payroll/Invoice/Tax/GL"| Lock
-    Mand -->|"Vault + Rules/Permissions/Transactions"| Lock
-    Mand -->|"Apex + Auth/Crypto/HMAC/Webhooks"| Lock
-    Mand -->|"Nexus + Sync/Race/Offline/Merge"| Lock
-    Mand -->|"Sentinel + IAM/OAuth/PKCE/Rotation"| Lock
+    Mand -->|"Echo / Scout / Sentinel / Synapse / Scribe"| Neon["inherit (Gemini 4 Neon High)\nor /swarm: gemini-4-neon-xhigh"]
+    Mand -->|"Vault / Apex / Nexus / Cipher (Code & Rules)"| Lock["pro [MANDATORY] (Hydrogen tiered-xhigh)\n+ Neon xhigh / Pool 2 Release Audit"]
     Mand -->|"No"| Arch{"Architectural Complexity Trigger?"}
-    Arch -->|"Yes (Design System, Kernel, CSG, Packaging, RFC)"| Pro["pro (1.0x — Gemini 4 Hydrogen)\nHigh-Velocity Deep Coding"]
+    Arch -->|"Yes (Design System, Kernel, CSG, Packaging, RFC)"| Pro["pro (1.0x — Gemini 4 Hydrogen tiered-xhigh)\nHigh-Velocity Deep Coding"]
     Arch -->|"No"| Lite{"Cipher CSV Regex or Row Scan?"}
     Lite -->|"Yes"| FL["flash_lite (0.08x)\nLightweight Scan"]
-    Lite -->|"No"| F["flash (0.20x)\nFast Execution (~85-90% of Daily Ops)"]
+    Lite -->|"No"| F["flash (Hydrogen tiered-high / 0.20x 3.8-flash)\nFast Execution & Routine Ops"]
 ```
 
 ### Programmatic Routing Triggers Across All Specialists
 
-| Specialist / Rule | Mandatory / Deep-Tier (`1.0x`) Triggers | Fast / Lightweight Bypass (`0.20x` / `0.08x`) |
+| Specialist / Rule | Mandatory / Deep-Tier (`1.0x`) Triggers | Fast / Lightweight Bypass |
 | :--- | :--- | :--- |
-| **`Echo`** *(Mandatory)* | Unconditional unless pure formatting (`json format`, `syntax check`, `indent`) with **zero** clinical/ultrasound/doppler terms | Syntax-only JSON prettification (`0.20x`) |
-| **`Cipher`** *(Mandatory)* | `payroll`, `invoice`, `overtime`, `flsa`, `pa act`, `tax`, `qbo`, `gl`, `journal`, `sla`, `arbitrage` (integer-cents ledger math) | Dirty CSV header regex & row scans (`0.08x`) |
-| **`Vault`** *(Mandatory)* | `firestore.rules`, `security`, `permission`, `auth`, `iam`, `transaction`, `atomic`, `rollback`, `batch`, `dexie`, `composite cost` | Mock seed JSON or routine field stubs (`0.20x`) |
-| **`Apex`** *(Mandatory)* | `auth`, `crypto`, `hmac`, `signature`, `webhook`, `idempoten`, `jwt`, `oauth`, `concurrency`, `pubsub`, `middleware` | Routine endpoint boilerplate (`0.20x`) |
-| **`Nexus`** *(Mandatory)* | `race`, `sync`, `clobber`, `merge`, `hydration`, `indexeddb`, `offline`, `conflict`, `multi-device`, `onsnapshot`, `atomic` | Basic state-shape audit (`0.20x`) |
-| **`Sentinel`** *(Mandatory)* | `iam`, `oauth`, `pkce`, `jwt`, `privilege`, `escalation`, `rotation architecture`, `auth boundary`, `air-gap`, `supply-chain compromise` | Regex secret sweeps & patch CVEs (`0.20x`) |
-| **Architectural Triggers (`pro`)** | `Aegis` (`circular`, `refactor`, `react 19 compiler`), `Prism` (`design system`, `shader`, `anti-slop overhaul`), `Forge` (`manualchunks`, `rollup`, `100dvh`, `expo`, `capacitor`), `Beacon` (`ndef`, `lookahead`, `man-down`, `ptt`, `wedge`), `Torque` (`kernel`, `sysctl`, `udev`, `deadlock`), `Vanguard` (`scanner burst`, `partition`, `stress`), `Vulcan` (`csg`, `cantilever`, `pause-at-layer`) | Standard component edits, lint fixes, tests, commits (`0.20x`; `0.55x` medium) |
+| **`Echo`** *(Mandatory)* | **`inherit` (Neon High) / `pro [MANDATORY]`** + `/swarm: gemini-4-neon-xhigh` (selective Pool 2 on Tier A1 clinical gates) unless pure JSON formatting | Syntax-only JSON prettification |
+| **`Cipher`** *(Mandatory)* | **`pro [MANDATORY]`** on `payroll`, `invoice`, `overtime`, `flsa`, `pa act`, `tax`, `qbo`, `gl`, `journal`, `sla`, `arbitrage` + `inherit`/`gemini-4-neon-xhigh` verification | Dirty CSV header regex & row scans (`flash_lite`, `0.08x`) |
+| **`Vault`** *(Mandatory)* | **`pro [MANDATORY]`** on `firestore.rules`, `security`, `permission`, `auth`, `iam`, `transaction`, `atomic`, `rollback`, `batch`, `composite cost` + `gemini-4-neon-xhigh` audit | Mock seed JSON or routine field stubs |
+| **`Apex`** *(Mandatory)* | **`pro [MANDATORY]`** on `auth`, `crypto`, `hmac`, `signature`, `webhook`, `idempoten`, `jwt`, `oauth`, `kms`, `wiretap` + `gemini-4-neon-xhigh` auth audit | Routine status/env endpoint boilerplate |
+| **`Nexus`** *(Mandatory)* | **`pro [MANDATORY]`** on `race`, `sync`, `clobber`, `merge`, `hydration`, `indexeddb`, `offline`, `conflict`, `multi-device`, `onsnapshot`, `outbox` | Basic listener shape audit |
+| **`Scout`** *(Mandatory)* | **`inherit` (Neon High) [MANDATORY]** + `/swarm: gemini-4-neon-xhigh` for primary statutes, RFCs, and `Muse` adversarial audits | Quick version or syntax lookup |
+| **`Sentinel`** *(Mandatory)* | **`inherit` (Neon High) [MANDATORY]** + `/swarm: gemini-4-neon-xhigh` on IAM, KMS, App Attest, data lifecycles, and air-gap boundaries (selective Pool 2 `claude-opus-5-5-high` on Tier A1/A2/D gates) | Regex secret sweeps, `0600` & `dist/` scans |
+| **Architectural & Publication Triggers** | `Aegis` (`circular`, `refactor`, `react 19 compiler`), `Prism` (`design system`, `shader`; selective Pool 2 `claude-sonnet-5-5-high` for flagship UI overhauls), `Forge` (`manualchunks`, `rollup`, `100dvh`, `expo`, `capacitor`), `Beacon` (`ndef`, `lookahead`, `man-down`, `ptt`, `wedge`), `Torque` (`kernel`, `sysctl`, `udev`, `deadlock`), `Vanguard` (`scanner burst`, `partition`; cross-model `@verifier`), `Synapse` (`inherit` Neon High for evidentiary AI/telemetry), `Scribe` (`inherit` Neon High for public architecture docs), `Vulcan` (`csg`, `cantilever`, `pause-at-layer`) | Standard component edits, lint fixes, tests, commits |
 
-### Dual-Model Coding Routing (`Gemini 4 Hydrogen` + `Orchestrator`)
-Auditing underlying agent execution transcripts and model routing profiles exposed an asymmetrical split between planning/coordination models and heavy code execution engines:
+### 27-Model Dual-Pool Catalog & Verified Runtime Delegation Architecture
+Auditing live subscription rosters and actual child-subagent transcripts established both our **27-model dual-pool inventory** and the exact runtime mapping between abstract subagent tier enums and concrete executed models:
 
-| Execution Pattern | Model Architecture | Role & Measured Performance Characteristics |
+| Pool / Delegation Layer | Live Model Inventory (`27` Models) | Verified Runtime Role & Governance Policy |
 | :--- | :--- | :--- |
-| **Worker Coding Executor (`Model="pro"`)** | **`Gemini 4 Hydrogen`** (`tiered-high` / `tiered-xhigh`) | Achieves **`57%` on Terminal-Bench 4.1**, serving all deep subagent refactoring, rules hardening, and multi-file edits cleanly at minimal wall-clock drift. |
-| **Hybrid Plan-Then-Execute Pair** | **`Orchestrator (Argon / Carbon)`** + `Hydrogen` | Pairs deep read-only `Argon` / `Carbon` architectural synthesis with `Hydrogen` execution—delivering **`-24%` lower weighted quota burn** and **`-19%` faster completion latency** than monolithic `pro` sessions. |
-| **Tier Normalization Guard (`_classify_model_tier`)** | Strict string normalization (`carbon-high`, `hydrogen-*`, `medium`, `flash`, `lite`) | Prevents `carbon-high` planner turns or legacy descriptors from falling into wrong billing buckets, keeping telemetry gauges calibrated across upgrades. |
+| **Pool 1 · Gemini Family (`20` Models, Fixed 5h Bucket)** | **`Gemini 4 Neon`** (`low`, `medium`, `high`, `xhigh`), **`Orchestrator`** (`neon`, `argon`, default), **`Gemini 4 Hydrogen`**, **`Carbon`**, **`Argon`**, **`Gemini 3.8 Flash`** (`flash`, `flash-lite`) | Carries **`>95%`** of daily engineering load. `Halcyon` coordinates on `gemini-4-neon-high` and runs solo coding on `gemini-pro-orchestrator-neon`. |
+| **Pool 2 · Cross-Vendor (`7` Models, Multi-Day Reset)** | **`Claude 5.5`** (`opus` / `sonnet` × `low`, `medium`, `high`) + sunsetting **`GPT-OSS 120B`** (`gpt-oss-120b-medium`, sunsets `2026-11-30` — **excluded from routing**) | Tracked via isolated **`Cld:XX%/XdXXh`** anchor. Reserved strictly for cross-vendor Tier A1/A2/D release gates, flagship `Prism` UI overhauls, cross-model `@verifier` checks, stalled refactors, or Pool 1 exhaustion. |
+| **Subagent Tier Enum (`inherit \| pro \| flash \| flash_lite`)** | `pro` → **`Gemini 4 Hydrogen` (`tiered-xhigh`)** · `flash` → **`Gemini 4 Hydrogen` (`tiered-high`)** · `inherit` → **Coordinator's `Gemini 4 Neon High`** | Verified directly from child execution transcripts: coding subagents inherit Hydrogen's high-velocity code execution while `inherit` passes the coordinator's Neon High reasoning tier straight to clinical, statutory, security, and publication specialists. |
+| **Explicit `/swarm` Model Pinning** | **`gemini-4-neon-xhigh`** (Pool 1 deep verification) · **`claude-opus-5-5-high`** / **`claude-sonnet-5-5-high`** (selective Pool 2 cross-checks) | Used whenever exact model IDs are mandatory—pinning `gemini-4-neon-xhigh` for high-consequence security, statutory, clinical, and financial verification or engaging cross-vendor review on release gates. |
+| **Child-Transcript Classifier (`_classify_model_tier`)** | Normalizes concrete executed model IDs (`neon-*`, `hydrogen-*`, `argon-*`, `carbon-*`, `low`, `medium`, `3.8-flash`, `flash-lite`) directly from child transcripts | Eliminates alias distortion when `flash` or `inherit` resolves to different backend models across tiers, ensuring every token bills into its exact weight bucket. |
 
 ---
 
-## 3. Fixed-Bucket Dual Quota Calibration & Live HUD Telemetry
+## 3. Fixed-Bucket Dual-Pool Telemetry Calibration & Live HUD
 
-Earlier telemetry assumed a simple sliding 5-hour window (`oldest + 5h`). Analyzing wake-window boundary traces (`15:15:13 -> 20:15:13`) proved the provider actually enforces a **fixed 5-hour bucket** initiated by the first request after the previous bucket expires (`bucket_end = bucket_start + 5h`), alongside a **separate quota pool** for non-Gemini (Claude / GPT-OSS) sessions that must never dilute Gemini burn totals.
+Earlier telemetry assumed a simple sliding 5-hour window (`oldest + 5h`) and inferred model weights from parent dispatch labels. Analyzing wake-window boundary traces (`15:15:13 -> 20:15:13`) and inspecting actual child subagent transcripts proved two structural truths: Pool 1 enforces a **fixed 5-hour bucket** initiated by the first request after the previous bucket expires (`bucket_end = bucket_start + 5h`), while Pool 2 runs on a completely separate **multi-day rolling reset** (`Cld:XX%/XdXXh`) that must never dilute Pool 1 totals.
 
 ### Unified Weighted Token Formula & Calibrated Pool Constants
-Transcript log parsing isolates native Gemini turns from non-Gemini pool entries (`Cld:XX%`), reads uncached `input_tokens`, `output_tokens`, and `cache_read_tokens` directly (using `0.15 / 0.85` fallback splitting strictly on legacy rows), and applies empirically tuned weights:
+`squad-live-telemetry` parses **actual executed model IDs from both parent and child subagent transcripts**, isolates Pool 1 Gemini turns from Pool 2 cross-vendor sessions, reads uncached `input_tokens`, `output_tokens`, and `cache_read_tokens` directly (using `0.15 / 0.85` fallback splitting strictly on legacy rows), and applies empirically calibrated tier weights:
 
 $$\text{Weighted Tokens} = \sum_{\text{tier}} w_{\text{tier}} \times \Big(\text{Input}_{\text{uncached}} + (4.0 \times \text{Output}) + (0.025 \times \text{Cache}_{\text{read}})\Big)$$
 
-where $w_{\text{tier}} \in \{1.0_{\text{pro}},\, 0.55_{\text{medium}},\, 0.20_{\text{flash}},\, 0.08_{\text{lite}}\}$.
+where $w_{\text{tier}} \in \{1.0_{\text{pro/high/xhigh}},\, 0.55_{\text{medium}},\, 0.35_{\text{gemini4-low}},\, 0.20_{\text{3.8-flash}},\, 0.08_{\text{flash-lite}}\}$.
 
-- **Fixed 5-Hour Bucket (`SQUAD_5H_QUOTA = 32,500,000`):** Calibrated empirically from observed consumption vs. remaining server header percentages (`27.36M / 0.84 = 32.57M`). Rather than drifting endlessly on sliding steps, a bucket starts cleanly on the first post-expiry request and resets cleanly at `bucket_start + 5h` (`Rst: XhXXm` or `Ready`).
-- **7-Day Rolling Weekly Ceiling (`SQUAD_WEEKLY_QUOTA = 195,000,000`, `~6.0x` 5h buckets):** Displays green `[7d: X% OK]` below `70%`, yellow `[WARN: 7d CAP X%]` from `70%–89%`, and red `[CRIT: 7d CAP X%]` at `>= 90%`.
-- **Automatic `/usage` Ground-Truth Lock (`XX% LIVE` + `Cld:XX%`):** Whenever the Flight Director invokes model roster introspection at session boundaries or sprint milestones (`0` worker spawns), exact server-side `quota_remaining` and `quota_resets` payloads write straight to transcripts—anchoring the HUD cleanly as **`84% LIVE`** across the entire `0%–100%` spectrum rather than guessing blind estimates until low-quota warnings fire.
+- **Separate `Gemini 4 Low` (`0.35x`) Tier:** Distinct from `0.55x` medium and `0.20x` `Gemini 3.8 Flash`, preventing Gemini 4 low-tier bursts from skewing empirical 5-hour burn curves.
+- **Fixed 5-Hour Pool 1 Bucket (`SQUAD_5H_QUOTA = 32,500,000`):** Calibrated empirically against live platform remaining-percentage headers (`27.36M / 0.84 = 32.57M`). A bucket initiates cleanly on the first post-expiry request and resets deterministically at `bucket_start + 5h` (`Rst: XhXXm` or `Ready`).
+- **7-Day Rolling Heuristic (`SQUAD_WEEKLY_QUOTA = 325,000,000`, `~7d est`):** Recalibrated from earlier `195M` estimates to reflect observed multi-day throughput across the 27-model catalog. Crucially, the HUD implements **false-alarm suppression**: whenever live server headers confirm Pool 1 is unthrottled, spurious `[CRIT]` red banners are suppressed so operators see real status (`~7d est`) instead of alert fatigue.
+- **Automatic `/usage` Ground-Truth Lock (`XX% LIVE` + `Cld:XX%/XdXXh`):** Invoking zero-worker model roster introspection at session start and sprint milestones writes exact server-side `quota_remaining` and `quota_resets` headers directly into transcripts—anchoring both Pool 1 (`84% LIVE`) and the Pool 2 multi-day countdown (`Cld:100%/4d18h`) across the entire `0%–100%` range.
 
 ### Terminal Systems Engineering Inside the HUD
 Rendering dense multi-column ANSI dashboards inside split terminal multiplexers (Zellij / COSMIC Terminal) hits subtle rendering traps that shatter naive Python `len()` alignment:
@@ -265,25 +272,25 @@ def fit_line(s: str, max_w: int) -> str:
 In production inside a side-by-side terminal workspace split, the HUD distills system telemetry into a single non-scrolling dashboard frame every 2 seconds:
 
 ```text
- SQUADRON LIVE TELEMETRY · 5h: 84% LIVE (27.3M / 32.5M) · Cld:100% · Rst: 3h11m · [7d: 41% OK] · Cache: 88.4%
-──────────────────────────────────────────────────────────────────────────────────────────────────
+ SQUADRON LIVE TELEMETRY · 5h: 84% LIVE (27.3M / 32.5M) · Cld:100%/4d18h · Rst: 3h11m · [~7d est: 28% OK] · Cache: 88.4%
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
  ◈ Aegis     [IDLE] Clean TS/Lint       ◈ Vault     [PRO]  Rules & Schema    ◈ Apex     [PRO]  Guards & HMAC
  ◈ Nexus     [PRO]  Sync & IndexedDB    ◈ Cipher    [PRO]  Ledger & ETL      ◈ Prism    [ACTV] Tokens OKLCH
  ◈ Forge     [IDLE] 100dvh & Native     ◈ Beacon    [IDLE] <35ms & RTC       ◈ Vulcan   [IDLE] CSG Fixtures
- ◈ Echo      [PRO]  Clinical Read-Only  ◈ Scout     [IDLE] Veto & Dropzone   ◈ Scribe   [ACTV] Air-Gap Docs
+ ◈ Echo      [NEON] Clinical Read-Only  ◈ Scout     [NEON] Veto & Dropzone   ◈ Scribe   [ACTV] Air-Gap Docs
  ◈ Hermes    [IDLE] Private Vault Only  ◈ Torque    [IDLE] 23/23 & Kernel    ◈ Synapse  [IDLE] RRF & Compiler
- ◈ Vanguard  [ACTV] E2E Visual Gate     ◈ Sentinel  [PRO]  IAM & Air-Gap     ◈ Chronos  [IDLE] 24/24 Rulesets
-──────────────────────────────────────────────────────────────────────────────────────────────────
+ ◈ Vanguard  [ACTV] E2E Visual Gate     ◈ Sentinel  [NEON] IAM & Air-Gap     ◈ Chronos  [IDLE] 24/24 Rulesets
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
  WORKSPACE FLEET (12): arclight [clean] · sonoprep [clean] · video-engine [clean] · docs [worktree]
 ```
 
-### Automated Action Thresholds on Dual Quota Gauges
+### Automated Action Thresholds on Dual-Pool Quota Gauges
 
 | Gauge Threshold | Operational State Transition |
 | :--- | :--- |
-| **`5h > 25% remaining` and `7d < 70%`** | Standard dynamic routing: `~85–90%` mechanical tasks on `0.20x` fast tier (`0.55x` / `0.08x`); mandatory + architectural coding specialists on `Gemini 4 Hydrogen` (`1.0x`) & `Orchestrator` plan-execute pairs. |
-| **`5h <= 25% remaining`** *(Fixed `Rst:` < 90m)* | Pause non-critical documentation sweeps; prioritize only open verification gates (`Vanguard`, `Sentinel`, `Chronos`) or spill overflow cleanly onto isolated Claude/GPT-OSS pools (`Cld:XX%`). |
-| **`7d >= 70%`** *(Yellow Alert)* | Disable optional deep formatting sweeps; offload triage, digests, code review, and sanity checks strictly to Node 2 via `squad-local` (`hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`). |
-| **`7d >= 90%`** *(Red Critical)* | **Emergency Freeze on Exploratory Sweeps:** Allow strictly `pro [MANDATORY]` correctness gates (`Echo`, `Cipher`, `Vault`, `Apex`, `Nexus`, `Sentinel`) and final `Chronos` releases. |
+| **`5h > 25% remaining` and `~7d est < 70%`** | Standard Pool 1 routing (`>95%` volume): `Halcyon` on `gemini-4-neon-high`, solo coding on `gemini-pro-orchestrator-neon`, `inherit` → Neon High for verification specialists, `pro`/`flash` → Hydrogen coding tiers, and `0.35x` / `0.20x` / `0.08x` for routine sweeps. |
+| **`5h <= 25% remaining`** *(Fixed `Rst:` < 90m)* | Pause non-critical documentation sweeps; prioritize only open verification gates (`Vanguard`, `Sentinel`, `Chronos`) or spill overflow selectively onto Pool 2 Claude 5.5 (`Cld:XX%/XdXXh`, excluding sunsetting GPT-OSS 120B). |
+| **`~7d est >= 70%`** *(Elevated Heuristic)* | Disable optional deep formatting sweeps; offload triage, digests, code review, and sanity checks strictly to Node 2 via `squad-local` (`hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`). |
+| **Live Pool 1 Throttled or `~7d est >= 90%` Confirmed** | **Emergency Freeze on Exploratory Sweeps** *(false `[CRIT]` alarms suppressed while Pool 1 remains unthrottled on live `/usage` headers)*: Allow strictly mandatory verification gates (`Echo`, `Scout`, `Cipher`, `Vault`, `Apex`, `Nexus`, `Sentinel`) and final `Chronos` releases. |
 
 By surfacing both rolling counters before exhaustion hits, teams preserve deep reasoning headroom specifically for high-consequence security, synchronization, and clinical verification passes.

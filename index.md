@@ -7,7 +7,7 @@ tags:
   - ai-systems
   - architecture
   - hathcock-labs
-updated: 2026-11-18
+updated: 2026-11-22
 ---
 
 # Engineering & Product Documentation — Hathcock Labs
@@ -34,7 +34,7 @@ Whether checking if a Pennsylvania security officer holds an active Act 235 card
 Rather than burning cloud frontier quotas on every mechanical task, workloads distribute intentionally across hardware tiers:
 - **Sub-Millisecond Scratch NVMe:** SQLite WAL FTS5 retrieval (`<1.5 ms`), compiler caches, and atomic `fcntl.flock` handoff locks.
 - **Always-On Apple Silicon M1 Max Inference (`squad-local`):** 5-model zero-cloud-token CLI serving `nomic-embed-text` (`768d` vectors), `hermes3:8b` (automatic `01_Dispatch/` JSON triage & 5-bullet digests), `qwen2.5-coder:14b` (code/regex/SQL reviews), `deepseek-r1:14b` (step-by-step sanity checks), and `qwen3:14b` (general local Q&A), plus automated round-trip DR verification.
-- **Cloud Frontier Tiers:** Reserved deliberately for safety-critical reasoning (`Echo` clinical accuracy, `Vault` security rules, `Apex` auth/webhooks, `Nexus` sync races, `Sentinel` IAM boundaries) and deep architecture.
+- **27-Model Cloud Frontier Tiers (Pool 1 + Pool 2):** Routes `>95%` of work across `20` Pool 1 Gemini models—combining runtime subagent delegation (`inherit` → **Gemini 4 Neon High**, `pro`/`flash` → **Gemini 4 Hydrogen** tiered coding) with explicit `/swarm` pinning (`gemini-4-neon-xhigh`) for safety-critical reasoning (`Echo` clinical accuracy, `Vault` security rules, `Apex` auth/webhooks, `Nexus` sync races, `Sentinel` IAM boundaries)—while reserving `7` Pool 2 cross-vendor models (Claude 5.5; excluding sunsetting GPT-OSS 120B) selectively for release-gate cross-checks.
 
 ### 3. Physical Reality First (Gloves, Dead Zones & WebKit Quirks)
 Software runs in bright daylight offices, concrete basements with zero LTE, hurried stockrooms, and handheld devices operated one-handed. Our modules filter `<35ms` laser scanner bursts away from Spacebar PTT hotkeys, recover iOS WebKit `'interrupted'` audio states on lock-screen wake, bridge dead zones with `idempotencyKey`-deduplicated FIFO queues, and print solid plastic NFC enclosures mid-layer in OpenSCAD.
@@ -48,7 +48,7 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 | Cognitive Layer / Mechanism | Production Guarantee Delivered Across Products | Primary Reference |
 | :--- | :--- | :--- |
-| **Mandatory `pro` Clinical & Rules Locks** | Zero unverified medical ratios (`Echo`) & airtight 13-collection `CLIENT_VIEWER` isolation (`Vault` / `Apex`) | [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) |
+| **Mandatory `pro` / `Neon` Clinical & Rules Locks** | Zero unverified medical ratios (`Echo`) & airtight 13-collection `CLIENT_VIEWER` isolation (`Vault` / `Apex`) | [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) |
 | **Optane FTS5 + Hybrid RRF (`k = 60`)** | Surfaces solved WebKit, FLSA `29 C.F.R. § 778.115`, and `pnpm` build fixes in `<1.5 ms` | [02 · Five-Tier Memory & Hybrid RRF](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) |
 | **`<=2,000`-Token Differential Compiler** | Eliminates context rot during 5-package refactors while gating dual quota caps live | [03 · Differential Context & Quota](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) |
 | **Two-Node Dropzone + Schema-Locked AI** | Catches PA/DE/MD statutory & Safari `<dialog>` traps pre-code; preserves immutable raw testimony | [04 · Adversarial & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) |
@@ -62,7 +62,7 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 - **Arclight Security (`v0.4.0` PTT Live):** `5/5` workspace packages typecheck clean; **`433/433` unit tests** & **`164/164` E2E specs** across 10 adversarial rounds; **all `19` Cloud Functions v2 (`nodejs22`)** live via `esbuild`; `457.24 kB` max chunk; `0` visual/WCAG defects across `1440×900` and `375×812`.
 - **SonoPrep Pro (`iOS`):** `421` audited RVT/SPI questions, `132` SVGs, `18` interactive hotspots, `34/34` unit/App Store compliance tests, `15/15` E2E stages, `0` `oxlint` warnings, `<500 KB` bundles.
 - **Deterministic Video Engine (`v0.1.0`):** `4/4` packages typecheck clean; **`33/33` pipeline unit tests**; `17/17` seeded episodes clearing the 9-rule Grade `6.6–9.0` anti-slop voice gate; `1080×1920` `60fps` H.264 + `-14 LUFS` AAC stereo; `<35 KB` companion bio hubs.
-- **Cognitive Tooling & Fleet Governance:** `1.29 ms` Optane FTS5 search (`996/996` vector parity), `93%` blackboard initialization token drop (`8` active slots), `32.5M`/`195M` live `/usage` fixed-bucket telemetry, **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, and **`23/23 PASS` (`0.55s`)** 3-node drift verification.
+- **Cognitive Tooling & Fleet Governance:** `1.29 ms` Optane FTS5 search (`1,015/1,015` embedded sections), `20.4 KB` deduplicated global rules (`<24 KB` injection cap, down from `40.7 KB`), `93%` blackboard initialization token drop (`8` active slots), **27-model** dual-pool routing with `32.5M`/`325M` live `/usage` telemetry (`XX% LIVE`, `Cld:XX%/XdXXh`), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, and **`23/23 PASS` (`0.55s`)** 3-node drift verification.
 
 ---
 
@@ -89,7 +89,7 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 - [00 · Cognitive Architecture Overview](02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md) — Why single-context coding collapses and how `Halcyon` (XO) orchestrates 18 specialists across 3 compute nodes.
 - [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Full profiles of all 18 roles, `4-Wave` OOM-safe execution doctrine, `Tier A1/A2/B/C/D` audits, read-only statutory vetoes, and inter-agent seams.
 - [02 · Five-Tier Memory & Hybrid RRF Retrieval](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) — Structural repo maps, `fcntl.flock` rolling blackboards, FTS5 BM25 + 14-day recency, and `k = 60` Reciprocal Rank Fusion.
-- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, `Gemini 4 Hydrogen` + `Orchestrator` dual routing, and `32.5M`/`195M` fixed `/usage` gauges.
+- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, 27-model `Gemini 4 Neon` + `Hydrogen` + `/swarm` routing, `<24 KB` rule hygiene, and `32.5M`/`325M` calibrated `/usage` gauges.
 - [04 · Adversarial Verification & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) — Two-node adversarial research (`Scout` ↔ `Muse`) and schema-locked, raw-transcript-preserving production AI.
 - [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Optane `fleet wt` worktrees, `<5ms` blob/secret hooks, **`24/24` zero-bypass Pro Rulesets** across `12` repos, **`23/23` drift doctor (`0.55s`)**, and DR restores.
 - [06 · Ambient Mobile Dispatch & Local Inference](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) — Zero-RAM `inotify` inbox triggers, automatic `hermes3:8b` JSON dispatch triage, and 5-model `squad-local` offloading.

@@ -7,7 +7,7 @@ tags:
   - cognitive-systems
   - infrastructure
   - verification
-updated: 2026-11-18
+updated: 2026-11-22
 ---
 
 # 00 · Cognitive Architecture Overview
@@ -32,7 +32,7 @@ flowchart TB
     Memory["5-Tier Hybrid Memory Engine\n<1.5ms FTS5 BM25 + 768d Cosine RRF (k=60)"] --> Context["Differential Context Compiler\n<= 2,000 Tokens · <= 35L Symbol Slices · Pro Locks"]
     MC --> Context
 
-    Context --> Squad["18 Domain Specialists\nIsolated Write Scopes · Dual-Model Hydrogen/Orchestrator · Lazy SKILL.md"]
+    Context --> Squad["18 Domain Specialists\nIsolated Write Scopes · 27-Model Neon/Hydrogen · Lazy SKILL.md"]
     Squad <-->|"0-Token Vectors · squad-local (5 Models) · Verified DR"| Node2["Secondary Apple Silicon Node (M1 Max)\nLocal Inference · Containers · iOS Builds"]
     Squad <-->|"Sanitized Async Git Dropzone"| Auditor["External Adversarial Auditor (Muse)\nZero Shared Context · Primary-Source Audit"]
 
@@ -47,12 +47,12 @@ flowchart TB
 | Dimension | Naive Monolithic AI Coding | Hathcock Labs Governed Cognitive Stack |
 | :--- | :--- | :--- |
 | **Orchestration Apex** | Unstructured single-chat prompt cheering every assumption | **`Halcyon` (XO & Flight Director)** pushing back on weak assumptions, enforcing read-only statute vetoes & routing 4 hardware-safe waves |
-| **Context Window Diet** | Full raw files + multi-turn chat dumps (`50k–150k` tokens/turn) | Strict **`<= 2,000`-token** differential prompt with `<1.5 KB` `REPO_MAP.md` & `<= 35`-line symbol slices |
-| **Institutional Memory** | Re-reads giant Markdown logs every session or forgets past bugs | Sub-`1.5 ms` SQLite **FTS5 BM25 + 14-day recency** fused via **RRF (`k = 60`)** with local `768d` vectors |
-| **Safety-Critical Reasoning** | Same model/tier used for CSS tweaks and clinical/security checks | Programmatic **`pro [MANDATORY]`** locks (`Gemini 4 Hydrogen`) on clinical (`Echo`), math (`Cipher`), rules (`Vault`), auth (`Apex`), sync (`Nexus`), IAM (`Sentinel`) |
+| **Context Window & Rule Diet** | Full raw files + bloated `>40 KB` global rules truncating on boot | Global rules deduplicated **`40.7 KB` → `20.4 KB`** (`<24 KB` cap, `0` boot truncation) + **`<= 2,000`-token** differential prompt with `<1.5 KB` `REPO_MAP.md` & `<= 35`-line slices |
+| **Institutional Memory** | Re-reads giant Markdown logs every session or forgets past bugs | Sub-`1.5 ms` SQLite **FTS5 BM25 + 14-day recency** fused via **RRF (`k = 60`)** with local `768d` vectors (**`1,015/1,015` embedded sections**) |
+| **Safety-Critical Reasoning** | Same model/tier used for CSS tweaks and clinical/security checks | Runtime tier locks (`inherit` → **Gemini 4 Neon High**; `pro` → **Hydrogen `tiered-xhigh`**) + `/swarm` pinning (`gemini-4-neon-xhigh` & selective Pool 2 cross-vendor gates) on `Echo`, `Cipher`, `Vault`, `Apex`, `Nexus`, `Scout`, `Sentinel` |
 | **Verification Discipline** | Agent inspects its own reasoning inside the same biased context | External **Two-Node Adversarial Auditor (`Scout` ↔ `Muse`)** + deterministic hooks + **`24/24` zero-bypass GitHub Pro Rulesets** + Playwright gate |
 | **Concurrency & Collisions** | Multiple edits overwrite shared files or thrash 12 GB laptop RAM | Optane `fleet wt` worktrees + **4-Wave OOM-Safe Doctrine** + **POSIX `fcntl.flock`** locked blackboard (`8` active slots) |
-| **Token & Hardware Cost** | Burns frontier quota on summarization, linting, and blind searches | `Orchestrator (Argon/Carbon)` + `Hydrogen` (`-24%` quota), `~85–90%` mechanical work on `0.20x` tier, and `32.5M`/`195M` live `/usage` lock |
+| **Token & Hardware Cost** | Burns frontier quota on summarization, linting, and blind searches | **27-model** Pool 1/Pool 2 routing (`Gemini 4 Neon` + `Orchestrator Neon` + `Hydrogen`, `0.35x` `Gemini 4 Low`, `0.20x` `3.8-flash`) + calibrated `32.5M`/`325M` live `/usage` lock (`Cld:XX%/XdXXh`) |
 
 ---
 
@@ -252,7 +252,7 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 | :--- | :--- | :--- |
 | **Secondary Apple Silicon Node Offline** | `squad-memory query` times out cleanly after `1.5s` and falls back seamlessly to local Optane FTS5 BM25 (`<1.5 ms`) without blocking subagents. | Stale `section_embeddings` rows stay NULL in SQLite; `squad_vector_worker` drains backlog automatically once Node 2 returns. |
 | **Subagent Prompt Exceeds `2,000` Tokens** | `squad-context build` steps down 8 deterministic trim profiles; manual prompts `>2,000` tokens or `>80` code lines fail `squad-context validate` with `exit 1`. | Every dispatch attempt (pass/warn/fail, profile applied, model tier) writes atomically to `dispatch_audit.jsonl`. |
-| **7-Day Rolling Quota Reaches `70%` / `90%`** | Live HUD flashes yellow warning / red critical badges; summarization and triage remain pinned exclusively to local Apple Silicon inference. | `squad-live-telemetry` calibrates against live `/usage` headers (`XX% LIVE`) and isolates Claude/GPT-OSS pool rows from Gemini buckets. |
+| **7-Day Heuristic Quota High (`325M` est)** | Live HUD flags elevated rolling velocity while suppressing false `[CRIT]` alarms whenever Pool 1 remains unthrottled; summarization and triage stay pinned to local Apple Silicon inference. | `squad-live-telemetry` locks to live `/usage` headers (`XX% LIVE`), tracks actual child-transcript model IDs, and isolates Pool 2 (`Cld:XX%/XdXXh`) from Pool 1 Gemini buckets. |
 | **Memory Spike During Concurrent Builds** | `11.4 GB` `zstd` `zram` buffers bursts; `earlyoom` reclaims runaway build workers while explicitly `--avoid`-protecting compositor and orchestrator processes. | 4-Wave OOM-Safe Doctrine strictly bans concurrent `vite build`, Chromium, or Expo Metro processes on 12 GB workstation RAM. |
 | **Local Container or Sync Drift Across Nodes** | `launchd` watchdog on Node 2 restarts crashed containers cleanly; 15-minute `nebula-sync` heals DNS list drift automatically. | `squad-doctor` probes `23` invariants across all `3` hosts (`0.55s`–`<3.5s`), including 24/7 no-sleep & Wi-Fi `power_save=off` persistence. |
 
@@ -263,7 +263,7 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 Reliability in a multi-agent system requires closing the loop between runtime behavior and architectural invariants so silent degradation cannot linger undetected:
 
 1. **Dispatch Audit Trail (`dispatch_audit.jsonl`):** Every invocation compiled or validated by `squad-context` appends an `fcntl.flock`-guarded JSON line containing timestamp, specialist codename, selected model tier (`pro` vs. `flash`), mandatory-guardrail enforcement status, estimated token count, symbol slice count, and validation exit status. Regressions in prompt hygiene show up as measurable token inflation rather than vague "the AI feels sluggish" complaints.
-2. **Fixed-Bucket Dual-Window Telemetry & Dual-Model Routing:** Rather than discovering quota exhaustion mid-sprint, a sideband multiplexer pane continuously tail-parses fixed `5-hour` buckets (`32,500,000` weighted tokens initiated on first post-expiry request, anchored cleanly to server-side `/usage` `[quota]` headers as `XX% LIVE`) alongside a `195,000,000`-token `7-day` weekly ceiling—isolating secondary Claude/GPT-OSS pool consumption (`Cld:XX%`), applying tier weights (`1.0x` pro, `0.55x` medium, `0.20x` flash, `0.08x` lite) with `4.0x` output and `0.025x` cache-read scaling, and logging syntax-validated (`compile()`) zero-flicker `os.execv()` live reloads. Meanwhile, pairing **`Orchestrator (Argon / Carbon)`** planning with **`Gemini 4 Hydrogen`** coding execution (`57%` Terminal-Bench 4.1) slashes weighted quota burn **`-24%`** and wall-clock execution time **`-19%`**.
+2. **27-Model Dual-Pool Routing & Calibrated Fixed-Bucket Telemetry:** Rather than discovering quota exhaustion mid-sprint, a sideband multiplexer pane continuously tail-parses actual executed model IDs across parent and child subagent transcripts—measuring fixed `5-hour` Pool 1 buckets (`32,500,000` empirical weighted tokens anchored live to `/usage` headers as `XX% LIVE`) alongside a `325,000,000`-token `7-day` rolling heuristic (`~7d est`, suppressing false `[CRIT]` alerts while Pool 1 remains unthrottled) and an isolated multi-day Pool 2 countdown (`Cld:XX%/XdXXh`). Weights separate **`Gemini 4 Low` (`0.35x`)** cleanly from `1.0x` pro/high/xhigh, `0.55x` medium, `0.20x` `3.8-flash`, and `0.08x` `flash-lite` (`4.0x` output, `0.025x` cache-read) with syntax-validated (`compile()`) zero-flicker `os.execv()` live reloads. Routing spans **27 live models** (`20` Pool 1 Gemini models including **Gemini 4 Neon** & **Orchestrator Neon** alongside Hydrogen, Carbon, Argon, and 3.8 Flash; `7` Pool 2 Claude 5.5 + sunsetting GPT-OSS 120B excluded from routing): keeping `>95%` of volume in Pool 1 via runtime delegation (`inherit` → Neon High; `pro`/`flash` → Hydrogen `tiered-xhigh`/`tiered-high`) plus explicit `/swarm` pinning (`gemini-4-neon-xhigh` and selective Pool 2 cross-vendor release verification).
 3. **23-Invariant Cross-Node Fleet Doctor (`0.55s`–`<3.5s`):** On demand or after OS upgrades, `squad-doctor` opens parallel probe threads across all three nodes to assert Optane I/O scheduler lock (`[none]`), `vfs_cache_pressure=50`, `earlyoom` active protection, 24/7 workstation no-sleep & Wi-Fi always-on persistence, SQLite WAL & FTS5 integrity, `0600` credential permissions, `33/33` + `3/3` Git hook symlinks across `12` repos, `squad-local` 5-model Apple Silicon availability, verified off-box backup timestamps, and Node 3 volatile flash-wear settings.
 4. **Hot SQLite Backups With Proof-of-Restore:** Instead of blind `rsync` copies that risk torn WAL frames, daily DR snapshots execute SQLite's online `.backup()` API over SSH to Apple Silicon and immediately unpack, query FTS5 row counts, and assert parity on a temporary copy before marking the backup `VERIFIED_OK`.
 
@@ -293,11 +293,12 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 
 | Constant / Guardrail | Enforced Value | Owning Subsystem | Failure Prevented |
 | :--- | :--- | :--- | :--- |
+| **Global Rule Injection Budget** | `20.4 KB` (`< 24 KB` cap; down from `40.7 KB`) | Constitutional Rules + Optane FTS5 | Silent session-boot guardrail truncation |
 | **Max Dispatch Payload** | `2,000` tokens (`~7,600` chars @ `3.8` c/t) | Context Compiler | Lost-in-the-middle prompt bloat |
 | **Max Symbol Slice Length** | `35` lines/symbol (`80` contiguous max) | Symbol Extractor / Validator | Raw full-file transcript dumping |
 | **Active Blackboard Window** | `8` recent missions (FIFO archive older) | Memory Engine (`flock`) | Unbounded startup read growth |
-| **Hybrid RRF Constant & Weights** | `k = 60`, `BM25(5.0, 2.0, 1.0)` + `14d` decay | Memory Query Engine | Keyword misses & semantic drift |
-| **Fixed Dual-Window Quotas** | `32,500,000` (5h fixed bucket) / `195,000,000` (7d cap) | Live Telemetry HUD | Bucket drift & surprise rate caps |
+| **Hybrid RRF Constant & Weights** | `k = 60`, `BM25(5.0, 2.0, 1.0)` + `14d` decay | Memory Query Engine (`1,015` chunks) | Keyword misses & semantic drift |
+| **Calibrated Dual-Pool Quotas** | `32.5M` (5h fixed) / `325M` (`~7d est`) + `Cld:XX%/XdXXh` | Live Telemetry HUD (27 models) | Bucket drift, false `[CRIT]` & pool bleed |
 | **Repository & Ruleset Parity** | `12` repos · `24/24` zero-bypass Pro rulesets | `Chronos` / `Sentinel` Gate | Accidental force-push / tag clobber |
 | **Vector RPC Grace Timeout** | `1.5 s` failover to FTS5 BM25 | Hybrid Query Pipeline | LAN outages blocking dev velocity |
 | **Hardware Scanner Burst Cut** | `< 35 ms` keystroke cadence threshold | Retail & Armory Wedges | Focus hijacking & partial barcode reads |
@@ -309,7 +310,7 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 
 - **Chapter 1 — [The 18-Specialist Squadron](01-The-18-Specialist-Squadron.md):** Full architectural profiles of all 18 roles, non-goals, inter-agent boundary seams, zero-mention intent routing, wave sequencing, and risk-tiered audits.
 - **Chapter 2 — [Five-Tier Memory & Hybrid RRF Retrieval](02-Five-Tier-Memory-and-Hybrid-RRF.md):** SQLite WAL DDL, FTS5 triggers, re-entrant `fcntl.flock` locking, CTE BM25 + 14-day recency math, `768d` BLOB packing, and worked Reciprocal Rank Fusion (`k = 60`).
-- **Chapter 3 — [Differential Context & Quota Governance](03-Differential-Context-and-Quota-Governance.md):** The `<= 2,000`-token compiler, 8-step trim ladder, AST symbol slicing, anti-dump detectors, mandatory `pro` locks, dual-window quota math, and the Unicode-safe live HUD.
+- **Chapter 3 — [Differential Context & Quota Governance](03-Differential-Context-and-Quota-Governance.md):** The `<= 2,000`-token compiler, `<24 KB` rule-file hygiene (`40.7 KB → 20.4 KB`), 8-step trim ladder, 27-model `Gemini 4 Neon` + `Hydrogen` + `/swarm` routing, calibrated `32.5M`/`325M` telemetry math, and the Unicode-safe live HUD.
 - **Chapter 4 — [Adversarial Verification & Fact-Locked AI](04-Adversarial-Verification-and-Fact-Locked-AI.md):** Breaking confirmation bias via the two-node `Scout` ↔ `Muse` Git dropzone and locking regulated runtime AI with `temperature: 0`, Zod `responseSchema` contracts, and immutable raw testimony.
 - **Chapter 5 — [Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md):** Sub-`5ms` secret/blob/media pre-commit hooks, Optane worktrees (`fleet wt`), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, Playwright WCAG gating, **23-invariant** 3-node drift doctor (`0.55s`), and round-trip verified DR restores.
 - **Chapter 6 — [Ambient Mobile Dispatch & Local Inference](06-Ambient-Mobile-Dispatch-and-Local-Inference.md):** Kernel `inotify` wakeups, automatic `hermes3:8b` JSON dispatch triage, crash-safe atomic writes, and the 5-model `squad-local` M1 Max zero-token CLI.
