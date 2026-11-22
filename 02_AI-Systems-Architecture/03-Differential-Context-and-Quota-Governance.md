@@ -1,6 +1,6 @@
 ---
 title: Differential Context & Quota Governance
-description: Deterministic <=2,000-token differential context compilation, <24 KB constitutional rule-file hygiene, 8-step progressive trimming, AST symbol slicing, 27-model Neon/Hydrogen + /swarm routing, calibrated 32.5M/325M dual-pool telemetry, and Unicode-safe live HUD engineering.
+description: Deterministic <=2,000-token differential context compilation, <24 KB constitutional rule-file hygiene, 16-28ms hooks.json lifecycle gates (65/65 tests), 8-step progressive trimming, 27-model Neon/Hydrogen + /swarm routing, calibrated 32.5M/325M dual-pool telemetry, and Unicode-safe live HUD engineering.
 tags:
   - ai-architecture
   - context-engineering
@@ -145,9 +145,19 @@ Even on a tight multi-file patch, critical acceptance criteria (`Section 1`) and
 ### Constitutional Rule-File Hygiene (`<24 KB` Per-File Injection Cap)
 Subagent dispatch budgets mean nothing if the host runtime silently truncates the global system constitution on session boot. Many agentic IDE runtimes enforce a hard per-file rule injection cap of **`24,000` bytes (`<24 KB`)**: once a global rules file drifts past that ceiling, trailing guardrails—such as release immutability rules, model routing locks, or air-gap firewalls—quietly vanish from active context without raising an error.
 
-To eliminate silent boot truncation permanently, Hathcock Labs refactored its global rules from **`40.7 KB` → `20.4 KB`** (`-49.9%` footprint, preserving `~3.6 KB` of headroom below the `24 KB` cap):
-- **Unified 18-Agent Roster Table:** Collapsed repetitive multi-paragraph per-agent descriptions into a single compact routing matrix encoding domain triggers, mandatory runtime tiers, skill mappings, and tool boundaries.
+To eliminate silent boot truncation permanently, Hathcock Labs refactored its global rules from **`40.7 KB` → `20.4 KB`** (`-49.9%` footprint, guarded below **`<22 KB`** by both `SessionStart` hooks and `squad-doctor` `29/29` for `~3.6 KB` headroom below the `24 KB` cap):
+- **Single-Source Unified Roster (`squadron.json` → `agents/*.md`):** `fleet sync-roster` generates the compact 18-agent routing table and all 18 natively discovered `agents/*.md` specs from one canonical manifest, eliminating 4-way configuration drift.
 - **Optane FTS5/Vector Offload (`1,015/1,015` Embedded Sections):** Moved deep procedural playbooks, historical failure traces, and extended specialist dossiers out of always-injected boot rules and into Optane SQLite WAL FTS5 + `768d` vector memory, retrieving them on demand in `<1.5 ms` with **zero boot truncation**.
+
+### Deterministic Lifecycle Hooks (`hooks.json` · `65/65` Tests · `16–28 ms`)
+Advisory prompt rules fail under fatigue or concurrent fan-out. Every critical runtime boundary now executes deterministically via native lifecycle hooks (**`hooks.json`**), verified by **`65/65` automated subprocess tests** at **`16–28 ms`** end-to-end latency:
+
+| Lifecycle Hook Event | Enforced Runtime Invariant | Failure Mode Eliminated |
+| :--- | :--- | :--- |
+| **`SessionStart`** | Checks global rule file byte size (`<22 KB` alarm / `<24 KB` cap) and flags stale Optane worktrees exceeding `<24h` TTL. | Silent boot truncation & forgotten orphaned worktrees. |
+| **`PreToolUse` (Shell & Write)** | Enforces strict project isolation boundaries (blocking cross-repo contamination between commercial clinical and unrelated study repos), blocks destructive shell commands & force-pushes, and runs write-time Tier-D Air-Gap leak scans on public repositories. | Cross-project contamination, destructive trunk resets & public leaks prior to disk write. |
+| **`PreToolUse` + `PostToolUse` (12 GB OOM Lock)** | Acquires a kernel **`fcntl.flock`** lock (with **`15m` auto-TTL** safety expiry, released cleanly on `PostToolUse`) before launching heavy builds (`vite build`, headless Chromium/Playwright, Metro). | Concurrent bundler/browser swap thrash and OOM kills on `12 GB` workstation RAM. |
+| **`PreToolUse` (`invoke_subagent`)** | Enforces the `<= 2,000`-token / `<= 80`-line anti-dump ceiling and mandatory safety-tier floors (`pro` / `inherit` Neon High) on safety-critical specialists. | Prompt bloat and accidental downgrade of security, clinical, or statutory checks. |
 
 ---
 
@@ -278,7 +288,7 @@ In production inside a side-by-side terminal workspace split, the HUD distills s
  ◈ Nexus     [PRO]  Sync & IndexedDB    ◈ Cipher    [PRO]  Ledger & ETL      ◈ Prism    [ACTV] Tokens OKLCH
  ◈ Forge     [IDLE] 100dvh & Native     ◈ Beacon    [IDLE] <35ms & RTC       ◈ Vulcan   [IDLE] CSG Fixtures
  ◈ Echo      [NEON] Clinical Read-Only  ◈ Scout     [NEON] Veto & Dropzone   ◈ Scribe   [ACTV] Air-Gap Docs
- ◈ Hermes    [IDLE] Private Vault Only  ◈ Torque    [IDLE] 23/23 & Kernel    ◈ Synapse  [IDLE] RRF & Compiler
+ ◈ Hermes    [IDLE] Private Vault Only  ◈ Torque    [IDLE] 29/29 & Kernel    ◈ Synapse  [IDLE] RRF & Compiler
  ◈ Vanguard  [ACTV] E2E Visual Gate     ◈ Sentinel  [NEON] IAM & Air-Gap     ◈ Chronos  [IDLE] 24/24 Rulesets
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
  WORKSPACE FLEET (12): arclight [clean] · sonoprep [clean] · video-engine [clean] · docs [worktree]
