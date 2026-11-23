@@ -1,6 +1,6 @@
 ---
 title: Autonomous DevOps & Zero-Trust Gates
-description: Trunk-based Optane Git worktrees, <5ms pre-commit blob/media/secret fireguards, workspace pre-push gates, 24/24 zero-bypass GitHub Pro Rulesets across 12 repos, linear-forward vX.Y.Z releases, 23-invariant drift doctor, and round-trip verified DR restores.
+description: Trunk-based Optane Git worktrees, <5ms pre-commit blob/media/secret & scoped Anti-Slop fireguards, consume-once verified tree stamps (HEAD^{tree}, 0700, 60s TTL), 204 lifecycle hook tests, 24/24 zero-bypass GitHub Pro Rulesets across 12 repos, 30/30 cross-node diagnostic doctor, and round-trip verified DR restores.
 tags:
   - ai-architecture
   - devops
@@ -9,14 +9,14 @@ tags:
   - rulesets
   - disaster-recovery
   - playwright
-updated: 2026-11-18
+updated: 2026-11-23
 ---
 
 # 05 · Autonomous DevOps & Zero-Trust Gates
 
 Telling an AI coding agent in prose *"remember to run TypeScript, avoid pushing multi-megabyte media blobs, and verify mobile viewports"* provides zero mechanical safety. Under sprint pressure or concurrent multi-agent execution, unguarded branches invite dangling half-done trees, binary repository bloat, accidental force-pushes, or overwritten release tags unless **OS hooks, remote GitHub Rulesets, compilers, and headless browser suites enforce correctness automatically**.
 
-Hathcock Labs locks code quality, trunk immutability, secret/blob hygiene, rendered DOM geometry, and backup recoverability across **12 active repositories** behind **Optane NVMe feature worktrees (`fleet wt`)**, `<5ms` pre-commit fireguards, **2-layer local + remote `24/24` zero-bypass GitHub Pro Rulesets**, linear-forward `fleet release` / `fleet rollback`, grouped Renovate controls, a **23-invariant 3-node drift doctor (`0.55s`)**, and automated round-trip restore proofs.
+Hathcock Labs locks code quality, trunk immutability, secret/blob hygiene, rendered DOM geometry, and backup recoverability across **12 active repositories** behind **Optane NVMe feature worktrees (`fleet wt`)**, `<5ms` pre-commit fireguards with **scoped Anti-Slop gates**, **consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL)**, **`204` automated lifecycle hook tests**, **2-layer local + remote `24/24` zero-bypass GitHub Pro Rulesets**, linear-forward `fleet release` / `fleet rollback`, grouped Renovate controls, a **`30/30` cross-node diagnostic doctor**, and automated round-trip restore proofs.
 
 ---
 
@@ -24,9 +24,9 @@ Hathcock Labs locks code quality, trunk immutability, secret/blob hygiene, rende
 
 ```mermaid
 flowchart LR
-    WT["Optane Feature Worktree\nfleet wt new (flock + hardlink deps)"] --> PreC["1. Pre-Commit (<5ms · 13/13 specs)\nNUL-safe ACMR · >2MB / Media Block\nSecret Regex · Oxlint · REPO_MAP"]
+    WT["Optane Feature Worktree\nfleet wt new (flock + hardlink deps)"] --> PreC["1. Pre-Commit (<5ms · Scoped Anti-Slop)\nNUL-safe ACMR · >2MB / Media Block\nSecret Regex · Oxlint · <100ms Symbol Maps"]
     PreC --> PostC["2. Post-Commit (0ms fg)\nAsync FTS5 Index Sync"]
-    PostC --> PreP["3. Pre-Push (5/5 specs · <15s)\nTrunk Non-FF & Tag Lock · py_compile\ntsc --noEmit · vitest run"]
+    PostC --> PreP["3. Pre-Push (Consume-Once Tree Stamp)\nHEAD^{tree} 0700 60s TTL · Trunk & Tag Lock\npy_compile · tsc --noEmit · vitest --reporter=dot"]
     PreP --> GH["4. GitHub Pro 24/24 Zero-Bypass Rulesets\ntrunk-immutable + tags-immutable\n+ Playwright Visual/WCAG Gate -> fleet release"]
 ```
 
@@ -56,13 +56,13 @@ BLOB_BYTES=$(git cat-file -s ":$FILE" 2>/dev/null || echo 0)
 1. **Binary, Media & Database Quarantine:** Immediately halts `.mp4`, `.mov`, `.wav`, `.sqlite`/`.db` files and any blob **`> 2 MB`** before large binaries ever enter `.git` pack history.
 2. **Expanded Credential & Added-Line Secret Regex Sweep:** Filters strictly added (`^+`) diff lines—quarantining `.env.*` / keyfiles outside `.example`/`.template`/`.sample` docs, and blocking provider keys (`AIza*`, `gh*`, `sk-*`, `AKIA*`), inline secret literals, and `-----BEGIN ... PRIVATE KEY-----` blocks (`13/13` automated unit assertions).
 3. **Built-In Public Air-Gap Guard:** Automatically enforces the **5-Category Public Air-Gap Firewall** inside public repositories (`0` credentials, `0` raw PII, `0` internal LAN subnets/mDNS suffixes/local workstation paths, `0` private store/project/channel identifiers, `0` internal vault/coaching artifacts).
-4. **Sub-50ms Rust Linting (`oxlint --deny-warnings`) & `REPO_MAP.md` Auto-Refresh:** Lints staged TS/JS sources with zero warnings tolerated and updates `<1.5 KB` `REPO_MAP.md` maps inside the exact same commit.
+4. **Scoped Anti-Slop Gate, Sub-50ms Rust Linting (`oxlint --deny-warnings`) & `<100 ms` Symbol Maps:** Evaluates strictly staged added diff lines against Anti-Slop placeholder patterns (`// TODO`, stub handlers, unguarded dead fallbacks), runs `oxlint --deny-warnings` with zero warnings tolerated, and refreshes `<1.5 KB` `REPO_MAP.md` alongside **`<100 ms` workspace-sharded `<= 4 KB` symbol maps** inside the exact same commit.
 
 ### Stage 2 · Zero-Wait Post-Commit Indexing (`0 ms` Foreground)
 Whenever `HEAD` updates structural repo maps, engineering playbooks, or adversarial dropzone reports, `squad-post-commit` compares `git diff-tree --no-commit-id --name-only -r HEAD` and triggers an Optane SQLite FTS5 sync silently via detached background execution (`0 ms` interactive stall, zero working-tree mutations).
 
-### Stage 3 · Two-Layer Trunk & Tag Immutability (`squad-pre-push` + `24/24` GitHub Pro Rulesets)
-Protecting shared branches locally alone fails if an external CLI push bypasses hooks; enforcing remote rulesets alone wastes CI minutes when bad local pushes fail remotely. We combine **both**:
+### Stage 3 · Two-Layer Trunk & Tag Immutability, Consume-Once Verified Tree Stamps & `24/24` GitHub Pro Rulesets
+Protecting shared branches locally alone fails if an external CLI push bypasses hooks; enforcing remote rulesets alone wastes CI minutes when bad local pushes fail remotely. We combine **both**, while eliminating redundant double-test runs safely without spoofable environment variables:
 
 ```bash
 # Layer 1 (Local Hook): Check immutable release tags BEFORE skipping branch deletions
@@ -79,7 +79,8 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 done
 ```
 
-- **Local Pre-Push Layer (`5/5` isolated tests):** Verifies trunk non-FF protection, immutable `refs/tags/v*` rules ahead of delete-only early returns, repository privacy checks (`isPrivate`), Python `/tmp` bytecode compilation, and workspace `tsc --noEmit && vitest run`.
+- **Consume-Once Verified Tree Stamps (`HEAD^{tree}`, `0700`, `60s` TTL):** Previously, passing `tsc && vitest` during worktree landing and immediately pushing to `origin` triggered a redundant second full suite run inside `squad-pre-push`—whereas trusting an env var (`SKIP_TESTS=1`) creates a trivial bypass loophole. Now, a verified verification harness writes a **`0700` mode stamp** bound to the exact Git tree hash (`git rev-parse HEAD^{tree}`) with a strict **`60s` TTL**. `squad-pre-push` verifies hash parity and freshness, then **consumes (unlinks) the stamp atomically on first use**—preventing duplicate test execution while guaranteeing any single-byte edit or stale tree forces a full re-run.
+- **Local Pre-Push Layer & Normalized Reporters (`204` Total Lifecycle Hook Tests):** Verifies trunk non-FF protection, immutable `refs/tags/v*` rules ahead of delete-only early returns, repository privacy checks (`isPrivate`), Python `/tmp` bytecode compilation, and workspace `tsc --noEmit && vitest run --reporter=dot` (keeping passing output terse).
 - **Remote Layer (`24/24` Zero-Bypass GitHub Pro Rulesets across `12/12` Repositories):** Every repository pairs an active **`trunk-immutable`** branch ruleset with an active **`tags-immutable`** tag ruleset (`allow_auto_merge=true`, `delete_branch_on_merge=true`, zero bypass actors)—rendering history rewrites, trunk deletions, and floating release tag mutations mathematically impossible even if someone runs `--no-verify`.
 - **Linear-Forward `<5s` Releases & Rollbacks (`fleet release` / `fleet rollback`):** All `12/12` repositories tag clean releases cleanly as immutable annotated **`vX.Y.Z`** tags. Rollbacks never rewrite trunk history—instead applying `git revert` cleanly forward onto a fresh linear patch tag inside `<5 seconds`.
 
@@ -134,10 +135,10 @@ Findings deduplicate cleanly by normalized selector pattern (*"count problems, n
 
 ---
 
-## Parallel 23-Invariant Drift Doctor & Verified Disaster Recovery
+## Parallel 30-Invariant Diagnostic Doctor & Verified Disaster Recovery
 
-### 1. 3-Node Gold-Standard Readiness Doctor (`squad-doctor`, `0.55s`)
-System drifts—such as a Linux kernel update resetting an NVMe scheduler, workstation sleep or Wi-Fi power management throttling background workers, or an OS reboot dropping a `launchd` watchdog—rarely announce themselves loudly until an outage hits. Executing `4` concurrent `ThreadPoolExecutor` probes (local Linux introspection, single-round-trip Python-over-SSH diagnostics on Nodes 2 & 3, and HTTP health verification), `squad-doctor` verifies **23 concrete invariants** across all three hardware nodes in **`~0.55s–<3.5s`**:
+### 1. 3-Node Gold-Standard Diagnostic Doctor (`squad-doctor`, `30/30 PASS`)
+System drifts—such as a Linux kernel update resetting an NVMe scheduler, workstation sleep or Wi-Fi power management throttling background workers, an OS reboot dropping a `launchd` watchdog, global rules creeping past byte ceilings, or stale deprecated model tags lingering in local configs—rarely announce themselves loudly until an outage hits. Executing `4` concurrent `ThreadPoolExecutor` probes (local Linux introspection, single-round-trip Python-over-SSH diagnostics on Nodes 2 & 3, and HTTP health verification), `squad-doctor` verifies **`30/30` concrete invariants** across all three hardware nodes:
 
 | Node | # | Verified Invariant | Pass Contract |
 | :--- | :-: | :--- | :--- |
@@ -153,10 +154,12 @@ System drifts—such as a Linux kernel update resetting an NVMe scheduler, works
 | **Node 1 (Workstation)** | 12 | **24/7 No-Sleep & Wi-Fi Always-On Guard** | `sleep`/`suspend`/`hibernate` masked, lid ignore active, NetworkManager & `iwlwifi` `power_save=0` |
 | **Node 2 (Apple Silicon)** | 13–14 | Container Fleet & Watchdog | `0` unhealthy/restarting containers; `launchd` watchdog active |
 | **Node 2 (Apple Silicon)** | 15 | Background Vector Worker | `300s` `launchd` vector pre-embedder active & clean lock state |
-| **Node 2 (Apple Silicon)** | 16 | 5-Model Local Inference Readiness | Ollama API alive serving `nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b` & `qwen3:14b` |
+| **Node 2 (Apple Silicon)** | 16 | Local Inference & Co-Residency Readiness | Ollama API alive serving tuned `qwen3:8b` (`4.8 GB` / `37 tok/s`) + pinned `nomic-embed-text` (`0` evictions, `0 MB` swap) + `14B` tiers |
 | **Node 2 (Apple Silicon)** | 17–18 | DR Restore Proof & Repo Sync Dedup | `LATEST_RESTORE_VERIFIED.txt < 36h` (`VERIFIED_OK`); sync `2 MB` rotation intact |
 | **Node 3 (ARM Edge)** | 19–20 | Primary DNS Container & Lockstep Control | DNS container `running:healthy`; unified control API returns `200 OK` lockstep |
 | **Node 3 (ARM Edge)** | 21–23 | Edge Flash-Wear Protections | `Storage=volatile` `journald`, `noatime` root mount, DNS SQLite `DBinterval >= 300s` |
+| **Governance & Hygiene** | 24–29 | Cognitive Governance Invariants | UTF-8 & rule byte-cap guard (`11.5 KB` active), cross-tool symlink parity, cold-archive secret hygiene, `<24h` worktree TTL, canonical-repo worktree hook resolution, `squadron.json` ↔ `agents/*.md` roster parity |
+| **Governance & Hygiene** | 30 | **Automated Stale-Model Hygiene** | Sweeps configs, rules, and agent specs to ensure zero deprecated or stale local/cloud model IDs linger |
 
 ### 2. Online SQLite Snapshots & 4-Step Round-Trip DR Restore Proof
 Standard filesystem `cp` or `rsync` copies risk capturing a split-brain SQLite database whose `-wal` shared frames have not flushed cleanly. Daily off-box backups (`squad-backup-memory.sh`) invoke SQLite's online C-level `.backup()` API to yield an internally consistent snapshot *without blocking concurrent queries*:
@@ -227,7 +230,7 @@ function contrastRatio(fgRgb, bgRgb) {
 Separating exact numeric assertions from screenshot-eyeballing catches subtle contrast slips (`4.1:1` slate-on-stone links) and `2px` mobile flex clipping automatically across every commit wave.
 
 > [!IMPORTANT]
-> Combining sub-`5ms` commit hooks, strict pre-push & `24/24` zero-bypass remote Rulesets, Optane worktrees, DOM geometry gates, `23`-invariant infrastructure checks, and proof-of-restore DR scripts shifts verification from **human willpower** to **deterministic systems engineering**.
+> Combining sub-`5ms` commit & scoped Anti-Slop hooks, consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL), `24/24` zero-bypass remote Rulesets, Optane worktrees, DOM geometry gates, **`30/30`** diagnostic doctor invariants, and proof-of-restore DR scripts shifts verification from **human willpower** to **deterministic systems engineering**.
 
 ---
 

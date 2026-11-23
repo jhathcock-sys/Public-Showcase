@@ -8,7 +8,7 @@ tags:
   - vector-search
   - rrf
   - concurrency
-updated: 2026-11-17
+updated: 2026-11-23
 ---
 
 # 02 · Five-Tier Memory & Hybrid RRF Retrieval
@@ -25,17 +25,17 @@ Hathcock Labs solves this via a **5-Tier Hierarchical Memory & Hybrid Retrieval 
 
 ```mermaid
 flowchart TB
-    T1["Tier 1 · Constitutional Rules & REPO_MAP.md\nGlobal Invariants + <1.5 KB Structural Index per Repo"] --> T2["Tier 2 · Rolling Operational Blackboard\nCapped at 8 Active Entries · POSIX fcntl.flock Protected"]
-    T2 --> T3["Tier 3 · Modular Procedural Runbooks\n18 Domain SKILL.md Files Loaded Lazily on Demand"]
+    T1["Tier 1 · 11.5 KB Rules, REPO_MAP & Symbol Maps\n-45.6% Rules + <100ms Sharded <=4 KB Symbol Maps"] --> T2["Tier 2 · Rolling Operational Blackboard\nCapped at <=3.5 KB (6 Entries) · POSIX fcntl.flock Protected"]
+    T2 --> T3["Tier 3 · Progressive-Disclosure Runbooks\nSplit Core SKILL.md + On-Demand Reference Modules"]
     T3 --> T4["Tier 4 · Optane NVMe FTS5 + Hybrid RRF Engine\nSQLite WAL BM25 (<1.5ms) + 768d Cosine Fusion (k=60)"]
     T4 --> T5["Tier 5 · Institutional Knowledge Vault\nLossless Blackboard Archive · Playbooks · 5-Part Session Learnings"]
     T5 -.->|"Auto-Indexed on Append & Post-Commit"| T4
 ```
 
-### Tier 1: Constitutional Ground Truth & Zero-Search `REPO_MAP.md`
-At startup, the Mission Controller loads strictly compact constitutional bounds: physical node profiles, strict isolation walls (preventing commercial medical apps from coupling to unrelated study backends), and specialist delegation contracts.
+### Tier 1: `11.5 KB` Constitutional Ground Truth, `REPO_MAP.md` & `<100 ms` Sharded Symbol Maps
+At startup, the Mission Controller loads strictly compact constitutional bounds (`11.5 KB`, cut `-45.6%` from `21.0 KB` with an `-82.6%` compact roster): physical node profiles, strict isolation walls, and specialist delegation contracts.
 
-Every repository maintains an auto-generated **`REPO_MAP.md`** capped under **`1.5 KB` (`~100–350` tokens)**. Inside monorepos, it parses `apps/`, `packages/`, and `services/` workspaces alongside pages, state slices, core services, and exact verification commands:
+Every repository pairs an auto-generated **`REPO_MAP.md`** (`<1.5 KB`) with **`<100 ms` workspace-sharded `<= 4 KB` symbol maps**—allowing specialists to jump directly to exact function/component line numbers rather than executing unbounded multi-thousand-line file reads (which `PreToolUse` read guards auto-clamp from `>400` lines down to a `350`-line window). Inside monorepos, maps parse `apps/`, `packages/`, and `services/` workspaces alongside pages, state slices, core services, and exact verification commands:
 
 ```markdown
 # REPO MAP // sample-monorepo
@@ -55,8 +55,8 @@ Every repository maintains an auto-generated **`REPO_MAP.md`** capped under **`1
 
 Reading `REPO_MAP.md` replaces 5–8 blind `fd`/`rg` directory scans with direct symbol navigation—and pre-commit hooks refresh it automatically inside the same commit whenever tracked source files change.
 
-### Tier 2: Rolling 8-Entry Blackboard & Re-Entrant `fcntl.flock` Locking
-Live cross-agent mission handoffs sit in a compact operational blackboard strictly capped at the **8 most recent missions** (`<200` lines / `~30 KB`). Enforcing rolling compaction slashed subagent initialization reads from **~112,000 tokens down to ~7,800 tokens (~93% savings)**.
+### Tier 2: Rolling `<= 3.5 KB` (`6`-Entry) Blackboard & Re-Entrant `fcntl.flock` Locking
+Live cross-agent mission handoffs sit in a compact operational blackboard strictly capped at **`<= 3.5 KB` (`6` active entries)**—down from an earlier `8`-slot `~30 KB` cap and an unbounded `~112,000`-token flat log (`>96%` initialization token savings).
 
 When four parallel specialists finish within milliseconds of each other, naive file appends interleave markdown blocks or lose updates. Every handoff invokes `squad-memory append`, protected at the OS kernel boundary by a **re-entrant POSIX advisory file lock (`fcntl.flock`)**:
 
@@ -91,8 +91,8 @@ Inside that exclusive lock, `append_mission()` completes four steps atomically:
 2. Computes `SHA-256(header + body)` and executes `INSERT OR IGNORE` directly into SQLite FTS5 in **`<5 ms`**, making the new handoff immediately searchable.
 3. Spawns a detached background embedding subprocess (`start_new_session=True`, `/dev/null` stdio) so foreground agents finish in ~5–16 ms with zero LAN HTTP blocking.
 
-### Tier 3: Modular `SKILL.md` Procedural Runbooks
-Eighteen specialist manuals—covering clinical ARDMS validation, OpenSCAD snap-fit tolerances, iOS Safari `<dialog>` rules, and scanner burst testing—stay out of default prompts and load lazily only when a specialist executes inside that domain.
+### Tier 3: Progressive-Disclosure `SKILL.md` Procedural Runbooks
+Eighteen specialist manuals—covering clinical ARDMS validation, OpenSCAD snap-fit tolerances, iOS Safari `<dialog>` rules, and scanner burst testing—are split into progressive-disclosure core `SKILL.md` entrypoints plus on-demand `references/` modules, staying out of default prompts and loading lazily strictly when a specialist executes inside that domain.
 
 ---
 

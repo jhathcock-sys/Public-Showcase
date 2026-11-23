@@ -7,14 +7,14 @@ tags:
   - governance
   - release-engineering
   - orchestration
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 
 # 01 · The 18-Specialist Squadron
 
 Asking a single monolithic AI prompt to optimize Tailwind CSS tokens, author multi-tenant Firestore security rules, audit ARDMS Doppler ultrasound criteria, and tune Linux kernel sysctls inside one rolling window guarantees role collision. Visual shortcuts leak into database permissions; clinical rigor gets diluted by build boilerplate; and massive system instructions drown out task-level constraints.
 
-Hathcock Labs eliminates role interference by placing **`Halcyon` (Executive Officer / XO & Flight Director)** at the orchestration apex over **18 narrow domain specialists**—generated from a single-source-of-truth **`squadron.json`** registry (`fleet sync-roster` → **`18` natively discovered `agents/*.md` specs**, eliminating 4-way config drift and per-session re-definition) alongside a deduplicated **`20.4 KB`** global constitution (trimmed from `40.7 KB` to stay safely under the `<24 KB` cap and `<22 KB` doctor alarm) backed by **`1,015`** Optane-indexed memory sections and external auditor **`Muse`**—under declarative execution locks, **`16–28 ms` `hooks.json`** lifecycle gates (`65/65` tests), **27-model dual-pool delegation**, a **4-Wave Hardware-Aware OOM-Safe Execution Doctrine**, and **Tier `A1/A2/B/C/D` risk-scoped release sign-offs**.
+Hathcock Labs eliminates role interference by placing **`Halcyon` (Executive Officer / XO & Flight Director)** at the orchestration apex over **18 narrow domain specialists**—generated from a single-source-of-truth **`squadron.json`** registry (`fleet sync-roster` → **`18` natively discovered `agents/*.md` specs** with a **`-82.6%` compact roster table**) alongside a trimmed **`11.5 KB`** global constitution (`-45.6%` from `21.0 KB`), progressive-disclosure skill splits, `<= 3.5 KB` active blackboard cap, global MCP prune (`4 → 1`), Optane-indexed memory, and external auditor **`Muse`**—under declarative execution locks, **`204` lifecycle hook tests** (`hooks.json`), **27-model dual-pool delegation**, a **4-Wave Hardware-Aware OOM-Safe Execution Doctrine** with mandatory Wave 3 **Adversarial Break-It Audits (`Sentinel` + `Aegis`, looping until `0 CRIT/HIGH`)**, and **Tier `A1/A2/B/C/D` risk-scoped release sign-offs**.
 
 ---
 
@@ -52,9 +52,9 @@ Hathcock Labs eliminates role interference by placing **`Halcyon` (Executive Off
 
 Maintaining 18 specialists across separate rule markdowns, runtime subagent registrations, telemetry dictionaries, and runbooks historically invited **4-way configuration drift** and forced coordinators to spend startup tool calls re-defining subagents every session.
 
-Hathcock Labs eliminates that drift with a single canonical manifest (**`squadron.json`**) synchronized deterministically via **`fleet sync-roster`** and continuously audited by **`squad-doctor` (`29/29`)**:
+Hathcock Labs eliminates that drift with a single canonical manifest (**`squadron.json`**) synchronized deterministically via **`fleet sync-roster`** and continuously audited by **`squad-doctor` (`30/30`)**:
 
-- **Zero Per-Session Re-Definition:** `fleet sync-roster` renders all **18 native `agents/*.md`** agent specifications directly into the runtime's auto-discovered agent directory alongside the compact unified roster table inside our `<24 KB` global rule file (`20.4 KB`). Every specialist is immediately discoverable on session boot without boilerplate registration calls.
+- **Zero Per-Session Re-Definition:** `fleet sync-roster` renders all **18 native `agents/*.md`** agent specifications directly into the runtime's auto-discovered agent directory alongside the compact 1-line-per-agent roster index (`-82.6%`) inside our `<14 KB` global rule file (`11.5 KB`). Every specialist is immediately discoverable on session boot without boilerplate registration calls.
 - **Declarative Read-Only Enforcement (`commandExecutionPolicy: off`):** Rather than relying on polite prompt instructions to keep verifiers read-only, generated agent frontmatter locks **`Echo`** (clinical verifier) and **`Scout`** (statutory veto director) declaratively with `commandExecutionPolicy: off` and read-only tool scopes.
 - **Declarative Lazy Skill Firewall (`skills: []`):** Dual-context technical writer **`Scribe`** compiles with `skills: []` in its native spec so zero private operational skills auto-inject at boot; public missions explicitly load *only* `public-technical-publications/SKILL.md`, reinforced mechanically by write-time `PreToolUse` Tier-D Air-Gap hooks.
 
@@ -152,13 +152,13 @@ Hathcock Labs eliminates that drift with a single canonical manifest (**`squadro
 ### Wing IV · Infrastructure, Cognitive Telemetry, QA, Security & Release
 
 #### 14. `Torque` (`Workstation-Optimizer`) — OS, Kernel & Hardware Systems Mechanic
-- **Primary Mandate:** Tune Linux kernel `sysctl` parameters, Optane/NVMe `[none]` I/O scheduling, `zram` & `earlyoom` rules, 24/7 workstation no-sleep & Wi-Fi `power_save=0` locks, ARM microSD flash-wear mitigation, and Apple Silicon container watchdogs; execute **29-invariant cross-node & governance integrity audits (`squad-doctor`)**.
+- **Primary Mandate:** Tune Linux kernel `sysctl` parameters, Optane/NVMe `[none]` I/O scheduling, `zram` & `earlyoom` rules, 24/7 workstation no-sleep & Wi-Fi `power_save=0` locks, ARM microSD flash-wear mitigation, and Apple Silicon container watchdogs; execute **30-invariant cross-node & governance integrity audits (`squad-doctor`)**.
 - **Failure Mode Prevented:** Prevents workstation OOM lockups under parallel compilation, idle desktop sleeps killing active background pipelines, and premature flash burnout on always-on edge nodes.
 - **Explicit Non-Goal:** Does not leave ad-hoc manual `/proc` tweaks undocumented outside version-controlled `/etc/sysctl.d`, `/etc/systemd/`, or `/etc/udev` configs.
 - **Tool Access & Tier Split:** Read/write + system diagnostics. Deep tier (`1.0x`) for kernel sysctls, udev rules, deadlock analysis, and profiling.
 
 #### 15. `Synapse` (`AI-Cognitive-Optimizer`) — AI Cognitive & Memory Infrastructure Architect
-- **Primary Mandate:** Maintain the Optane SQLite FTS5 + Hybrid RRF (`k = 60`, **`1,015/1,015` embedded sections**) engine, the `<= 2,000`-token differential context compiler, `<24 KB` constitutional rule hygiene (`40.7 KB → 20.4 KB`), the `32.5M`/`325M` live telemetry HUD with platform `/usage` header calibration, Pool 2 countdown (`Cld:XX%/XdXXh`), and child-transcript model tracking, the 5-model `squad-local` Apple Silicon CLI, **27-model dual-pool Neon/Hydrogen + `/swarm` routing**, and `temperature: 0.0` `responseSchema` contracts.
+- **Primary Mandate:** Maintain the Optane SQLite FTS5 + Hybrid RRF (`k = 60`, **`1,110/1,110` embedded sections**) engine, the `<= 2,000`-token differential context compiler, `<14 KB` constitutional rule hygiene (`21.0 KB → 11.5 KB`), the `32.5M`/`325M` live telemetry HUD with platform `/usage` header calibration, Pool 2 countdown (`Cld:XX%/XdXXh`), and child-transcript model tracking, the 4-model `squad-local` Apple Silicon CLI, **27-model dual-pool Neon/Hydrogen + `/swarm` routing**, and `temperature: 0.0` `responseSchema` contracts.
 - **Failure Mode Prevented:** Eliminates context rot, silent session-boot rule truncation, quota bucket drift and false weekly alarms across mixed model pools, concurrent blackboard corruption, and unconstrained LLM prose inside legal/clinical apps.
 - **Explicit Non-Goal:** Never removes local FTS5 fallback resilience when remote inference nodes drop offline.
 - **Tool Access & Tier Split:** Read/write + `fetch`. **`inherit` (Gemini 4 Neon High) / `pro [MANDATORY]`** (or `/swarm: gemini-4-neon-xhigh`) for evidentiary AI, retrieval architecture, quota algebra, and routing telemetry.
@@ -211,8 +211,8 @@ flowchart LR
 - **Wave 0 (Single-Model Local Pre-Flight):** Runs sanity checks and exploratory structural scans on Apple Silicon (`squad-local` pinned to **one 14B model at a time**, eliminating concurrent multi-14B VRAM swap thrashing).
 - **Wave 1 (Sequential Shared Contracts & Read-Only Veto):** `Vault`, `Cipher`, and `Apex` lock shared Zod schemas, Firestore security rules, and KMS boundaries sequentially while `Scout` applies read-only statutory veto validation **before** implementation spreads.
 - **Wave 2 (Disjoint Parallel Low-RSS Authoring):** Fans out non-overlapping file write globs across authoring specialists (`Prism`, `Beacon`, `Nexus`, `Forge`, `Scribe`) backed by a mechanical **`PreToolUse` `fcntl.flock` heavy-build lock** (`15m` auto-TTL + `PostToolUse` release in `hooks.json`) that serializes `vite build`, headless Chromium/Playwright, and Expo Metro automatically on 12 GB workstation memory. Two concurrent subagents never write to the same file path in one wave.
-- **Wave 3 (Serialized Heavy Verification & Native Offload):** Runs heavy compilation and headless browser suites (`vite build`, `tsc --noEmit`, Playwright `squad-visual-gate`) strictly **one process at a time** on the workstation, offloads heavy native Capacitor/Xcode iOS archive builds to Apple Silicon, then gates release through `Sentinel` and `Chronos`.
-- **Lazy `SKILL.md` Injection, Declarative Firewalls & `<24 KB` Rule Hygiene:** Eighteen domain runbooks (`~2,200–3,000` tokens each, `>42,000` startup tokens if pre-loaded) stay archived on disk until needed, while the global constitutional rule file was deduplicated from **`40.7 KB` → `20.4 KB`** (guarded under `<22 KB` by `SessionStart` + `squad-doctor` via the `squadron.json` unified 18-agent roster + **`1,015`** Optane-indexed memory sections) so zero guardrails silently truncate on session boot. On public repositories, `Scribe`'s declarative **`skills: []`** spec and write-time `PreToolUse` Tier-D Air-Gap hooks enforce a hard firewall banning private operational runbooks or leaks from ever entering context.
+- **Wave 3 (Mandatory Adversarial Break-It Pass + Serialized Heavy Verification):** Every new feature executes an independent **Adversarial Break-It Pass (`Sentinel` + `Aegis`) looping strictly until `0 CRITICAL / 0 HIGH`** (catching `22` real security/edge-case defects including a React 19 StrictMode `<dialog>` race during Arclight `v0.7.1`), paired with serialized heavy compilation and headless Playwright suites (`1`-at-a-time on `12 GB` RAM), Apple Silicon native Xcode offload, and final `Chronos` release sealing.
+- **Progressive-Disclosure `SKILL.md` Splits, Declarative Firewalls & `11.5 KB` Rule Hygiene:** Specialist runbooks split into lean entrypoints with on-demand reference modules, while global rules dropped **`21.0 KB` → `11.5 KB` (`-45.6%`)** with a **`-82.6%` compact roster**, **`<= 3.5 KB` active blackboard**, and **`4 → 1` global MCP prune** verified continuously by `squad-doctor` (`30/30` including stale-model hygiene). On public repositories, `Scribe`'s declarative **`skills: []`** spec and write-time `PreToolUse` Tier-D Air-Gap hooks enforce a hard firewall banning private operational runbooks or leaks from ever entering context.
 
 ---
 

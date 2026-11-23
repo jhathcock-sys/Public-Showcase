@@ -1,6 +1,6 @@
 ---
 title: Ambient Mobile Dispatch & Local Inference
-description: Zero-RAM Linux kernel inotify ingestion, automatic hermes3:8b JSON triage on mobile notes, and the 5-model Apple Silicon M1 Max zero-token local inference CLI (squad-local).
+description: Zero-RAM Linux kernel inotify ingestion, automatic local JSON triage on mobile notes, and Flash-Attention + q8_0 KV-cache tuned Apple Silicon M1 Max zero-token local inference (qwen3:8b at 4.8 GB VRAM / 37 tok/s co-resident with pinned nomic-embed-text at 0 evictions & 0 MB swap).
 tags:
   - ai-architecture
   - local-inference
@@ -8,7 +8,7 @@ tags:
   - mobile-workflow
   - ollama
   - zero-token
-updated: 2026-11-17
+updated: 2026-11-23
 ---
 
 # 06 · Ambient Mobile Dispatch & Local Inference
@@ -28,7 +28,7 @@ flowchart LR
     Mobile["Mobile Phone Capture\nMarkdown Note or Voice Memo (.m4a/.mp3/.wav)"] --> Sync["Vault Sync to Workstation\n01_Dispatch/ Inbox"]
     Sync -->|"Kernel inotify (<2s Wake · 0 MB Idle RAM)"| Watch["obsidian_dispatch_watcher.py\nOne-Shot Service Execution"]
     Watch -->|"Audio Capture"| Voice["Multimodal Transcription & Intent Classifier\nJSON: Transcript · Agent · Priority · Project"]
-    Watch -->|"Unstructured Note (No agent:)"| LocalTriage["Local hermes3:8b JSON Triage\n0 Cloud Tokens · Deterministic Fallback"]
+    Watch -->|"Unstructured Note (No agent:)"| LocalTriage["Local qwen3:8b JSON Triage\n0 Cloud Tokens · Deterministic Fallback"]
     Watch -->|"Structured Frontmatter"| Meta["YAML Frontmatter Parser\nAgent · Priority · Project · Instructions"]
     Voice --> Safe["Crash-Safe Atomic Write\ntempfile + os.fsync() + os.replace()"]
     LocalTriage --> Safe
@@ -71,7 +71,7 @@ When a phone captures a field bug and Vault Sync writes the new file to disk, th
 ### Engineering Guarantees of `obsidian_dispatch_watcher.py`
 1. **Zero Idle Resident Footprint (`0 MB`):** When the dispatch inbox is empty, no watcher daemon lives in RAM. The moment vault synchronization drops a markdown note or audio recording, the kernel fires `inotify` and invokes the one-shot processor in under **2 seconds**.
 2. **Broad Mobile Audio Codec Ingestion & Sync Settle Protection:** Supports `.m4a`, `.wav`, `.mp3`, `.ogg`, `.aac`, `.webm`, and `.flac` captures directly from phone voice recorders (`audio/mp4`, `audio/wav`, `audio/ogg`, `audio/aac`, `audio/webm`, `audio/flac`), ignoring transient `.tmp` or partial sync marker files cleanly until handles flush.
-3. **Automatic `hermes3:8b` JSON Triage & Audio Intent Extraction:** When an unstructured quick-capture note drops into `01_Dispatch/` without explicit `agent:` YAML frontmatter (or marked `agent: auto`), `obsidian_dispatch_watcher.py` calls `triage_markdown_local()` against the local Apple Silicon `hermes3:8b` model (`temperature: 0`, strict `TRIAGE_SCHEMA` JSON mode) at **`0` cloud tokens**—classifying the note across all 18 specialists and target repositories while normalizing enums safely and falling back deterministically (`Hermes`, `MEDIUM`) if off-LAN. Multimodal audio processing likewise parses spoken notes into clean structured JSON:
+3. **Automatic `qwen3:8b` JSON Triage & Audio Intent Extraction:** When an unstructured quick-capture note drops into `01_Dispatch/` without explicit `agent:` YAML frontmatter (or marked `agent: auto`), `obsidian_dispatch_watcher.py` calls `triage_markdown_local()` against the local Apple Silicon `qwen3:8b` model (`temperature: 0`, `think: false`, `num_ctx: 4096`, strict `TRIAGE_SCHEMA` JSON mode) at **`0` cloud tokens**—classifying the note across all 18 specialists and target repositories while normalizing enums safely and falling back deterministically (`Hermes`, `MEDIUM`) if off-LAN. Multimodal audio processing likewise parses spoken notes into clean structured JSON:
 
 ```json
 {
@@ -80,7 +80,7 @@ When a phone captures a field bug and Vault Sync writes the new file to disk, th
   "agent": "Beacon",
   "priority": "HIGH",
   "project": "target-repository-name",
-  "triage_engine": "apple-silicon/hermes3:8b (0 cloud tokens)",
+  "triage_engine": "apple-silicon/qwen3:8b (0 cloud tokens)",
   "instructions": "Actionable Markdown checklist routed to the target specialist"
 }
 ```
@@ -104,21 +104,32 @@ def atomic_write(target_path: str, content: str) -> None:
 
 ---
 
-## 2. Zero-Cloud-Token 5-Model Inference (`squad-local` on M1 Max)
+## 2. Zero-Cloud-Token 4-Model Inference (`squad-local` on M1 Max)
 
-Our always-on Apple Silicon **M1 Max (`32 GB` unified memory)** node hosts a local `Ollama` runtime fronted by our **`squad-local` 5-model CLI**, absorbing embeddings, unstructured dispatch classification, technical digests, code sanity reviews, and step-by-step reasoning checks at **zero cloud API cost**:
+Our always-on Apple Silicon **M1 Max (`32 GB` unified memory)** node hosts a local `Ollama` runtime fronted by our **`squad-local` 4-model CLI**, absorbing embeddings, unstructured dispatch classification, technical digests, code sanity reviews, and reasoning checks at **zero cloud API cost**:
 
-### Five-Model Local Task-Tier Lineup (`squad-local`)
+### Local Task-Tier Lineup & VRAM Co-Residency Tuning (`squad-local`)
 
 | `squad-local` Tier / Command | Local M1 Max Model | Workload & Engineering Contract | Cloud Cost |
 | :--- | :--- | :--- | :---: |
-| **`embed`** *(via `squad-memory`)* | **`nomic-embed-text`** (`768d`) | Batch `32`-chunk `float32` semantic indexing & `--auto-hybrid` RRF query vectors (`1.5s` RPC timeout) | **`0`** |
-| **`squad-local triage`** *(+ `01_Dispatch/`)* | **`hermes3:8b`** | Strict JSON-schema classification (`temperature: 0`) across 18 specialists & repositories + `5`-bullet digests (`~45–65 tok/s`) | **`0`** |
-| **`squad-local code`** | **`qwen2.5-coder:14b`** | Local code reviews (`--file`, up to `48 KB`), regex/SQL drafting, and boilerplate verification (`temperature: 0.1`) | **`0`** |
-| **`squad-local reason`** | **`deepseek-r1:14b`** | Chain-of-thought edge-case sanity checks with `<think>...</think>` trace extraction (`--no-think` optional) | **`0`** |
-| **`squad-local ask`** | **`qwen3:14b`** | General zero-token local engineering Q&A and system check explanations (`--system` override) | **`0`** |
+| **`embed`** *(pinned co-resident)* | **`nomic-embed-text`** (`768d`) | Batch `32`-chunk `float32` semantic indexing & `--auto-hybrid` RRF query vectors (`1.5s` RPC timeout, `keep_alive: -1`); stays permanently resident (`0` evictions) | **`0`** |
+| **`squad-local triage`** *(+ `01_Dispatch/`)* | **`qwen3:8b`** *(Flash Attn · `q8_0` KV · `8K` ctx)* | Strict JSON-schema classification (`temperature: 0`, `think: false`) across 18 specialists & repositories + `5`-bullet digests (**`4.8 GB` VRAM / `37 tok/s`**) | **`0`** |
+| **`squad-local code`** | **`qwen2.5-coder:14b`** | Local code reviews (`--file`, up to `48 KB`), regex/SQL drafting, and boilerplate verification (`temperature: 0.1`, clean upstream Modelfile) | **`0`** |
+| **`squad-local ask` / `reason`** | **`qwen3:14b`** | General zero-token local engineering Q&A (`think: false` @ `22.2 tok/s`) and step-by-step edge-case sanity checks (`--think` optional) | **`0`** |
 
-Running `squad-local status` probes `/api/tags` and `/api/ps` over the LAN, reporting round-trip latency, currently loaded VRAM footprints, quantization levels, and readiness across all five models—with `--json` machine output recording `"cloud_tokens": 0`, `elapsed_ms`, `load_ms`, and `tok_per_sec` on every call.
+#### Eliminating `64K` Modelfile Eviction Thrash (Flash Attention + `q8_0` KV + `8K` Cap)
+Default `64K`-context Ollama Modelfile allocations inflate KV-cache VRAM reservations dramatically—forcing the Apple Silicon runtime to evict `nomic-embed-text` whenever a chat/triage request arrives and causing cold model reload stalls and unified-memory swap pressure. Locking local inference behind three deterministic daemon knobs eliminated eviction thrash completely:
+
+```env
+# Apple Silicon Ollama Inference Tuning (Zero Eviction / Zero Swap Co-Residency)
+OLLAMA_FLASH_ATTENTION=1
+OLLAMA_KV_CACHE_TYPE=q8_0
+# Explicit Modelfile / request context cap: num_ctx=8192 (eliminates 64K default KV bloat)
+```
+
+- **Measured Co-Residency Result:** **`qwen3:8b`** runs steadily at **`4.8 GB` VRAM** and **`37 tok/s`**, remaining continuously **co-resident with pinned `nomic-embed-text`** at **`0` model evictions** and **`0 MB` swap**—while `squad-doctor` (`30/30`) verifies stale-model hygiene automatically so retired/unreferenced model tags never linger across configs.
+
+Running `squad-local status` probes `/api/tags` and `/api/ps` over the LAN, reporting round-trip latency, currently loaded VRAM footprints, quantization levels, and readiness across the local lineup—with `--json` machine output recording `"cloud_tokens": 0`, `elapsed_ms`, `load_ms`, and `tok_per_sec` on every call.
 
 ### Workload 1 · Synchronous-Free `768d` Vector Indexing (`nomic-embed-text`)
 - **Primary Delta Worker:** Embeds uncached Markdown knowledge sections in batches of `32` via local HTTP RPC (`POST /api/embed`), packing `768`-dimensional little-endian `float32` blobs (`struct.pack("<768f", *vec)`) and precomputed L2 norms directly into SQLite (`section_embeddings`). Detached background spawns (`squad-memory embed`) keep foreground `append` and `sync` latencies under `16 ms` on the workstation.
@@ -152,15 +163,21 @@ def run_vector_worker(snapshot_db: str, cache_db: str) -> dict:
 
 Using `immutable=1` guarantees the worker never fails on read-only directory snapshots or stale `-shm`/`-wal` sidecars copied from another machine.
 
-### Workload 2 · Zero-Token Technical Digests (`hermes3:8b`)
-`squad-memory summarize <file>` (or piped `stdin` up to `15,000` characters) routes technical specs, reports, or release diffs locally to `hermes3:8b` over LAN HTTP at `temperature: 0.2` and `num_predict: 400`:
+### Workload 2 · Zero-Token Technical Digests (`qwen3:8b`)
+`squad-memory summarize <file>` (or piped `stdin` up to `15,000` characters) routes technical specs, reports, or release diffs locally to `qwen3:8b` via `/api/chat` over LAN HTTP at `think: false`, `temperature: 0.2`, `num_ctx: 4096`, and `num_predict: 400`:
 
 ```json
 {
-  "model": "hermes3:8b",
+  "model": "qwen3:8b",
   "stream": false,
-  "options": { "temperature": 0.2, "num_predict": 400 },
-  "prompt": "Synthesize exactly 5 terse engineering bullets: (1) core architectural decision, (2) concrete files/components affected, (3) quantified limits or latency bounds, (4) failure mode prevented, (5) handoff/verification step. Zero fluff."
+  "think": false,
+  "options": { "temperature": 0.2, "num_ctx": 4096, "num_predict": 400 },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Synthesize exactly 5 terse engineering bullets: (1) core architectural decision, (2) concrete files/components affected, (3) quantified limits or latency bounds, (4) failure mode prevented, (5) handoff/verification step. Zero fluff."
+    }
+  ]
 }
 ```
 
@@ -178,7 +195,7 @@ Saving tokens by pushing judgment-critical code onto small local open-weight mod
 | Workload Characteristic | Execution Tier | Verification & Safety Contract |
 | :--- | :--- | :--- |
 | Clinical medicine (`Echo`), security rules (`Vault`), auth/HMAC (`Apex`), sync races (`Nexus`), IAM (`Sentinel`), production code edits | **Cloud Frontier Tiers** (`pro` / `flash`) | Guarded by `pro [MANDATORY]` locks, `tsc`, `oxlint`, Vitest, Playwright DOM/WCAG gates, and `Muse`. |
-| `768d` embeddings, `01_Dispatch/` `hermes3:8b` JSON triage, 5-bullet digests, `qwen2.5-coder:14b` code/regex checks, `deepseek-r1:14b` sanity checks, `qwen3:14b` Q&A | **Local M1 Max (`squad-local` 5-Model Node)** | High-volume inference at **`0` cloud token burn** with deterministic FTS5 / enum fallbacks when off-LAN. |
+| `768d` embeddings, `01_Dispatch/` `qwen3:8b` JSON triage, 5-bullet digests, `qwen2.5-coder:14b` code/regex checks, `qwen3:14b` reasoning & Q&A | **Local M1 Max (`squad-local` 4-Model Node)** | High-volume inference at **`0` cloud token burn** with deterministic FTS5 / enum fallbacks when off-LAN. |
 
 ### Disconnected Operation & Zero-Blocking Guarantees
 
@@ -221,7 +238,7 @@ AUDIO_MIME_MAP = {
 | Telemetry Metric | Unoffloaded Baseline | Local Apple Silicon Tier | Monthly Engineering Gain |
 | :--- | :--- | :--- | :--- |
 | **`1,200` Section Vector Re-Index** | Cloud embedding API latency + quota | **`~1.8s` cached / `~14s` full cold**, `0` cloud tokens | Zero rate-limit jitter on large vault syncs |
-| **Daily `5`-Bullet Architecture Digests** | `~2,500`–`4,000` frontier tokens per doc | **`hermes3:8b` (`~45–65 tok/s`)**, `0` cloud tokens | Preserves rolling quota strictly for `Vault`/`Echo`/`Apex` |
+| **Daily `5`-Bullet Architecture Digests & Triage** | `~2,500`–`4,000` frontier tokens per doc | **`qwen3:8b` (`4.8 GB` VRAM / `37 tok/s`, Flash Attn + `q8_0` KV + `8K` ctx)** co-resident w/ pinned `nomic-embed-text` (`0` evictions, `0 MB` swap) | Preserves rolling quota strictly for `Vault`/`Echo`/`Apex` |
 | **Idle Folder Monitoring Cost** | Polling Python loop (`~55 MB` RAM, periodic CPU wakes) | **`0 MB` idle**, kernel `inotify` sub-2s dispatch wake | Longer mobile battery life & zero background bloat |
 | **Partial Sync File Corruption** | Occasional truncated Markdown reads | **Tempfile + `os.fsync()` + `os.replace()`** (`0` torn reads) | Eliminates half-written cards across multi-device sync |
 
@@ -240,19 +257,19 @@ Distributed file synchronization paired with local model execution introduces su
 | **Multimodal Transcription Fails Offline** | Move binary clip safely to processed archive + emit `audio-untranscribed` stub note | Zero audio data loss and zero infinite service restart loops |
 | **Local Apple Silicon Ollama Unreachable** | `urllib` HTTP `1.5s` connect/read timeout on RPC; worker logs clean skip | FTS5 queries stay uninterrupted (`<1.5 ms`); `section_embeddings` catches up on reconnect |
 | **Backup `memory.db` Held Open by Concurrent Writers** | Open secondary snapshots strictly with `?mode=ro&immutable=1` + non-blocking `LOCK_EX | LOCK_NB` | Worker embeds `content_hash` gaps cleanly without `SQLITE_BUSY` or stacked cron runs |
-| **Over-Verbose Local `hermes3:8b` Output** | Bounded `15,000`-char input window + `temperature: 0.2` + `num_predict: 400` + explicit 5-bullet rubric | Summaries stay compact, scannable, and finish in a few seconds with `0` cloud cost |
+| **`64K` Modelfile KV-Cache Eviction Thrash** | `OLLAMA_FLASH_ATTENTION=1`, `OLLAMA_KV_CACHE_TYPE=q8_0`, `8K` context cap (`num_ctx=8192`) | `qwen3:8b` (`4.8 GB` VRAM / `37 tok/s`) stays co-resident with pinned `nomic-embed-text` at `0` evictions & `0 MB` swap |
 
 Paired together, `systemd.path` `inotify` wakeups and headless Apple Silicon inference turn asynchronous field captures and nightly knowledge indexing into silent background utilities rather than battery drains or cloud quota liabilities.
 
 ### Why Local Open-Weight Models Stay Explicitly Scoped
-- **Never Compromise Safety Surfaces:** While `hermes3:8b` excels at rapid 5-bullet technical synthesis and extraction on unified Apple Silicon memory, it never audits clinical ultrasound guidelines (`Echo`), multi-tenant Firestore rules (`Vault`), or HMAC webhook guards (`Apex`). Those remain strictly locked to verified frontier reasoning plus deterministic compiler/test gates.
+- **Never Compromise Safety Surfaces:** While tuned `qwen3:8b` (`4.8 GB` / `37 tok/s`) excels at rapid 5-bullet technical synthesis and structured JSON extraction on unified Apple Silicon memory, it never audits clinical ultrasound guidelines (`Echo`), multi-tenant Firestore rules (`Vault`), or HMAC webhook guards (`Apex`). Those remain strictly locked to verified frontier reasoning plus deterministic compiler/test gates.
 - **High-ROI Throughput Where Quality Is Verifiable:** `768d` embedding generation (`nomic-embed-text`) and structured digests produce directly inspectable retrieval hits and bulleted artifacts checked downstream by human engineers and lexical FTS5 fallbacks—recovering huge daily frontier quota headroom cleanly at zero marginal cost.
 
-### Continuous Health Probes Over Local Daemons
-Rather than assuming background Apple Silicon inference workers stay silently alive across macOS updates or restarts, `squad-doctor` verifies local Ollama availability across the full 5-model lineup (`nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`), verifies `squad-local` CLI readiness on the workstation, confirms active `launchd` PID supervision on the container watchdog and `300s` vector pre-embedder, and checks workstation SQLite `section_embeddings` coverage (`embedded == total`) inside its `22`-invariant `<3.5`-second sweep—turning local inference into an observable, self-verifying tier of production architecture.
+### Continuous Health Probes Over Local Daemons (`30/30` Doctor + Stale-Model Hygiene)
+Rather than assuming background Apple Silicon inference workers stay silently alive across macOS updates or restarts, `squad-doctor` verifies local Ollama availability across the tuned lineup (`nomic-embed-text`, `qwen3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`), executes **automated stale-model hygiene checks** ensuring retired model IDs never linger in active configs, verifies `squad-local` CLI readiness on the workstation, confirms active `launchd` PID supervision on the container watchdog and `300s` vector pre-embedder, and checks workstation SQLite `section_embeddings` coverage (`embedded == total`) inside its **`30/30`-invariant** cross-node diagnostic sweep—turning local inference into an observable, self-verifying tier of production architecture.
 
 ### End-to-End Capture Safeguards Summary
 - **Atomic File Swap (`os.replace`):** Partial phone sync drops never reach parsers half-written.
 - **Zero Zombie Daemons:** Linux `systemd.path` triggers drop resident memory consumption completely to `0 MB` between field captures.
 - **Lossless Offline Tolerance:** Unreachable transcription endpoints archive binary audio directly alongside stub notes rather than failing or looping.
-- **Predictable Local Compute:** Batched `32`-chunk `768d` vectors (`norm` + `<768f` BLOB) and `hermes3:8b` summaries keep background knowledge continuous at zero cloud token burn.
+- **Predictable Local Compute:** Batched `32`-chunk `768d` vectors (`norm` + `<768f` BLOB) pinned alongside `q8_0` Flash-Attention `qwen3:8b` (`4.8 GB` / `37 tok/s`, `0` evictions, `0 MB` swap) keep background knowledge continuous at zero cloud token burn.

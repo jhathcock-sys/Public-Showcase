@@ -7,12 +7,29 @@ tags:
   - releases
   - verification
   - benchmarks
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 
 # November 2026 Engineering Milestones
 
 An engineering log of verified capabilities, architectural shifts, and quality benchmarks shipped across Hathcock Labs repositories through November 2026.
+
+---
+
+## 2026-11-23 — Arclight `v0.7.1` (Sprint 2, Wave 0, Sprint 2.5) & 18-Upgrade Engineering ROI Overhaul (~20× Token Reduction)
+
+Completed an end-to-end cognitive-efficiency overhaul across our orchestration stack followed immediately by a full production proof milestone shipping **Arclight Security `v0.7.1`** ([Arclight Security ERP](../01_Products/Arclight-Security-ERP.md), [03 · Differential Context & Quota Governance](../02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md)):
+
+- **18-Upgrade Static Prompt Tax Reduction & Runtime Guardrails (`204` Lifecycle Hook Tests):**
+  - Cut global constitutional rules from **`21.0 KB` → `11.5 KB` (`-45.6%`)**, compressed the 18-agent roster table by **`-82.6%`**, split dense specialist runbooks into progressive-disclosure `SKILL.md` + `references/`, tightened the active rolling blackboard cap to **`<= 3.5 KB`** (`6` entries), and pruned globally mounted MCP servers **`4 → 1`** (closing `PreToolUse` tool-hook bypasses and moving heavy browser automation MCP into an on-demand disabled plugin).
+  - Hardened deterministic runtime guardrails across **`204` automated lifecycle hook tests**: auto-clamping code read guards (`> 400` lines → `350`-line window), single-command test reporter normalization (`--reporter=dot` / `--reporter=line`), **`<100 ms` workspace-sharded `<= 4 KB` symbol maps**, scoped Anti-Slop pre-commit gates, **consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL)** preventing duplicate `pre-push` runs without spoofable env vars, and a **`30/30` cross-node diagnostic doctor** adding automated stale-model hygiene checks.
+- **Local Apple Silicon Inference Tuning (`0` Evictions, `0 MB` Swap):** Enabled Flash Attention (`OLLAMA_FLASH_ATTENTION=1`), `q8_0` KV cache (`OLLAMA_KV_CACHE_TYPE=q8_0`), and an explicit **`8K` context cap** (`num_ctx=8192`)—eliminating `64K` Modelfile KV-cache eviction thrash so **`qwen3:8b` runs at `4.8 GB` VRAM / `37 tok/s`** continuously co-resident with pinned **`nomic-embed-text`** at **`0` evictions** and **`0 MB` swap**.
+- **Arclight Security `v0.6.0` → `v0.6.1` → `v0.7.1` Shipped:**
+  - **Sprint 2 (`v0.6.0`):** `T+5m` No-Show Watchdog + zero-OT (`<=40h`) ranked backfill cascade (`DryRunSmsTransport` fail-closed), Master Recurring Shift Templates (`2-2-3` / `4-on-4-off` / weekly) + compliance-gated self-service bid/swap, GPS anti-spoofing (`isFromMockProvider`, `<=75m`, 3s accelerometer variance) + toggleable per-site/org liveness selfie punch + hard off-duty sensor teardown whenever `shift.status !== 'IN_PROGRESS'`, Automated Client Daily Digest (`DryRunEmailTransport` fail-closed), and Executive QBR Scorecard & `%PDF-` export with `"AI-Assisted"` evidentiary disclosure.
+  - **Wave 0 (`v0.6.1`):** Zero-regression modular state decomposition — web command context (`10,895 → 421` LOC + `12` domain slices) and mobile field store (`5,583 → 384` LOC + `7` domain slices) preserving `100%` public API backwards compatibility.
+  - **Sprint 2.5 (`v0.7.1`):** Clean Production Org Provisioning with hard Sandbox-vs-Production isolation + Firestore Rules `orgMode` immutability lock, 5-Step Agency Onboarding Wizard with live CSV Bulk Roster Importer (`<=400` rows single-transaction atomic import, privileged-role rejection), 3-Step Downstream Client Account & 1-Click `CLIENT_VIEWER` Portal Provisioning Wizard, and 17-topic contextual `?` `HelpPopover` (viewport-clamped, capture-phase `Escape`, role-gated) + lazy-split role-aware `QuickStartDrawer` (`474.9 KB` max JS chunk `< 500 KB`).
+  - **Verified `v0.7.1` Metrics:** **`1,098/1,098` automated tests** (`670` unit, `394` Vitest E2E, `34` Playwright browser E2E across desktop `1440px` & mobile `375px`), **`42` Gen-2 Cloud Functions (`enforceAppCheck: true`)**, **`0` `oxlint` warnings/errors across `360` files**, hardened across **`3` independent rounds of Adversarial Break-It Audits** (`0 CRITICAL / 0 HIGH`).
+- **Measured Production Benchmark (Real Proof of ~20× Token Reduction):** Executing Wave 0 (`16.5K` LOC refactor) + full Sprint 2.5 + `3` rounds of Adversarial Break-It Audits (`Sentinel` + `Aegis`, looping until `0 CRIT/HIGH`, catching & killing **`22` real security/edge-case defects** including a **React 19 StrictMode `<dialog>` race**) completed in **`80.5 minutes`** with **`~1.38M` est tokens** across `20` specialist runs and **`0` quota walls**—a **~20× reduction** compared to pre-upgrade monolithic orchestration (`~29.6M` raw read tokens across `2` forced quota resets).
 
 ---
 
@@ -54,7 +71,7 @@ Landed foundational architecture and deterministic verification harnesses for [H
 Delivered full multi-package expansion and visual overhaul for [Arclight Security ERP & CAD](../01_Products/Arclight-Security-ERP.md):
 - **Daylight Enterprise UI Overhaul:** Eliminated generic dark-slate templates and identical 4-KPI-box rows across six workbenches in favor of warm-stone `#F6F6F3` canvases, `#FFFFFF` `1px` sheets, `#F0EFEA` `248px` left-rail navigation, and 3-tier typography (`Instrument Sans`, `Newsreader` serif legal sheets, `IBM Plex Mono` `tabular-nums`).
 - **Armory, Keys & Patrol Fleet Custody:** Launched serialized custody workflows gating firearms, TASER CEWs, PA expandable batons (`18 Pa. C.S. § 908` / Act 235), body cameras, key rings, and cruisers (`DRIVERS_LICENSE`), paired with `<35ms` USB/Bluetooth HID scanner wedge capture and Web Audio feedback.
-- **"Dark Hours" SLA Billing & HR Lifecycle:** Shipped GPS-reconciled client invoicing with automatic `10%` SLA penalty credits below `98%` coverage, 6-stage IdentoGO applicant tracking, RFC-4180 fault-tolerant CSV roster/schedule importers, Site BOLOs with officer acknowledgment trails, SBI 70/20/10 coaching records, and printable MD SB 760 48-hour MSP Use-of-Force notices.
+- **"Dark Hours" SLA Billing & HR Lifecycle:** Shipped GPS-reconciled client invoicing with automatic `10%` SLA penalty credits below `98%` coverage, 6-stage IdentoGO applicant tracking, RFC-4180 fault-tolerant CSV roster/schedule importers, Site BOLOs with officer acknowledgment trails, structured coaching logs, and printable MD SB 760 48-hour MSP Use-of-Force notices.
 - **Verified Production Benchmarks:** `5/5` monorepo packages passing strict TypeScript (`0` errors), `25/25` test suites (**`205/205` passing unit/integration tests**), Vite build completed in `2.39s` with every chunk `<500 KB` (`11 KB – 378 KB`), and `0` blocking or advisory visual defects at `1440×900` and `375×812`.
 
 ---
@@ -89,15 +106,15 @@ Completed full multi-loop verification for [SonoPrep Pro (iOS)](../01_Products/S
 
 | Product / Subsystem | Verification Mechanism Executed | Quantified Result | Bundle / Latency Bounds |
 | :--- | :--- | :--- | :--- |
-| **Arclight Security ERP (`v0.4.0`)** | Workspace `tsc --noEmit` + Vitest + 10-round E2E | **`433/433` unit; `164/164` E2E; `19` Blaze functions** | **`457.24 kB` max chunk**; `0` lint warns (`108` files) |
-| **Arclight Web Command & Client Portal** | Headless Playwright DOM & WCAG visual gate | **`0` blocking / `0` advisory defects** | Checked at `1440×900` & `375×812` |
+| **Arclight Security ERP (`v0.7.1`)** | Workspace `tsc --noEmit` + Vitest + Playwright + 3 Break-It Audits | **`1,098/1,098` tests** (`670` unit · `394` Vitest E2E · `34` browser E2E); **`42` Gen-2 functions (`enforceAppCheck: true`)**; `0 CRIT/HIGH` | **`474.9 KB` max chunk (`<500 KB`)**; `0` `oxlint` across `360` files |
+| **Arclight Web Command & Client Portal** | Headless Playwright E2E + DOM/WCAG visual gate | **`34/34` browser E2E · `0` blocking / `0` advisory defects** | Checked at `1440px` desktop & `375px` mobile |
 | **Deterministic Video Engine (`v0.1.0`)** | Workspace `tsc` + Vitest + Anti-Slop + `ffprobe` | **`33/33` unit; `17/17` Grade `6.6–9.0` episodes** | `1080×1920` `60fps` `-14 LUFS`; `<35 KB` bio hubs |
 | **SonoPrep Pro (`iOS`)** | Vitest + Playwright Free/Pro + `oxlint` + `xcodebuild` | **`34/34` unit; `15/15` E2E; `0` lint warns** | All chunks `<500 KB`; native Release build |
-| **Cognitive Memory (`squad-memory`)** | Live Optane WAL query & atomic lock benchmarks | **`0.63–1.29 ms` lexical; `1,015/1,015` vector parity** | `<300` returned tokens (`~99%` drop vs files) |
-| **Lifecycle Hooks & SSOT Registry** | Automated subprocess suite + `fleet sync-roster` audit | **`65/65` hook tests; `18` native `agents/*.md`** | **`16–28 ms`** latency; `commandExecutionPolicy: off`, `skills: []` |
-| **Rule Budget & Telemetry (`squad-live-telemetry`)** | Byte-budget audit + child-transcript `/usage` lock | **`20.4 KB` rules (`<24 KB` cap); `27` models; `32.5M`/`325M`** | `0` boot truncation; `Cld:XX%/XdXXh`; `0.35x` G4 Low |
-| **DevOps Hooks & Pro Rulesets (`12` Repos)** | Isolated hook tests + GitHub Pro zero-bypass API audit | **`13/13` pre-commit; `5/5` pre-push; `24/24` Rulesets** | `<5 ms` commit gate; auto-hydrated `fleet wt`; `<5s` `fleet rollback` |
-| **Fleet & Governance Readiness (`squad-doctor`)** | Concurrent 4-worker 3-node + governance invariant probe | **`29/29 PASS`** (23 infra + 6 rule/symlink/archive/TTL/hook/roster checks) | Parallel 3-node + SSOT parity sweep |
+| **Cognitive Memory (`squad-memory`)** | Live Optane WAL query & `<100 ms` sharded symbol maps | **`0.63–1.29 ms` lexical; `<= 4 KB` symbol maps; `<= 3.5 KB` blackboard** | `<300` returned tokens; `>96%` startup drop |
+| **18-Upgrade Efficiency & Hooks** | Automated lifecycle hook suite + Wave 0 / Sprint 2.5 proof | **`204` hook tests; `11.5 KB` rules (`-45.6%`); `-82.6%` roster; `4 → 1` MCP** | **`~1.38M` est tok / `80.5m` / `0` quota walls (~20× cut)** |
+| **Local Apple Silicon Inference** | Flash Attn + `q8_0` KV + `8K` cap co-residency benchmark | **`qwen3:8b` (`4.8 GB` VRAM / `37 tok/s`) + pinned `nomic-embed-text`** | **`0` evictions · `0 MB` swap · `0` cloud tokens** |
+| **DevOps Hooks & Pro Rulesets (`12` Repos)** | Isolated hook tests + GitHub Pro zero-bypass API audit | **Scoped Anti-Slop + `HEAD^{tree}` `0700` `60s` stamps; `24/24` Rulesets** | `<5 ms` commit gate; auto-hydrated `fleet wt`; `<5s` `fleet rollback` |
+| **Fleet & Governance Readiness (`squad-doctor`)** | Concurrent 4-worker 3-node + governance + stale-model probe | **`30/30 PASS`** (infra + governance + automated stale-model hygiene) | Parallel 3-node + SSOT & model parity sweep |
 
 ---
 
@@ -110,14 +127,14 @@ Rather than shipping quick patches, core failure classes observed across enginee
 | **2026-10** | Cold-start NFC tap routes overwriting recent tablet custody updates on arrival | Mandatory atomic `runTransaction` `mergeStoreState` arbitrating `checkedOutAt` vs `renamedAt` independently |
 | **2026-10** | Unbounded operational custody logs threatening Firestore's `1 MiB` document limit | UTF-8 `TextEncoder` `750 KB` safety watermark trimming strictly oldest ephemeral log tails |
 | **2026-10** | iOS Safari breaking audio cues after screen locks & hiding custom modal focus bugs | `SoundService` `visibilitychange` `ctx.resume()` recovery + native `<dialog>` coordinate light-dismiss |
-| **2026-11** | Multi-agent initialization burns (`~112k` tokens/startup) & file append collisions | Rolling `8`-entry blackboard behind re-entrant `fcntl.flock` + `<1.5 ms` Optane FTS5 queries |
+| **2026-11** | Multi-agent initialization burns (`~112k` tokens/startup) & file append collisions | Rolling `<= 3.5 KB` (`6`-entry) blackboard behind re-entrant `fcntl.flock` + `<1.5 ms` Optane FTS5 queries |
 | **2026-11** | Concurrent `pnpm` monorepo installs halting on unapproved transitive lifecycle scripts | Pre-approved `allowBuilds` manifests + centralized Optane package cache warm-ups pre-wave |
 | **2026-11** | Generic dark `#07090e` 4-KPI-card layouts appearing on daytime operational dashboards | Domain-adaptive Daylight Enterprise / Clinical Calm archetypes verified by Playwright DOM/WCAG gate |
 | **2026-11** | Mobile Safari `<dialog>` scrollbar transitions flickering (WebKit Bug 311752) | Global `:user-invalid` + explicit `aria-invalid="false"` sync + ban on `scrollbar-color` transitions |
 | **2026-11** | Sliding quota bucket drift, false weekly `[CRIT]` alarms & parent-alias billing distortion | Fixed `32.5M` 5h bucket + `325M` `~7d est` (false-`[CRIT]` suppressed while unthrottled), live `/usage` (`XX% LIVE`, `Cld:XX%/XdXXh`), child-transcript tracking, `0.35x` `Gemini 4 Low` & 27-model Neon/Hydrogen routing |
-| **2026-11** | Global rules growing to `40.7 KB` risking silent truncation past `<24 KB` per-file boot caps | Deduplicated rules to **`20.4 KB`** (`<22 KB` doctor guard) via `squadron.json` unified 18-agent roster + Optane FTS5/vector offload (`1,015` sections) for zero boot truncation |
-| **2026-11** | 4-way agent config drift, per-session re-definition & advisory-only OOM/air-gap/isolation prompts | Single-source **`squadron.json`** (`fleet sync-roster` → `18` native `agents/*.md` w/ `commandExecutionPolicy: off` & `skills: []`) + **`16–28 ms` `hooks.json`** (`65/65` tests: `fcntl.flock` `15m`-TTL heavy-build lock, write-time Air-Gap, anti-dump & tier floor) |
-| **2026-11** | Cold nested worktree installs, unverified DR snapshots, force-push hazards & sleep/Wi-Fi drift | Auto-hydrated `fleet wt` (`functions/node_modules`, `packages/*/dist`), `sqlite3.backup()` 4-step restore verifier, **`24/24` Pro Rulesets**, & **`29/29` `squad-doctor`** |
+| **2026-11** | Static prompt tax (`21.0 KB` rules, `4` global MCPs, verbose test logs & unbounded reads) causing `~29.6M`-token sprints across `2` quota resets | 18-upgrade ROI overhaul: **`11.5 KB` rules (`-45.6%`)**, **`-82.6%` roster**, **`4 → 1` MCP prune**, progressive skills, **`204` hook tests** (auto-clamping `>400→350L` reads, `--reporter=dot`, scoped Anti-Slop, consume-once `HEAD^{tree}` `0700` `60s` tree stamps) & `<100 ms` `<= 4 KB` symbol maps → **~20× token cut (`~1.38M` est tok, `0` quota walls)** |
+| **2026-11** | Default `64K` Ollama Modelfile KV-cache reservations evicting `nomic-embed-text` & causing swap thrash on Apple Silicon | Locked Flash Attention + `q8_0` KV cache + `8K` context cap (`qwen3:8b` at **`4.8 GB` VRAM / `37 tok/s`** co-resident with pinned `nomic-embed-text`, **`0` evictions & `0 MB` swap**) + `30/30` doctor stale-model hygiene |
+| **2026-11** | React 19 StrictMode `<dialog>` double-invocation race & privileged CSV onboarding escalation risks | Mandatory Wave 3 **Adversarial Break-It Audits (`Sentinel` + `Aegis`, looping until `0 CRIT/HIGH`)** catching & killing `22` real defects, Firestore `orgMode` immutability lock, and deterministic privileged-role rejection on atomic `<= 400`-row CSV imports |
 
 ---
 

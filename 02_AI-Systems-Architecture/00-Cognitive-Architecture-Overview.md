@@ -7,7 +7,7 @@ tags:
   - cognitive-systems
   - infrastructure
   - verification
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 
 # 00 · Cognitive Architecture Overview
@@ -36,8 +36,8 @@ flowchart TB
     Squad <-->|"0-Token Vectors · squad-local (5 Models) · Verified DR"| Node2["Secondary Apple Silicon Node (M1 Max)\nLocal Inference · Containers · iOS Builds"]
     Squad <-->|"Sanitized Async Git Dropzone"| Auditor["External Adversarial Auditor (Muse)\nZero Shared Context · Primary-Source Audit"]
 
-    Squad --> Gates["Deterministic Lifecycle & Release Gates\n16-28ms hooks.json (65/65) · <5ms Pre-Commit · 24/24 Rulesets · 29/29 Doctor"]
-    Gates --> Prod["Shipped Systems (12 Repos)\nSecurity ERP · iOS Clinical · Short-Form Video · Floor PWAs · OpenSCAD"]
+    Squad --> Gates["Deterministic Lifecycle & Release Gates\n204 Hook Tests · Scoped Anti-Slop · Tree Stamps · 24/24 Rulesets · 30/30 Doctor"]
+    Gates --> Prod["Shipped Systems (12 Repos)\nSecurity ERP v0.7.1 · iOS Clinical · Short-Form Video · Floor PWAs · OpenSCAD"]
 ```
 
 ---
@@ -46,13 +46,13 @@ flowchart TB
 
 | Dimension | Naive Monolithic AI Coding | Hathcock Labs Governed Cognitive Stack |
 | :--- | :--- | :--- |
-| **Orchestration & Registry** | Unstructured single-chat prompt + duplicated ad-hoc agent definitions | **`Halcyon` (XO)** + single-source **`squadron.json`** (`fleet sync-roster` → `18` native `agents/*.md` with declarative `commandExecutionPolicy: off` & `skills: []`, zero 4-way drift) |
-| **Context Window & Rule Diet** | Full raw files + bloated `>40 KB` global rules truncating on boot | Global rules deduplicated **`40.7 KB` → `20.4 KB`** (`<24 KB` cap; `<22 KB` doctor guard) + **`<= 2,000`-token** differential prompt with `<1.5 KB` `REPO_MAP.md` & `<= 35`-line slices |
-| **Institutional Memory** | Re-reads giant Markdown logs every session or forgets past bugs | Sub-`1.5 ms` SQLite **FTS5 BM25 + 14-day recency** fused via **RRF (`k = 60`)** with local `768d` vectors (**`1,015/1,015` embedded sections**) |
+| **Orchestration & Registry** | Unstructured single-chat prompt + duplicated ad-hoc agent definitions | **`Halcyon` (XO)** + single-source **`squadron.json`** (`fleet sync-roster` → `18` native `agents/*.md`, **`-82.6%` compact roster**, declarative `commandExecutionPolicy: off` & `skills: []`) |
+| **Context Window & Prompt Tax** | Full raw files + bloated `>40 KB` global rules + always-mounted MCP schemas | Global rules cut **`21.0 KB` → `11.5 KB` (`-45.6%`)**, global MCP pruned **`4 → 1`**, progressive-disclosure skills, **`<= 3.5 KB` active blackboard**, `<100 ms` `<= 4 KB` symbol maps & `<= 2,000`-token dispatches |
+| **Institutional Memory** | Re-reads giant Markdown logs every session or forgets past bugs | Sub-`1.5 ms` SQLite **FTS5 BM25 + 14-day recency** fused via **RRF (`k = 60`)** with local `768d` vectors (`0` cloud tokens, pinned `nomic-embed-text`) |
 | **Safety-Critical Reasoning** | Same model/tier used for CSS tweaks and clinical/security checks | Runtime tier locks (`inherit` → **Gemini 4 Neon High**; `pro` → **Hydrogen `tiered-xhigh`**) enforced by `PreToolUse` `hooks.json` tier floors + `/swarm` pinning (`gemini-4-neon-xhigh` & Pool 2 gates) |
-| **Verification Discipline** | Agent inspects its own reasoning inside the same biased context | **`16–28 ms` `hooks.json`** (`65/65` tests: project isolation, write-time Air-Gap, anti-dump) + **`Scout` ↔ `Muse`** auditor + **`24/24` Pro Rulesets** + Playwright gate |
-| **Concurrency & Collisions** | Multiple edits overwrite shared files or thrash 12 GB laptop RAM | Auto-hydrated Optane `fleet wt` worktrees (`functions/node_modules`, `packages/*/dist`) + **4-Wave** `PreToolUse`/`PostToolUse` `fcntl.flock` heavy-build lock (`15m` TTL) + `8`-slot blackboard |
-| **Token & Hardware Cost** | Burns frontier quota on summarization, linting, and blind searches | **27-model** Pool 1/Pool 2 routing (`Gemini 4 Neon` + `Orchestrator Neon` + `Hydrogen`, `0.35x` `Gemini 4 Low`, `0.20x` `3.8-flash`) + calibrated `32.5M`/`325M` live `/usage` lock (`Cld:XX%/XdXXh`) |
+| **Verification Discipline** | Agent inspects its own reasoning inside the same biased context | **`204` lifecycle hook tests** (auto-clamping `>400` → `350`-line reads, `--reporter=dot`, write-time Air-Gap) + mandatory Wave 3 **`Sentinel` + `Aegis` Break-It Audits (`0 CRIT/HIGH`)** + `Scout` ↔ `Muse` + `24/24` Pro Rulesets |
+| **Concurrency & Collisions** | Multiple edits overwrite shared files or thrash 12 GB laptop RAM | Auto-hydrated Optane `fleet wt` worktrees + **4-Wave** `fcntl.flock` heavy-build lock (`15m` TTL) + consume-once **`HEAD^{tree}`** (`0700`, `60s` TTL) tree stamps + `<= 3.5 KB` blackboard |
+| **Token & Hardware Cost** | `~29.6M` raw read tokens across `2` forced quota resets | **~20× token reduction (`~1.38M` est tokens in `80.5m`, `0` quota walls)** across 20 runs + Flash-Attn `q8_0` `qwen3:8b` (`4.8 GB` / `37 tok/s`, `0` evictions, `0 MB` swap) |
 
 ---
 
@@ -101,7 +101,7 @@ flowchart LR
     end
 
     subgraph N2 ["Node 2 · Secondary Apple Silicon Host (M1 Max, Always-On)"]
-        S_Emb["squad-local 5-Model Inference\nnomic-embed-text · hermes3:8b · qwen2.5-coder:14b\ndeepseek-r1:14b · qwen3:14b"]
+        S_Emb["squad-local 4-Model Inference\nnomic-embed-text · qwen3:8b (q8_0 KV)\nqwen2.5-coder:14b · qwen3:14b"]
         S_Docker["Container Engine + Watchdog\nSecondary DNS (15m Sync) · Portal · Telemetry Stack"]
         S_DR["Off-Box Disaster Recovery Target\n5m Vector Cache Worker · 4-Step Restore Verifier"]
     end
@@ -114,7 +114,7 @@ flowchart LR
     N1 <-->|"Local RPC: 768d Embeddings & 5-Bullet Summaries (0 Cloud Tokens)"| N2
     N1 -->|"Daily Hot SQLite .backup() + Round-Trip Restore Audit"| N2
     N3 <-->|"15-Min Allow/Blocklist Lockstep Replication"| N2
-    N1 -->|"Parallel SSH/HTTP 29-Invariant Integrity Doctor"| N2
+    N1 -->|"Parallel SSH/HTTP 30-Invariant Integrity Doctor"| N2
     N1 -->|"Parallel SSH/HTTP Health & Wear Checks"| N3
 ```
 
@@ -136,7 +136,7 @@ ACTION=="add|change", KERNEL=="nvme[0-9]*n[0-9]*", ATTR{queue/scheduler}="none"
 
 ### Node 2 · Always-On Apple Silicon Inference & Replication Node
 A unified-memory Apple Silicon **M1 Max (`32 GB`)** host handles 24/7 continuous services without draining laptop battery or cloud quotas:
-- **Zero-Cloud-Token 5-Model Inference (`squad-local`):** Serves `nomic-embed-text` (`768d` vectors), `hermes3:8b` (`01_Dispatch/` JSON triage + `5-bullet` digests), `qwen2.5-coder:14b` (code/regex/SQL reviews), `deepseek-r1:14b` (step-by-step reasoning checks), and `qwen3:14b` (general local Q&A) over LAN HTTP RPC at zero cloud API cost.
+- **Zero-Cloud-Token 4-Model Inference (`squad-local`):** Serves `nomic-embed-text` (`768d` vectors, pinned `keep_alive=-1`), `qwen3:8b` (`01_Dispatch/` JSON triage + `5-bullet` digests at `4.8 GB` VRAM / `37 tok/s`), `qwen2.5-coder:14b` (code/regex/SQL reviews), and `qwen3:14b` (reasoning & local Q&A with explicit `think` control) over LAN HTTP RPC at zero cloud API cost.
 - **Autonomous Container & Vector Daemons:** Runs secondary DNS failover synchronized every `15 minutes` (`nebula-sync`), vehicle telemetry bridges, and a LAN research review portal, watched by a `launchd` container watchdog alongside a `300s` background vector cache worker.
 - **Verified Off-Box Disaster Recovery:** Receives daily hot snapshots and passes a **4-step round-trip SQLite restore proof** before stamping `VERIFIED_OK`.
 
@@ -227,13 +227,13 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 
 ## Quantified Token & Hardware Economics
 
-| Optimization Mechanism | Unoptimized Baseline | Governed System | Measured Improvement |
+| Optimization Mechanism | Unoptimized Baseline | Governed System (18-Upgrade ROI Stack) | Measured Improvement |
 | :--- | :--- | :--- | :--- |
-| **Blackboard Startup Read** | Unbounded log (`~112,000` tokens) | Rolling 8-entry log (`~7,800` tokens) | **`93%` initialization token reduction** |
-| **Memory Query Payload** | Full file reads (`~50,000+` tokens) | Optane FTS5 top-K snippets (`<300` tokens) | **`~99%` context drop in `<1.5 ms`** |
-| **Subagent Dispatch Size** | Raw dumps + chat logs (`10k–40k` tokens) | Differential Compiler cap (`<= 2,000` tokens) | **Hard `exit 1` enforcement on bloat** |
-| **Routine Tooling Quota Cost** | `1.0x` frontier weight on all tasks | `0.20x` fast tier (`~85–90%` of daily ops) | **`~4x` effective sprint runway** |
-| **Embeddings & Summaries** | Cloud API per chunk / digest | Local Apple Silicon (`nomic-embed-text` / `hermes3:8b`) | **`0` cloud tokens spent** |
+| **Full Sprint Production Proof** | Monolithic orchestration (`~29.6M` raw read tokens, `2` quota resets) | **Wave 0 (`16.5K` LOC) + Sprint 2.5 + 3 Break-It Audits (`~1.38M` est tokens, `20` runs, `80.5m`)** | **~20× token reduction · `0` quota walls** |
+| **Static Prompt Tax** | `21.0 KB` rules + `4` global MCP servers + verbose roster | **`11.5 KB` rules (`-45.6%`)**, **`-82.6%` roster**, **`4 → 1` MCP prune**, progressive skills | Massive per-turn token cut + closed MCP bypasses |
+| **Active Blackboard Cap** | Unbounded log (`~112,000` tokens) | Rolling `<= 3.5 KB` (`6`-entry) blackboard behind `fcntl.flock` | **`>96%` initialization token reduction** |
+| **Code Reads & Symbol Maps** | Unbounded multi-thousand-line file reads | Auto-clamping `>400 → 350`-line read guard + `<100 ms` `<= 4 KB` sharded symbol maps | Eliminates single-read context blowouts |
+| **Local Apple Silicon Inference** | `64K` Modelfile KV-cache eviction thrash & cloud digests | Flash Attn + `q8_0` KV + `8K` ctx: **`qwen3:8b` (`4.8 GB` / `37 tok/s`) + pinned `nomic-embed-text`** | **`0` evictions · `0 MB` swap · `0` cloud tokens** |
 
 ---
 
@@ -253,8 +253,8 @@ Notice the allocation discipline: **frontier `1.0x` reasoning runs exclusively o
 | **Secondary Apple Silicon Node Offline** | `squad-memory query` times out cleanly after `1.5s` and falls back seamlessly to local Optane FTS5 BM25 (`<1.5 ms`) without blocking subagents. | Stale `section_embeddings` rows stay NULL in SQLite; `squad_vector_worker` drains backlog automatically once Node 2 returns. |
 | **Subagent Prompt Exceeds `2,000` Tokens** | `squad-context build` steps down 8 deterministic trim profiles; manual prompts `>2,000` tokens or `>80` code lines fail `squad-context validate` with `exit 1`. | Every dispatch attempt (pass/warn/fail, profile applied, model tier) writes atomically to `dispatch_audit.jsonl`. |
 | **7-Day Heuristic Quota High (`325M` est)** | Live HUD flags elevated rolling velocity while suppressing false `[CRIT]` alarms whenever Pool 1 remains unthrottled; summarization and triage stay pinned to local Apple Silicon inference. | `squad-live-telemetry` locks to live `/usage` headers (`XX% LIVE`), tracks actual child-transcript model IDs, and isolates Pool 2 (`Cld:XX%/XdXXh`) from Pool 1 Gemini buckets. |
-| **Memory Spike During Concurrent Builds** | `PreToolUse` `hooks.json` acquires a kernel `fcntl.flock` lock (`15m` auto-TTL, released on `PostToolUse`) to serialize heavy builds (`vite`, Chromium/Playwright, Metro) before launch; `11.4 GB` `zstd` `zram` + `earlyoom` buffer residual spikes. | Mechanical 4-Wave OOM enforcement (`65/65` hook tests, `16–28 ms`) eliminates concurrent bundler/Chromium swaps on 12 GB workstation RAM. |
-| **Local Container, Config, or Node Drift** | `launchd` watchdog on Node 2 restarts crashed containers cleanly; 15-minute `nebula-sync` heals DNS list drift; `fleet sync-roster` regenerates `agents/*.md` from `squadron.json`. | `squad-doctor` verifies **`29/29`** invariants across all `3` hosts (adding UTF-8/`<22 KB` rule cap, symlink parity, archive secret hygiene, `<24h` worktree TTL, canonical-repo hook guard & SSOT roster parity). |
+| **Memory Spike During Concurrent Builds** | `PreToolUse` `hooks.json` acquires a kernel `fcntl.flock` lock (`15m` auto-TTL, released on `PostToolUse`) to serialize heavy builds (`vite`, Chromium/Playwright, Metro) before launch; `11.4 GB` `zstd` `zram` + `earlyoom` buffer residual spikes. | Mechanical 4-Wave OOM enforcement (`204/204` hook tests, `16–28 ms`) eliminates concurrent bundler/Chromium swaps on 12 GB workstation RAM. |
+| **Local Container, Config, or Node Drift** | `launchd` watchdog on Node 2 restarts crashed containers cleanly; 15-minute `nebula-sync` heals DNS list drift; `fleet sync-roster` regenerates `agents/*.md` from `squadron.json`. | `squad-doctor` verifies **`30/30`** invariants across all `3` hosts (adding UTF-8/`<14 KB` rule cap, symlink parity, archive secret hygiene, `<24h` worktree TTL, canonical-repo hook guard, SSOT roster parity & stale-model hygiene). |
 
 ---
 
@@ -264,7 +264,7 @@ Reliability in a multi-agent system requires closing the loop between runtime be
 
 1. **Dispatch Audit Trail (`dispatch_audit.jsonl`):** Every invocation compiled or validated by `squad-context` appends an `fcntl.flock`-guarded JSON line containing timestamp, specialist codename, selected model tier (`pro` vs. `flash`), mandatory-guardrail enforcement status, estimated token count, symbol slice count, and validation exit status. Regressions in prompt hygiene show up as measurable token inflation rather than vague "the AI feels sluggish" complaints.
 2. **27-Model Dual-Pool Routing & Calibrated Fixed-Bucket Telemetry:** Rather than discovering quota exhaustion mid-sprint, a sideband multiplexer pane continuously tail-parses actual executed model IDs across parent and child subagent transcripts—measuring fixed `5-hour` Pool 1 buckets (`32,500,000` empirical weighted tokens anchored live to `/usage` headers as `XX% LIVE`) alongside a `325,000,000`-token `7-day` rolling heuristic (`~7d est`, suppressing false `[CRIT]` alerts while Pool 1 remains unthrottled) and an isolated multi-day Pool 2 countdown (`Cld:XX%/XdXXh`). Weights separate **`Gemini 4 Low` (`0.35x`)** cleanly from `1.0x` pro/high/xhigh, `0.55x` medium, `0.20x` `3.8-flash`, and `0.08x` `flash-lite` (`4.0x` output, `0.025x` cache-read) with syntax-validated (`compile()`) zero-flicker `os.execv()` live reloads. Routing spans **27 live models** (`20` Pool 1 Gemini models including **Gemini 4 Neon** & **Orchestrator Neon** alongside Hydrogen, Carbon, Argon, and 3.8 Flash; `7` Pool 2 Claude 5.5 + sunsetting GPT-OSS 120B excluded from routing): keeping `>95%` of volume in Pool 1 via runtime delegation (`inherit` → Neon High; `pro`/`flash` → Hydrogen `tiered-xhigh`/`tiered-high`) plus explicit `/swarm` pinning (`gemini-4-neon-xhigh` and selective Pool 2 cross-vendor release verification).
-3. **29-Invariant Cross-Node & Governance Integrity Doctor (`squad-doctor`):** Expanded from `23` to **`29/29`** automated parallel probes across all three nodes—verifying hardware/OS state (Optane `[none]` scheduler, `vfs_cache_pressure=50`, `earlyoom`, 24/7 no-sleep & Wi-Fi lock, SQLite WAL/FTS5, `0600` credentials, Git hook symlinks across `12` repos, 5-model Apple Silicon availability, verified off-box backups, and Node 3 flash-wear settings) plus six cognitive-governance invariants: **UTF-8 / `<22 KB` global rule ceiling**, **cross-tool symlink parity**, **cold-archive secret hygiene**, **`<24h` Optane worktree TTL**, **worktree hook canonical-repo resolution**, and **single-source `squadron.json` ↔ `agents/*.md` roster parity**.
+3. **30-Invariant Cross-Node & Governance Integrity Doctor (`squad-doctor`):** Expanded to **`30/30`** automated parallel probes across all three nodes—verifying hardware/OS state (NVMe `[none]` scheduler, `vfs_cache_pressure=50`, `earlyoom`, 24/7 no-sleep & Wi-Fi lock, SQLite WAL/FTS5, `0600` credentials, Git hook symlinks across `12` repos, 4-model Apple Silicon availability, verified off-box backups, and Node 3 flash-wear settings) plus seven cognitive-governance invariants: **UTF-8 / `<14 KB` global rule ceiling**, **cross-tool symlink parity**, **cold-archive secret hygiene**, **`<24h` worktree TTL**, **worktree hook canonical-repo resolution**, **single-source `squadron.json` ↔ `agents/*.md` roster parity**, and **automated stale-model hygiene**.
 4. **Hot SQLite Backups With Proof-of-Restore:** Instead of blind `rsync` copies that risk torn WAL frames, daily DR snapshots execute SQLite's online `.backup()` API over SSH to Apple Silicon and immediately unpack, query FTS5 row counts, and assert parity on a temporary copy before marking the backup `VERIFIED_OK`.
 
 > [!IMPORTANT]
@@ -293,16 +293,18 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 
 | Constant / Guardrail | Enforced Value | Owning Subsystem | Failure Prevented |
 | :--- | :--- | :--- | :--- |
-| **Global Rule Injection Budget** | `20.4 KB` (`< 24 KB` cap; `< 22 KB` doctor alarm) | Constitutional Rules + `SessionStart` / `squad-doctor` | Silent session-boot guardrail truncation |
-| **Deterministic Lifecycle Hooks** | `16–28 ms` latency · `65/65` subprocess tests | `hooks.json` (`SessionStart` / `PreToolUse` / `PostToolUse`) | Project bleed, force-push, 12 GB OOM, Air-Gap & dump leaks |
-| **Single-Source Agent Registry** | `squadron.json` → `18` native `agents/*.md` | `fleet sync-roster` + `squad-doctor` (`29/29`) | 4-way config drift & per-session agent re-definition |
+| **Global Rule Injection Budget** | **`11.5 KB`** (`-45.6%` from `21.0 KB`; `< 24 KB` cap) | Constitutional Rules + `SessionStart` / `squad-doctor` | Static prompt tax & silent boot truncation |
+| **Deterministic Lifecycle Hooks** | **`204` hook tests** · auto-clamp `>400→350L` · `--reporter=dot` | `hooks.json` (`SessionStart` / `PreToolUse` / `PostToolUse`) | Context blowouts, project bleed, OOM & Air-Gap leaks |
+| **Single-Source Agent Registry** | `squadron.json` → `18` native `agents/*.md` (`-82.6%` roster) | `fleet sync-roster` + `squad-doctor` (`30/30`) | 4-way config drift & stale model references |
+| **Global MCP Footprint** | **`4 → 1` MCP prune** (browser MCP on-demand disabled plugin) | Runtime MCP Policy | Static schema bloat & `PreToolUse` tool-hook bypasses |
 | **Max Dispatch Payload** | `2,000` tokens (`~7,600` chars @ `3.8` c/t) | Context Compiler + `invoke_subagent` hook | Lost-in-the-middle prompt bloat |
-| **Max Symbol Slice Length** | `35` lines/symbol (`80` contiguous max) | Symbol Extractor / Validator | Raw full-file transcript dumping |
-| **Active Blackboard Window** | `8` recent missions (FIFO archive older) | Memory Engine (`flock`) | Unbounded startup read growth |
+| **Workspace Symbol Maps** | **`< 100 ms` generation · `<= 4 KB` sharded maps** | `pre-commit` / `REPO_MAP` Generator | Blind directory scans & full-file reads |
+| **Active Blackboard Window** | **`<= 3.5 KB` cap (`6` recent missions)** | Memory Engine (`flock`) | Unbounded startup read growth |
+| **Verified Tree Push Stamps** | Consume-once **`HEAD^{tree}`** (`0700`, `60s` TTL) | `squad-pre-push` + `fleet wt land` | Duplicate test runs without spoofable env vars |
 | **Hybrid RRF Constant & Weights** | `k = 60`, `BM25(5.0, 2.0, 1.0)` + `14d` decay | Memory Query Engine (`1,015` chunks) | Keyword misses & semantic drift |
 | **Calibrated Dual-Pool Quotas** | `32.5M` (5h fixed) / `325M` (`~7d est`) + `Cld:XX%/XdXXh` | Live Telemetry HUD (27 models) | Bucket drift, false `[CRIT]` & pool bleed |
 | **Repository & Ruleset Parity** | `12` repos · `24/24` zero-bypass Pro rulesets | `Chronos` / `Sentinel` Gate | Accidental force-push / tag clobber |
-| **Vector RPC Grace Timeout** | `1.5 s` failover to FTS5 BM25 | Hybrid Query Pipeline | LAN outages blocking dev velocity |
+| **Local Apple Silicon Co-Residency** | Flash Attn + `q8_0` KV + `8K` ctx (`4.8 GB` / `37 tok/s`) | Apple Silicon Inference Node | `64K` KV-cache eviction thrash & unified swap |
 | **Hardware Scanner Burst Cut** | `< 35 ms` keystroke cadence threshold | Retail & Armory Wedges | Focus hijacking & partial barcode reads |
 | **Runtime AI Determinism** | `temperature = 0.0` + Zod `responseSchema` | Product AI Endpoints | Invented statutory citations or JSON drift |
 
@@ -310,9 +312,9 @@ Rather than relying on vague guidelines, the entire stack enforces hard numerica
 
 ## Chapter Map: Deep Technical Breakdown
 
-- **Chapter 1 — [The 18-Specialist Squadron](01-The-18-Specialist-Squadron.md):** Single-source `squadron.json` registry (`fleet sync-roster` → `18` native `agents/*.md` specs with declarative `commandExecutionPolicy: off` & `skills: []`), inter-agent boundary seams, zero-mention routing, 4-wave sequencing, and risk-tiered audits.
-- **Chapter 2 — [Five-Tier Memory & Hybrid RRF Retrieval](02-Five-Tier-Memory-and-Hybrid-RRF.md):** SQLite WAL DDL, FTS5 triggers, re-entrant `fcntl.flock` locking, CTE BM25 + 14-day recency math, `768d` BLOB packing, and worked Reciprocal Rank Fusion (`k = 60`).
-- **Chapter 3 — [Differential Context & Quota Governance](03-Differential-Context-and-Quota-Governance.md):** The `<= 2,000`-token compiler, `hooks.json` deterministic lifecycle gates (`65/65` tests, `16–28 ms`), `<24 KB` rule-file hygiene (`40.7 KB → 20.4 KB`), 8-step trim ladder, 27-model `Gemini 4 Neon` + `Hydrogen` + `/swarm` routing, calibrated `32.5M`/`325M` telemetry math, and the Unicode-safe live HUD.
+- **Chapter 1 — [The 18-Specialist Squadron](01-The-18-Specialist-Squadron.md):** Single-source `squadron.json` registry (`-82.6%` compact roster → `18` native `agents/*.md` specs with declarative `commandExecutionPolicy: off` & `skills: []`), inter-agent boundary seams, zero-mention routing, 4-wave sequencing with mandatory Wave 3 Adversarial Break-It Passes (`Sentinel` + `Aegis` → `0 CRIT/HIGH`), and risk-tiered audits.
+- **Chapter 2 — [Five-Tier Memory & Hybrid RRF Retrieval](02-Five-Tier-Memory-and-Hybrid-RRF.md):** `<100 ms` `<= 4 KB` sharded symbol maps, `<= 3.5 KB` `fcntl.flock` rolling blackboards, progressive-disclosure skills, SQLite WAL DDL, CTE BM25 + 14-day recency math, `768d` BLOB packing, and worked Reciprocal Rank Fusion (`k = 60`).
+- **Chapter 3 — [Differential Context & Quota Governance](03-Differential-Context-and-Quota-Governance.md):** The `<= 2,000`-token compiler, 18-upgrade static prompt tax cuts (`11.5 KB` rules, `4 → 1` MCP prune), `204` lifecycle hook tests (auto-clamping `>400→350L` reads, `--reporter=dot`), 27-model routing, calibrated `32.5M`/`325M` telemetry, and the **~20× production token benchmark** (`80.5m`, `~1.38M` est tokens, `0` quota walls).
 - **Chapter 4 — [Adversarial Verification & Fact-Locked AI](04-Adversarial-Verification-and-Fact-Locked-AI.md):** Breaking confirmation bias via the two-node `Scout` ↔ `Muse` Git dropzone and locking regulated runtime AI with `temperature: 0`, Zod `responseSchema` contracts, and immutable raw testimony.
-- **Chapter 5 — [Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md):** Sub-`5ms` secret/blob/media pre-commit hooks, auto-hydrated Optane worktrees (`fleet wt`), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, Playwright WCAG gating, **29-invariant** integrity doctor (`squad-doctor`), and round-trip verified DR restores.
-- **Chapter 6 — [Ambient Mobile Dispatch & Local Inference](06-Ambient-Mobile-Dispatch-and-Local-Inference.md):** Kernel `inotify` wakeups, automatic `hermes3:8b` JSON dispatch triage, crash-safe atomic writes, and the 5-model `squad-local` M1 Max zero-token CLI.
+- **Chapter 5 — [Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md):** Sub-`5ms` secret/blob/media & scoped Anti-Slop pre-commit hooks, consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL), auto-hydrated Optane worktrees (`fleet wt`), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, Playwright WCAG gating, **`30/30` diagnostic doctor** (w/ stale-model hygiene), and round-trip verified DR restores.
+- **Chapter 6 — [Ambient Mobile Dispatch & Local Inference](06-Ambient-Mobile-Dispatch-and-Local-Inference.md):** Kernel `inotify` wakeups, crash-safe atomic writes, and Flash-Attention + `q8_0` KV + `8K`-cap Apple Silicon inference (`qwen3:8b` `4.8 GB` / `37 tok/s` co-resident with pinned `nomic-embed-text` at `0` evictions & `0 MB` swap).

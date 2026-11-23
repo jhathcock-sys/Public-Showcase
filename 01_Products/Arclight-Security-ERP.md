@@ -8,12 +8,12 @@ tags:
   - erp
   - cad
   - multi-tenant
-updated: 2026-11-18
+updated: 2026-11-23
 ---
 
 # Arclight Security ERP & Computer-Aided Dispatch
 
-**Arclight Security** is a multi-tenant Security Guard Enterprise Resource Planning (ERP), Workforce Management, and Computer-Aided Dispatch (CAD) platform built for contract security agencies operating across **Maryland, Delaware, and Pennsylvania**.
+**Arclight Security (`v0.7.1`)** is a multi-tenant Security Guard Enterprise Resource Planning (ERP), Workforce Management, and Computer-Aided Dispatch (CAD) platform built for contract security agencies operating across **Maryland, Delaware, and Pennsylvania**.
 
 Mid-market security contractors (`25–500` officers) typically pay **`$25–$55+` per guard per month** stitching together a brittle four-vendor "Frankenstack":
 - **Guard Tour & DAR:** Silvertrac, OfficerReports, GuardsPro, or TrackTik with multi-module creep and annual lock-ins.
@@ -140,12 +140,11 @@ Even if a compromised client tampers with request JSON arguments, server handler
 
 ---
 
-## 5. Anti-Spoof Field Controls, HR Lifecycle & Zero-OT Automation
+## 5. Anti-Spoof Field Controls, Scheduling Automation & Client Reporting (`v0.6.0` Sprint 2)
 
-- **Anti-Spoof Geofence & Privacy-Safe Location:** Validates Android mock-location flags (`isMockedLocation === false`), enforces `horizontalAccuracyMeters <= 75`, captures optional `accelerometerVariance3s` motion signatures and App Attest / Play Integrity tokens, and strictly never polls GPS off-duty (`shift.status !== 'IN_PROGRESS'`).
-- **IdentoGO Onboarding & Dirty CSV Importers:** Tracks recruits across `APPLIED -> INTERVIEW -> IDENTOGO_FINGERPRINTS -> STATE_LICENSE_PENDING -> OFFER_I9 -> HIRED` (`UNARMED` / `ARMED` tracks) alongside RFC-4180 heuristic CSV importers that normalize E.164 phone numbers and preview validation issues before batch commits.
-- **Site BOLOs & SBI 70/20/10 Coaching:** Tracks `CRITICAL`, `HIGH`, and `ADVISORY` site alerts with verifiable officer acknowledgment trails (`acknowledgedByOfficerIds`), paired with structured Situation-Behavior-Impact coaching and progressive discipline logs.
-- **`T+5m` No-Show Watchdog & Zero-OT Backfill Design:** Automated watchdog progression nudges overdue officers at `T+5m`, chimes dispatch at `T+10m`, and ranks eligible replacement pools at `T+15m` via `evaluateShiftEligibility(...)` sorted **strictly by `(projectedWeeklyHours + shiftDuration <= 40)` first** to prevent unbilled overtime:
+Sprint 2 (`v0.6.0`) moved scheduling continuity, field anti-spoofing, and automated client reporting from design contracts into verified production execution across **`42` Gen-2 Cloud Functions (`enforceAppCheck: true`)**:
+
+- **`T+5m` No-Show Watchdog & Zero-OT (`<=40h`) Ranked Backfill Cascade:** Automated watchdog schedules nudge overdue officers at `T+5m`, alert dispatch at `T+10m`, and compute compliance-filtered backfill cascades at `T+15m` via `evaluateShiftEligibility(...)` sorted **strictly by `(projectedWeeklyHours + shiftDuration <= 40)` first** to eliminate unbilled overtime. Outbound SMS dispatch runs fail-closed through **`DryRunSmsTransport`** until production carrier credentials are explicitly enabled:
 
 ```typescript
 export function rankBackfillCandidates(
@@ -163,13 +162,36 @@ export function rankBackfillCandidates(
 }
 ```
 
-- **Half-Duplex PTT Tactical Radio (`v0.4.0` Shipped Live):** Complete hybrid tactical communications layer (`GlobalRadioDock.tsx` with Spacebar PTT + `HoldToTalkBar.tsx` `76pt` min-height mobile bar + Bluetooth RSM hooks) powered by HS256 LiveKit token minting, atomic floor leases, MD/PA two-party wiretap consent with explicit **`10-33 SOS` life-safety `recordAudio: false` carve-out**, and dead-zone `STORE_AND_FORWARD` replay ([Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md)).
+- **Master Recurring Shift Templates & Compliance-Gated Bid/Swap:** Generates recurring rosters cleanly across **`2-2-3`**, **`4-on-4-off`**, and **weekly** rotation patterns, paired with self-service officer shift bidding and peer swap workflows that re-run the full tri-state `@arclight/compliance-engine` interlocks before any reassignment commits.
+- **GPS Anti-Spoofing, Toggleable Liveness Selfie & Hard Off-Duty Teardown:** Clock-ins verify Android mock-location rejection (`isFromMockProvider === false`), enforce `horizontalAccuracyMeters <= 75`, evaluate `3s` accelerometer motion variance (`accelerometerVariance3s`), and support a **toggleable per-site / per-org liveness selfie punch** for high-liability posts. Whenever **`shift.status !== 'IN_PROGRESS'`**, the mobile runtime executes a hard off-duty sensor teardown—releasing GPS, motion, and audio handles completely so officers are never tracked off the clock.
+- **Automated Client Daily Digest & Executive QBR Scorecard (`%PDF-`):** Scheduled client digests compile verified shift coverage, patrol tour completeness, and approved incidents—failing closed via **`DryRunEmailTransport`** in sandbox/dry-run modes—while the Executive QBR Scorecard exports print-ready **`%PDF-`** deliverables carrying mandatory **`"AI-Assisted"` evidentiary disclosure** whenever polished narratives accompany immutable `rawOfficerTranscript` records.
+- **IdentoGO Onboarding, Site BOLOs & Half-Duplex PTT Tactical Radio:** Tracks recruits across `APPLIED -> INTERVIEW -> IDENTOGO_FINGERPRINTS -> STATE_LICENSE_PENDING -> OFFER_I9 -> HIRED` (`UNARMED` / `ARMED` tracks), enforces verifiable Site BOLO acknowledgments (`CRITICAL`, `HIGH`, `ADVISORY`) and structured coaching logs, and integrates live half-duplex tactical PTT (`GlobalRadioDock.tsx` Spacebar PTT + `HoldToTalkBar.tsx` `76pt` mobile bar + Bluetooth RSM hooks) with HS256 LiveKit token minting, atomic floor leases, MD/PA two-party wiretap consent with explicit **`10-33 SOS` life-safety `recordAudio: false` carve-out**, and dead-zone `STORE_AND_FORWARD` replay ([Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md)).
+
+---
+
+## 6. Modular State Decomposition (`v0.6.1` Wave 0) & Production Onboarding (`v0.7.1` Sprint 2.5)
+
+### Wave 0 (`v0.6.1`) — Zero-Regression State Architecture Decomposition
+Before expanding multi-tenant onboarding and client provisioning surfaces, both frontend state monoliths were decomposed cleanly into domain-scoped slices while preserving **100% public API backwards compatibility** (`0` caller regressions):
+
+| Surface | Monolithic Baseline | Decomposed Core + Slices | Backwards Compatibility |
+| :--- | :---: | :---: | :---: |
+| **Web Command Context** (`apps/web-command`) | `10,895` LOC | **`421` LOC** orchestrator + **`12` domain slices** | `100%` public hook/context API preserved |
+| **Mobile Field Store** (`apps/mobile-guard`) | `5,583` LOC | **`384` LOC** orchestrator + **`7` domain slices** | `100%` public store & offline FIFO API preserved |
+
+### Sprint 2.5 (`v0.7.1`) — Clean Production Provisioning, Onboarding & Contextual Guidance
+Sprint 2.5 hardened the complete day-one agency and client activation path without contaminating live production tenants with demo data:
+
+- **Hard Sandbox-vs-Production Isolation & `orgMode` Immutability Lock:** Production tenant provisioning runs through an explicit clean-org bootstrap path with zero demo fixtures. Firestore Security Rules lock `orgMode` (`SANDBOX` vs. `PRODUCTION`) as immutable after organization creation so a misconfigured client or elevated API call can never flip a live agency into sandbox mode or back-port demo records.
+- **5-Step Agency Onboarding Wizard & Atomic CSV Bulk Roster Importer:** Walks new agencies sequentially through organization profile, jurisdictional compliance defaults, initial client/site setup, officer roster import, and go-live verification. The embedded RFC-4180 CSV Bulk Roster Importer previews row-level errors live and executes **`<= 400`-row single-transaction atomic imports** while deterministically **rejecting privileged role escalation** (`OWNER`, `ADMIN`, `SUPER_ADMIN`) from uploaded CSV rows.
+- **3-Step Downstream Client Account & 1-Click `CLIENT_VIEWER` Portal Provisioning Wizard:** Lets operations managers create scoped client organizations, bind authorized site IDs, and mint least-privilege `CLIENT_VIEWER` portal credentials in one guided workflow locked to the 13-collection perimeter above.
+- **17-Topic Contextual `?` `HelpPopover` & Lazy-Split `QuickStartDrawer`:** Embeds **17 role-gated contextual `?` help popovers** (viewport-clamped against desktop/mobile edges with capture-phase `Escape` dismissal) alongside a **lazy-split, role-aware `QuickStartDrawer`** keeping the maximum Vite JavaScript chunk at **`474.9 KB`** (strictly under the `< 500 KB` budget).
 
 ### Live Daylight Command Surfaces Implemented
-The command-center web application avoids dark generic dashboards in favor of six dense Daylight Operations views paired with a three-page scoped Client Transparency Portal (`/client` overview, `/client/reports` filtered DARs & non-draft incidents, `/client/invoices` formal print-ready sheets):
-- **Live Operations & Telemetry Grid:** Active post coverage, checkpoint tour completeness, no-show alerts, and 48h MSP SB 760 countdown banners.
-- **Compliance & Armory Vaults:** Expiration radar (`30/14/7` day tiers), serial barcode checkout/return logs, and vehicle inspection flags.
-- **Payroll Margin & Policy Read-Receipt Matrices:** Live gross/overtime/local-tax previews and timestamped SOP acknowledgement audits.
+The command-center web application avoids dark generic dashboards in favor of dense Daylight Operations views paired with the scoped Client Transparency Portal (`/client` overview, `/client/reports` filtered DARs & non-draft incidents, `/client/invoices` formal print-ready sheets):
+- **Live Operations & Telemetry Grid:** Active post coverage, checkpoint tour completeness, `T+5m` no-show watchdog & zero-OT backfill cascades, and 48h MSP SB 760 countdown banners.
+- **Compliance, Armory & Onboarding Wizards:** Expiration radar (`30/14/7` day tiers), serial barcode checkout/return logs, 5-step Agency Onboarding + atomic `<=400`-row CSV importer, and 3-step Client Portal provisioning.
+- **Payroll Margin, QBR Scorecards & Policy Read-Receipt Matrices:** Live gross/overtime/local-tax previews, Executive QBR `%PDF-` exports, and timestamped SOP acknowledgement audits.
 
 ### Planned Production Financial & Field Expansions
 Arclight's unified domain core is architected cleanly around upcoming enterprise integrations without rewriting schema boundaries:
@@ -178,9 +200,14 @@ Arclight's unified domain core is architected cleanly around upcoming enterprise
 
 ---
 
-## Verified v0.4.0 Production & Sprint 1 PTT Benchmarks
+## Verified `v0.7.1` Production Quality & Security Benchmarks
 
-- **Monorepo Type Safety & Lint Hygiene:** `5/5` workspace packages passing strict TypeScript (`0` errors) and **`0` `oxlint` warnings across `108` files**.
-- **Automated Test & Adversarial Coverage:** **`433/433` unit tests** passing across domain, compliance, functions, mobile field store, and web command, plus **`164/164` E2E integration tests** verified across `10` white-box adversarial QA rounds.
-- **Production Cloud Deployment:** Web Command live with **`457.24 kB` maximum Vite chunk** (`<500 KB` budget enforced), `0` blocking/advisory visual defects across `1440×900` and `375×812`, and **all `19` Cloud Functions v2 (`nodejs22`)** live via `esbuild` monorepo staging (`issueLiveKitRadioToken`, `acquireRadioFloor`, `releaseRadioFloor`, `logRadioTransmission`, `resolveRadioSos`, shift/armory/payroll callables, and SLA watchdogs).
+| Verification Pillar | Verified `v0.7.1` Metric | Enforcement Scope |
+| :--- | :--- | :--- |
+| **Automated Test Suite** | **`1,098/1,098` passing** (`670` unit · `394` Vitest E2E · `34` Playwright browser E2E) | Desktop `1440px` & Mobile `375px` viewports, compliance, payroll, PTT, onboarding & isolation |
+| **Serverless API Perimeter** | **`42` Gen-2 Cloud Functions (`enforceAppCheck: true`)** | Zod `AuthClaimsSchema` tenant isolation, `orgMode` immutability, fail-closed `DryRun*` transports |
+| **Static Lint & Type Safety** | **`0` `oxlint` warnings/errors across `360` files** | Strict workspace `tsc --noEmit` across all monorepo packages |
+| **Bundle Performance Budget** | **`474.9 KB` max Vite JS chunk (`< 500 KB`)** | Lazy-split role-aware `QuickStartDrawer` & manual Rollup chunking |
+| **Adversarial Break-It Audits** | **`3` independent security & edge-case rounds → `0 CRITICAL / 0 HIGH`** | Independent `Sentinel` + `Aegis` loop validating rules, role escalation, `<dialog>` StrictMode races & edge cases |
+
 - **Cross-Cutting Deep Dives:** [Statutory Compliance as Code](../03_Architecture-Deep-Dives/Statutory-Compliance-As-Code.md) · [Half-Duplex PTT Over LTE](../03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md) · [Anti-Slop UI Engineering](../03_Architecture-Deep-Dives/Anti-Slop-UI-Engineering.md)

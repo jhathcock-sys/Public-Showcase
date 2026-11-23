@@ -18,7 +18,7 @@ High-volume retail sales floors and stockrooms punish desktop-shaped enterprise 
 We engineered two complementary Progressive Web Apps (PWAs) specifically for **sub-second floor hardware workflows** and **conflict-free multi-device coordination**:
 
 1. **Phone-First Hardware Custody & Asset Manager PWA:** Tracks shared ruggedized handheld terminals, charging cradles, lockup key rings, and floor devices using strict single-handed thumb-zone ergonomics.
-2. **Multi-Device Floor Execution & Coaching Planner PWA:** Synchronizes multi-week shift schedules, dirty spreadsheet KPI imports, daily zone lineups, and structured 70/20/10 coaching workflows across manager laptops, tablets, and smartphones.
+2. **Multi-Device Floor Execution & Coaching Planner PWA:** Synchronizes multi-week shift schedules, dirty spreadsheet KPI imports, daily zone lineups, and structured leadership coaching workflows across manager laptops, tablets, and smartphones.
 
 ---
 

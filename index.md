@@ -7,7 +7,7 @@ tags:
   - ai-systems
   - architecture
   - hathcock-labs
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 
 # Engineering & Product Documentation — Hathcock Labs
@@ -33,7 +33,7 @@ Whether checking if a Pennsylvania security officer holds an active Act 235 card
 ### 2. Heterogeneous Compute & Zero-Waste Token Economics
 Rather than burning cloud frontier quotas on every mechanical task, workloads distribute intentionally across hardware tiers:
 - **Sub-Millisecond Scratch NVMe:** SQLite WAL FTS5 retrieval (`<1.5 ms`), compiler caches, and atomic `fcntl.flock` handoff locks.
-- **Always-On Apple Silicon M1 Max Inference (`squad-local`):** 5-model zero-cloud-token CLI serving `nomic-embed-text` (`768d` vectors), `hermes3:8b` (automatic `01_Dispatch/` JSON triage & 5-bullet digests), `qwen2.5-coder:14b` (code/regex/SQL reviews), `deepseek-r1:14b` (step-by-step sanity checks), and `qwen3:14b` (general local Q&A), plus automated round-trip DR verification.
+- **Always-On Apple Silicon M1 Max Inference (`squad-local`):** Flash-Attention + `q8_0` KV cache + `8K` context-cap local inference eliminating `64K` Modelfile eviction thrash (**`qwen3:8b` at `4.8 GB` VRAM / `37 tok/s`** co-resident with pinned **`nomic-embed-text`** at **`0` evictions & `0 MB` swap**), plus `14B` local review tiers (`qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`) and automated round-trip DR verification at **`0` cloud tokens**.
 - **27-Model Cloud Frontier Tiers (Pool 1 + Pool 2):** Routes `>95%` of work across `20` Pool 1 Gemini models—combining runtime subagent delegation (`inherit` → **Gemini 4 Neon High**, `pro`/`flash` → **Gemini 4 Hydrogen** tiered coding) with explicit `/swarm` pinning (`gemini-4-neon-xhigh`) for safety-critical reasoning (`Echo` clinical accuracy, `Vault` security rules, `Apex` auth/webhooks, `Nexus` sync races, `Sentinel` IAM boundaries)—while reserving `7` Pool 2 cross-vendor models (Claude 5.5; excluding sunsetting GPT-OSS 120B) selectively for release-gate cross-checks.
 
 ### 3. Physical Reality First (Gloves, Dead Zones & WebKit Quirks)
@@ -48,21 +48,21 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 | Cognitive Layer / Mechanism | Production Guarantee Delivered Across Products | Primary Reference |
 | :--- | :--- | :--- |
-| **SSOT Native Agents & Lifecycle Hooks** | `squadron.json` → `18` `agents/*.md` (`commandExecutionPolicy: off`, `skills: []`) + `16–28 ms` `hooks.json` (`65/65` tests) locking clinical (`Echo`), rules (`Vault`), OOM `flock` & Air-Gap | [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) |
-| **Optane FTS5 + Hybrid RRF (`k = 60`)** | Surfaces solved WebKit, FLSA `29 C.F.R. § 778.115`, and `pnpm` build fixes in `<1.5 ms` | [02 · Five-Tier Memory & Hybrid RRF](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) |
-| **`<=2,000`-Token Differential Compiler** | Eliminates context rot during 5-package refactors while gating dual quota caps live | [03 · Differential Context & Quota](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) |
-| **Two-Node Dropzone + Schema-Locked AI** | Catches PA/DE/MD statutory & Safari `<dialog>` traps pre-code; preserves immutable raw testimony | [04 · Adversarial & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) |
-| **Chained Git/Playwright Gates & DR** | Enforces clean TypeScript, passing tests, DOM contrast, `0600` keys & tested off-box restores | [05 · Autonomous DevOps & Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) |
-| **Kernel `inotify` + Apple Silicon Inference** | Turns on-foot field voice notes into routed tasks at `0 MB` idle RAM & `0` local vector tokens | [06 · Mobile Dispatch & Local LLM](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) |
+| **SSOT Native Agents & Lifecycle Hooks** | `squadron.json` → `18` `agents/*.md` (`-82.6%` roster, `commandExecutionPolicy: off`, `skills: []`) + **`204` hook tests** (`>400→350L` read clamp, `--reporter=dot`, OOM `flock` & Air-Gap) | [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) |
+| **Optane FTS5 + Hybrid RRF (`k = 60`)** | `<100 ms` `<= 4 KB` sharded symbol maps, `<= 3.5 KB` blackboard & `<1.5 ms` recall of WebKit, FLSA `29 C.F.R. § 778.115` & `pnpm` fixes | [02 · Five-Tier Memory & Hybrid RRF](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) |
+| **18-Upgrade Context & Quota Governance** | `11.5 KB` rules (`-45.6%`), `4 → 1` MCP prune & `<=2,000`-token dispatches delivering **~20× token reduction (`80.5m` / `~1.38M` tok / `0` quota walls)** | [03 · Differential Context & Quota](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) |
+| **Two-Node Dropzone + Schema-Locked AI** | Catches PA/DE/MD statutory & Safari `<dialog>` traps pre-code; preserves immutable raw testimony & mandatory Wave 3 Break-It Audits (`0 CRIT/HIGH`) | [04 · Adversarial & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) |
+| **Chained Git, Tree Stamps & `30/30` Doctor** | Scoped Anti-Slop pre-commit, consume-once `HEAD^{tree}` (`0700`, `60s` TTL) stamps, `24/24` Pro rulesets, `30/30` doctor (w/ stale-model hygiene) & off-box DR | [05 · Autonomous DevOps & Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) |
+| **Kernel `inotify` + Tuned Local Inference** | Turns mobile captures into routed tasks at `0 MB` idle RAM & runs `qwen3:8b` (`4.8 GB` / `37 tok/s`) co-resident w/ pinned `nomic-embed-text` (`0` evictions, `0 MB` swap) | [06 · Mobile Dispatch & Local LLM](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) |
 
 ---
 
 ## Verified Quantitative Snapshot
 
-- **Arclight Security (`v0.4.0` PTT Live):** `5/5` workspace packages typecheck clean; **`433/433` unit tests** & **`164/164` E2E specs** across 10 adversarial rounds; **all `19` Cloud Functions v2 (`nodejs22`)** live via `esbuild`; `457.24 kB` max chunk; `0` visual/WCAG defects across `1440×900` and `375×812`.
+- **Arclight Security (`v0.7.1` Sprint 2 + Wave 0 + Sprint 2.5):** **`1,098/1,098` automated tests** (`670` unit, `394` Vitest E2E, `34` Playwright browser E2E across `1440px` desktop & `375px` mobile), **`42` Gen-2 Cloud Functions (`enforceAppCheck: true`)**, **`0` `oxlint` warnings/errors across `360` files**, **`474.9 KB` max JS chunk (`<500 KB`)**, Wave 0 state decomposition (`10,895 → 421` LOC web + `12` slices; `5,583 → 384` LOC mobile + `7` slices), clean production provisioning + `orgMode` immutability lock, and **`0 CRITICAL / 0 HIGH`** across **`3` independent adversarial break-it rounds**.
 - **SonoPrep Pro (`iOS`):** `421` audited RVT/SPI questions, `132` SVGs, `18` interactive hotspots, `34/34` unit/App Store compliance tests, `15/15` E2E stages, `0` `oxlint` warnings, `<500 KB` bundles.
 - **Deterministic Video Engine (`v0.1.0`):** `4/4` packages typecheck clean; **`33/33` pipeline unit tests**; `17/17` seeded episodes clearing the 9-rule Grade `6.6–9.0` anti-slop voice gate; `1080×1920` `60fps` H.264 + `-14 LUFS` AAC stereo; `<35 KB` companion bio hubs.
-- **Cognitive Tooling & Fleet Governance:** `1.29 ms` Optane FTS5 search (`1,015/1,015` embedded sections), `20.4 KB` deduplicated global rules (`<24 KB` cap; `<22 KB` doctor guard), `93%` blackboard initialization token drop (`8` active slots), **`squadron.json` SSOT** (`18` native `agents/*.md` via `fleet sync-roster`), **`hooks.json` lifecycle gates (`65/65` tests, `16–28 ms`)**, **27-model** dual-pool routing with `32.5M`/`325M` live `/usage` telemetry (`XX% LIVE`, `Cld:XX%/XdXXh`), auto-hydrated `fleet wt` worktrees, **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, and **`29/29 PASS`** `squad-doctor` integrity verification.
+- **18-Upgrade Engineering ROI & Fleet Governance:** **`11.5 KB` global rules** (`-45.6%` from `21.0 KB`), **`-82.6%` compact roster**, progressive-disclosure skills, **`<= 3.5 KB` active blackboard**, **`4 → 1` global MCP prune**, **`204` lifecycle hook tests** (`>400→350L` read clamp, `--reporter=dot`, scoped Anti-Slop, consume-once `HEAD^{tree}` `0700` `60s` tree stamps), `<100 ms` `<= 4 KB` sharded symbol maps, Flash-Attention + `q8_0` KV + `8K`-cap Apple Silicon co-residency (`qwen3:8b` `4.8 GB` / `37 tok/s` + pinned `nomic-embed-text`, `0` evictions, `0 MB` swap), **`24/24` zero-bypass GitHub Pro Rulesets** across `12` repos, **`30/30 PASS`** diagnostic doctor (w/ stale-model hygiene), and verified **~20× production token reduction** (**`80.5m`**, **`~1.38M` est tokens** across `20` runs, **`0` quota walls** vs `~29.6M` raw read tokens across `2` resets).
 
 ---
 
@@ -70,8 +70,8 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 | Node Role | Hardware Profile | Dedicated Workloads | Endurance & Protection Model |
 | :--- | :--- | :--- | :--- |
-| **Workstation Node** | 4C/8T Laptop · `12 GB` RAM + `11.4 GB` zram · **Optane NVMe Scratch** | Auto-hydrated Optane `fleet wt` worktrees (`functions/node_modules`, `packages/*/dist`), `hooks.json` (`16–28 ms`), `memory.db` WAL FTS5 (`1.29 ms`), `ccache`/Rust/Node caches, `inotify` dispatch triggers | `vm.vfs_cache_pressure=50`, `[none]` I/O scheduler, `earlyoom`, `fcntl.flock` heavy-build serialization (`15m` TTL), 24/7 no-sleep & Wi-Fi `power_save=0` |
-| **Inference & Backup Node** | Always-On Unified-Memory **Apple Silicon M1 Max (`32 GB`)** | `squad-local` 5-model lineup (`nomic-embed-text`, `hermes3:8b`, `qwen2.5-coder:14b`, `deepseek-r1:14b`, `qwen3:14b`), containers, iOS builds, 4-step DR verification | `launchd` container & `300s` vector watchdogs; `0` cloud tokens burned locally |
+| **Workstation Node** | 4C/8T Laptop · `12 GB` RAM + `11.4 GB` zram · **Optane NVMe Scratch** | Auto-hydrated Optane `fleet wt` worktrees, `hooks.json` (`204` tests), `<100 ms` `<= 4 KB` symbol maps, `memory.db` WAL FTS5 (`1.29 ms`), `ccache`/Rust/Node caches, `inotify` dispatch triggers | `vm.vfs_cache_pressure=50`, `[none]` I/O scheduler, `earlyoom`, `fcntl.flock` heavy-build serialization (`15m` TTL), 24/7 no-sleep & Wi-Fi `power_save=0` |
+| **Inference & Backup Node** | Always-On Unified-Memory **Apple Silicon M1 Max (`32 GB`)** | Tuned Ollama (`OLLAMA_FLASH_ATTENTION=1`, `q8_0` KV, `8K` cap): **`qwen3:8b` (`4.8 GB` / `37 tok/s`) + pinned `nomic-embed-text`** + `14B` tiers, containers, iOS builds, 4-step DR verification | **`0` evictions · `0 MB` swap**; `launchd` container & `300s` vector watchdogs; `0` cloud tokens burned locally |
 | **Edge Network Node** | `8 GB` **ARM SBC** | Primary network DNS filter + unified plain-English control telemetry HUD | Volatile RAM `journald`, `noatime,commit=60` mount, `300s` SQLite flush batching |
 
 ---
@@ -79,7 +79,7 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 ## Complete Documentation Map (`19` Chapters)
 
 ### 01 · Shipped Products & Hardware Systems (`5`)
-- [Arclight Security ERP & CAD](01_Products/Arclight-Security-ERP.md) — Replacing the 4-vendor contract security stack + live `v0.4.0` half-duplex PTT across Maryland, Delaware, and Pennsylvania.
+- [Arclight Security ERP & CAD](01_Products/Arclight-Security-ERP.md) — Replacing the 4-vendor contract security stack across MD/DE/PA (`v0.7.1`: Sprint 2 watchdogs/anti-spoof/QBR, Wave 0 modular state slices, Sprint 2.5 clean production onboarding & `orgMode` lock, `1,098/1,098` tests, `42` Gen-2 App-Check functions).
 - [SonoPrep Pro (iOS)](01_Products/SonoPrep-iOS.md) — Commercial ARDMS RVT/SPI vascular board prep with a 100% On-Device Study Vault and live Doppler physics simulation.
 - [Deterministic Programmatic Video Production Engine](01_Products/Deterministic-Video-Production-Engine.md) — Multi-channel `1080×1920` `60fps` Remotion composition, `-14 LUFS` FFmpeg mastering, Grade `6.6–9.0` anti-slop voice gate, and idempotent publishing.
 - [High-Velocity Retail Floor & Asset PWAs](01_Products/Retail-Operations-PWAs.md) — Single-handed mobile custody and execution tooling built for `<35ms` barcode wedges and instant NFC cold starts.
@@ -87,12 +87,12 @@ Every unverified legal claim or browser quirk passes an independent, context-iso
 
 ### 02 · AI Systems Architecture (7-Chapter Flagship Series)
 - [00 · Cognitive Architecture Overview](02_AI-Systems-Architecture/00-Cognitive-Architecture-Overview.md) — Why single-context coding collapses and how `Halcyon` (XO) orchestrates 18 specialists across 3 compute nodes.
-- [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Single-source `squadron.json` + native `agents/*.md` specs (`commandExecutionPolicy: off`, `skills: []`), `4-Wave` OOM-safe doctrine, `Tier A1/A2/B/C/D` audits, and inter-agent seams.
-- [02 · Five-Tier Memory & Hybrid RRF Retrieval](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) — Structural repo maps, `fcntl.flock` rolling blackboards, FTS5 BM25 + 14-day recency, and `k = 60` Reciprocal Rank Fusion.
-- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, `hooks.json` deterministic gates (`65/65` tests, `16–28 ms`), 27-model `Gemini 4 Neon` + `Hydrogen` + `/swarm` routing, `<24 KB` rule hygiene, and `32.5M`/`325M` `/usage` gauges.
+- [01 · The 18-Specialist Squadron](02_AI-Systems-Architecture/01-The-18-Specialist-Squadron.md) — Single-source `squadron.json` (`-82.6%` compact roster → `18` native `agents/*.md`), `4-Wave` OOM-safe doctrine with Wave 3 Adversarial Break-It Passes (`Sentinel` + `Aegis` → `0 CRIT/HIGH`), and `Tier A1/A2/B/C/D` audits.
+- [02 · Five-Tier Memory & Hybrid RRF Retrieval](02_AI-Systems-Architecture/02-Five-Tier-Memory-and-Hybrid-RRF.md) — `<100 ms` `<= 4 KB` sharded symbol maps, `<= 3.5 KB` `fcntl.flock` rolling blackboards, progressive-disclosure skills, FTS5 BM25 + 14-day recency, and `k = 60` Reciprocal Rank Fusion.
+- [03 · Differential Context & Quota Governance](02_AI-Systems-Architecture/03-Differential-Context-and-Quota-Governance.md) — `<= 2,000`-token compiler, 18-upgrade static prompt tax cuts (`11.5 KB` rules, `4 → 1` MCP prune), **`204` lifecycle hook tests**, 27-model routing, and the **~20× production token benchmark** (`80.5m`, `~1.38M` est tok, `0` quota walls).
 - [04 · Adversarial Verification & Fact-Locked AI](02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md) — Two-node adversarial research (`Scout` ↔ `Muse`) and schema-locked, raw-transcript-preserving production AI.
-- [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Auto-hydrated Optane `fleet wt` worktrees, `<5ms` blob/secret hooks, **`24/24` zero-bypass Pro Rulesets** across `12` repos, **`29/29` integrity doctor**, and DR restores.
-- [06 · Ambient Mobile Dispatch & Local Inference](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) — Zero-RAM `inotify` inbox triggers, automatic `hermes3:8b` JSON dispatch triage, and 5-model `squad-local` offloading.
+- [05 · Autonomous DevOps & Zero-Trust Gates](02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md) — Auto-hydrated Optane `fleet wt` worktrees, `<5ms` blob/secret & scoped Anti-Slop hooks, consume-once `HEAD^{tree}` (`0700`, `60s` TTL) tree stamps, **`24/24` zero-bypass Pro Rulesets**, **`30/30` diagnostic doctor**, and DR restores.
+- [06 · Ambient Mobile Dispatch & Local Inference](02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md) — Zero-RAM `inotify` inbox triggers and Flash-Attention + `q8_0` KV + `8K`-cap Apple Silicon co-residency (`qwen3:8b` `4.8 GB` / `37 tok/s` + pinned `nomic-embed-text`, `0` evictions, `0 MB` swap).
 
 ### 03 · Systems & UI Deep Dives
 - [Half-Duplex Push-to-Talk Over LTE](03_Architecture-Deep-Dives/Half-Duplex-PTT-Over-LTE.md) — Lease-backed floor locks, `10-33 SOS` preemption, synthesized radio chirps, and LiveKit + dead-zone replay.
