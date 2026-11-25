@@ -1,6 +1,6 @@
 ---
 title: Adversarial Verification & Fact-Locked AI
-description: Breaking contextual monoculture via the two-node Scout <-> Muse asynchronous Git audit loop and locking production AI features with temperature-zero schemas, entity traceability, and immutable raw testimony.
+description: Breaking contextual monoculture via two-node Scout <-> Muse audits, the 12-case adversarial specialist eval suite & standalone Wave 3 Break-It Gate (squad-harness), zero-bloat modern-web-guidance CLI Keep/Drop filtering (26/47 false positives eliminated), and temperature-zero schema-locked runtime AI.
 tags:
   - ai-architecture
   - verification
@@ -8,7 +8,8 @@ tags:
   - schemas
   - research
   - legal-safety
-updated: 2026-11-17
+  - adversarial-evals
+updated: 2026-11-25
 ---
 
 # 04 · Adversarial Verification & Fact-Locked AI
@@ -242,10 +243,36 @@ Field inputs pasted from external shift logs or dictated over noisy cellular con
 
 ---
 
-## 5. Multi-Turn Evidence Chains & Audit Traceability
+## 5. Zero-Bloat `modern-web-guidance` CLI Audits & Specialist Keep/Drop Filtering
+
+Embedding encyclopedic browser-compatibility matrices directly inside global AI system prompts bloats every session's static token tax and rots the instant WebKit or Chromium ships a new release. Conversely, blindly auto-fixing raw output from static web-platform scanners introduces regressions wherever deployment targets or physical peripherals diverge from generic web defaults.
+
+Hathcock Labs resolves both failure modes by wiring **`npx modern-web-guidance@latest search|retrieve|legacy-scan`** directly into specialist `SKILL.md` runbooks on demand—consuming **`0` static prompt tokens** during normal work—and gating every scanner finding behind a mandatory **Specialist Keep/Drop Verification Pass**:
+
+### Verified 10-App Fleet Audit Result (`26/47` False Positives Filtered Out)
+Across a 10-application fleet audit (`47` raw findings flagged by `legacy-scan`), independent specialist verification kept **`21` verified hardening wins** (detailed in [Anti-Slop UI Engineering & WebKit Resilience](../03_Architecture-Deep-Dives/Anti-Slop-UI-Engineering.md)) and explicitly **dropped `26/47` (`55.3%`) false positives** that would have damaged production reliability:
+
+| Dropped Finding Class | Why Automated Scanners Flagged It | Real-World Production Hazard Prevented |
+| :--- | :--- | :--- |
+| **iOS 15.0 Deployment Crash Traps** | Nudged replacing defensive CSS/JS fallbacks with newer Baseline APIs (`1dvh` without `100vh` fallback, modern WebKit-absent primitives) | Prevented layout collapse and runtime exceptions inside iOS 15.0 WKWebView baselines |
+| **`<35ms` HID Barcode Scanner Regressions** | Suggested naive form/focus or key-event refactors around global keyboard listeners | Protected high-velocity hardware barcode wedge burst capture (`<35ms` inter-keystroke cadence) from dropped characters |
+| **API-Key Password Autofill Hazards** | Recommended generic `autocomplete` credential attributes on secret configuration inputs | Prevented browser password managers from silently overwriting operator API keys with saved login passwords |
+
+---
+
+## 6. Adversarial Specialist Evals & Standalone Wave 3 Break-It Gate (`squad-harness`)
+
+Prompt-level instructions cannot guarantee that 18 specialists consistently refuse cross-boundary writes, detect subtle auth regressions, or resist prompt-injection leaks across model upgrades. Inside **`squad-harness`** (our code-enforced 4-Wave Mission Runner documented in [05 · Autonomous DevOps & Zero-Trust Gates](05-Autonomous-DevOps-and-Zero-Trust-Gates.md)), verification is separated from authoring through two mechanical controls:
+
+1. **12-Case Adversarial Specialist Eval Suite:** An executable benchmark testing specialist routing, read-only boundary refusals, air-gap leakage traps, unverified statutory claims, and regression detection before harness or prompt revisions promote.
+2. **Standalone Wave 3 Break-It Gate (`Sentinel` + `Aegis`):** Executed independently from Wave 2 implementation sessions with zero shared author-turn reasoning, looping strictly until **`0 CRITICAL / 0 HIGH`** findings remain across security rules, React/WebKit state races, and compiler/E2E gates.
+
+---
+
+## 7. Multi-Turn Evidence Chains & Audit Traceability
 
 Adversarial research only works long-term if teams can audit **why** an architectural rule exists six months later without rummaging through forgotten chat threads:
 
 1. **Append-Only Dropzone Ledger:** Every `requests/*.md` inquiry and `reports/*.md` verdict stays checked into version control permanently. When specifications shift (e.g., an iOS WebKit release resolves a modal backdrop bug), `Scout` opens a fresh inquiry carrying `Follow-up to: 2026-11-12-dialog-light-dismiss.md` rather than rewriting history.
-2. **Verbatim Claim Linkage Inside Playbooks:** Living playbooks cite exact report filenames and primary RFC/statute sections (`29 C.F.R. § 778.115`, `24 Del. C. Ch. 13`, `WebKit Bug 311752`) so any new engineer or specialist questioning a rule retrieves its primary proof in `<1.5 ms` via Optane FTS5.
+2. **Verbatim Claim Linkage Inside Playbooks:** Living playbooks cite exact report filenames and primary RFC/statute sections (`29 C.F.R. § 778.115`, `24 Del. C. Ch. 13`, `WebKit Bug 311752`) so any new engineer or specialist questioning a rule retrieves its primary proof in `<1.5 ms` via local NVMe FTS5.
 3. **Hard Parity Between Product & Runtime Audits:** The exact same statutory boundaries audited externally by `Muse` (`19 Del. C. § 707`, `18 Pa. C.S. § 908`) become mandatory unit-test assertions in `@arclight/compliance-engine` and Zod `responseSchema` negative constraints inside runtime AI prompts—bridging offline due diligence seamlessly into deterministic execution.

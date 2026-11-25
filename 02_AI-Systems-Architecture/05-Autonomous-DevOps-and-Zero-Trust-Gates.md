@@ -1,6 +1,6 @@
 ---
 title: Autonomous DevOps & Zero-Trust Gates
-description: Trunk-based Optane Git worktrees, <5ms pre-commit blob/media/secret & scoped Anti-Slop fireguards, consume-once verified tree stamps (HEAD^{tree}, 0700, 60s TTL), 204 lifecycle hook tests, 24/24 zero-bypass GitHub Pro Rulesets across 12 repos, 30/30 cross-node diagnostic doctor, and round-trip verified DR restores.
+description: Squadron Harness v1 + Micro-Chunk DAG Swarm Engine (code-enforced 4-Wave Mission Runner, Wave 0 local M1 Max offload, standalone Wave 3 Break-It Gate, 12-case adversarial evals), zero-bloat modern-web-guidance CLI fleet audits, Optane Git worktrees, <5ms pre-commit hooks, 24/24 zero-bypass Pro Rulesets, and 30/30 doctor.
 tags:
   - ai-architecture
   - devops
@@ -9,14 +9,35 @@ tags:
   - rulesets
   - disaster-recovery
   - playwright
-updated: 2026-11-23
+  - dag-swarm
+updated: 2026-11-25
 ---
 
 # 05 · Autonomous DevOps & Zero-Trust Gates
 
 Telling an AI coding agent in prose *"remember to run TypeScript, avoid pushing multi-megabyte media blobs, and verify mobile viewports"* provides zero mechanical safety. Under sprint pressure or concurrent multi-agent execution, unguarded branches invite dangling half-done trees, binary repository bloat, accidental force-pushes, or overwritten release tags unless **OS hooks, remote GitHub Rulesets, compilers, and headless browser suites enforce correctness automatically**.
 
-Hathcock Labs locks code quality, trunk immutability, secret/blob hygiene, rendered DOM geometry, and backup recoverability across **12 active repositories** behind **Optane NVMe feature worktrees (`fleet wt`)**, `<5ms` pre-commit fireguards with **scoped Anti-Slop gates**, **consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL)**, **`204` automated lifecycle hook tests**, **2-layer local + remote `24/24` zero-bypass GitHub Pro Rulesets**, linear-forward `fleet release` / `fleet rollback`, grouped Renovate controls, a **`30/30` cross-node diagnostic doctor**, and automated round-trip restore proofs.
+Hathcock Labs locks code quality, trunk immutability, secret/blob hygiene, rendered DOM geometry, and backup recoverability across **12 active repositories** behind **Squadron Harness v1 (`squad-harness`) + Micro-Chunk DAG Swarm execution**, **zero-bloat `modern-web-guidance` CLI fleet audits**, **local NVMe feature worktrees (`fleet wt`)**, `<5ms` pre-commit fireguards with **scoped Anti-Slop gates**, **consume-once verified tree stamps (`HEAD^{tree}`, `0700`, `60s` TTL)**, **`204` automated lifecycle hook tests**, **2-layer local + remote `24/24` zero-bypass GitHub Pro Rulesets**, linear-forward `fleet release` / `fleet rollback`, grouped Renovate controls, a **`30/30` cross-node diagnostic doctor**, and automated round-trip restore proofs.
+
+---
+
+## Squadron Harness v1 & Micro-Chunk DAG Swarm Engine (`squad-harness`)
+
+Coordinating multi-specialist engineering sprints purely through free-form chat instructions invites skipped audit waves, overlapping file edits, and inconsistent tier enforcement. **Squadron Harness v1 (`squad-harness`)** replaces prose orchestration with a **code-enforced 4-Wave Mission Runner** backed by atomic local NVMe state and a micro-chunk Directed Acyclic Graph (DAG) scheduler:
+
+```mermaid
+flowchart LR
+    W0["Wave 0 · Zero-Token M1 Max\nsquad-local scaffold (21.4 tok/s)\nsquad-context --compress-local (93-95%)"] --> W1["Wave 1 · Sequential Contracts\nSchemas · Security Rules · KMS\nRead-Only Primary-Source Veto"]
+    W1 --> W2["Wave 2 · Micro-Chunk DAG Swarm\nDisjoint File Ownership · Parallel Slices\nStrict Tier & Boundary Enforcement"]
+    W2 --> W3["Wave 3 · Standalone Break-It Gate\nSentinel + Aegis (Loop -> 0 CRIT/HIGH)\n12-Case Adversarial Eval · Serialized QA"]
+```
+
+### Mechanical Guarantees Enforced in Code
+1. **Wave 0 Local Apple Silicon Offload (`0` Cloud Tokens):** Before cloud frontier specialists launch, Wave 0 invokes `squad-local scaffold` (`qwen2.5-coder:14b` @ `21.4 tok/s`) for Zod/Vitest boilerplate and `squad-context --compress-local` (`qwen3:8b` @ `36.9 tok/s`, **`93–95%` compression**) to shrink raw logs/diffs cleanly.
+2. **Micro-Chunk DAG Disjoint Partitioning:** Wave 2 decomposes implementation into small, dependency-ordered DAG nodes with explicit disjoint file write scopes—preventing concurrent specialists from clobbering shared files while serializing heavy builds (`vite build`, Playwright, Metro) via kernel `fcntl.flock` to protect `12 GB` workstation RAM.
+3. **Standalone Wave 3 Break-It Gate & 12-Case Adversarial Eval Suite:** Wave 3 runs **`Sentinel` + `Aegis`** as an isolated, repeatable gate looping until **`0 CRITICAL / 0 HIGH`** findings clear, reinforced by a **12-case adversarial specialist eval suite** that catches routing bypasses, boundary violations, and air-gap slips before harness changes ship.
+4. **Atomic Local NVMe Mission State & Strict Tier Floors:** Every wave transition, node verdict, and retry watermark persists atomically (`tempfile + os.fsync() + os.replace()`) on local NVMe scratch—guaranteeing crash-resumable missions while blocking low-tier model downgrades on mandatory frontier domains (`Vault`, `Apex`, `Nexus`, `Sentinel`, `Echo`, `Scout`).
+5. **Zero-Bloat `modern-web-guidance` CLI Fleet Audit Integration:** Specialist web-platform skills run **`npx modern-web-guidance@latest search|retrieve|legacy-scan`** on demand rather than bloating static prompts, pairing raw scanner output with mandatory specialist Keep/Drop review (filtering out **`26/47` false positives** across our 10-app fleet, including iOS 15.0 deployment crash traps, `<35ms` HID barcode scanner regressions, and API-key password autofill hazards; see [04 · Adversarial Verification](04-Adversarial-Verification-and-Fact-Locked-AI.md)).
 
 ---
 

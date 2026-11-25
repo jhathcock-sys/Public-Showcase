@@ -1,18 +1,36 @@
 ---
 title: November 2026 Engineering Milestones
-description: Verified production releases, test counts, AI infrastructure upgrades, and security hardening milestones completed across Hathcock Labs systems through November 2026.
+description: Verified production releases, test counts, AI infrastructure upgrades, HALCYON Flight Deck voice PWA, Squadron Harness v1, 10-app Modern Web Guidance audit, and Apple Silicon v1.2 co-residency shipped across Hathcock Labs systems through November 2026.
 tags:
   - build-log
   - milestones
   - releases
   - verification
   - benchmarks
-updated: 2026-11-23
+updated: 2026-11-25
 ---
 
 # November 2026 Engineering Milestones
 
 An engineering log of verified capabilities, architectural shifts, and quality benchmarks shipped across Hathcock Labs repositories through November 2026.
+
+---
+
+## 2026-11-23 → 2026-11-25 — Squadron Harness v1 + DAG Swarm, HALCYON Flight Deck Voice PWA, 10-App Modern Web Guidance Audit & Apple Silicon v1.2
+
+Shipped a four-pillar autonomy, mobile voice, web-platform hardening, and local-inference wave across our orchestration stack and 10-application fleet ([04 · Adversarial Verification](../02_AI-Systems-Architecture/04-Adversarial-Verification-and-Fact-Locked-AI.md), [05 · Autonomous DevOps](../02_AI-Systems-Architecture/05-Autonomous-DevOps-and-Zero-Trust-Gates.md), [06 · Flight Deck & Local Inference](../02_AI-Systems-Architecture/06-Ambient-Mobile-Dispatch-and-Local-Inference.md), [Anti-Slop UI Engineering](../03_Architecture-Deep-Dives/Anti-Slop-UI-Engineering.md)):
+
+- **Squadron Harness v1 + Micro-Chunk DAG Swarm Engine (`squad-harness`):**
+  - Replaced prose-guided multi-agent runs with a **code-enforced 4-Wave Mission Runner** backed by atomic local NVMe mission state, strict tier/boundary enforcement, disjoint Wave 2 DAG file partitioning, Wave 0 local M1 Max scaffolding/compression, a standalone **Wave 3 Break-It Gate (`Sentinel` + `Aegis`, looping until `0 CRIT/HIGH`)**, and a **12-case adversarial specialist eval suite**.
+- **HALCYON Flight Deck Mobile / iPadOS Voice PWA (~4× Faster Voice Loop):**
+  - Built a local **FastAPI + persistent warm NDJSON agent bridge** paired with an installable Android/iPadOS PWA cutting warm time-to-first-token by **~4× (`8.5–11.5s` → `2.32s`)** via uncompressed **`16 kHz` WAV TTS (`0.29s`)**, a **3-way pipelined sentence-streaming queue**, **`scribe_v1` Push-to-Talk** (with `audio/mp4` Safari/iPadOS fallback), dual-channel **`---` voice framing** (spoken executive lead above `---`, structured tables/checklists rendered silently below), and a full-width **`76px` 64-bar audio-reactive visualizer** with `16px` anti-zoom mobile inputs.
+  - Hardened behind **zero-token Tailscale Serve identity auth** (`--no-proxy-headers`, constant-time `Tailscale-User-Login`, W3C Fetch Metadata top-level nav allow / cross-site API block, security-first `sw.js` caching `/assets/*` only) and shipped an **in-house zero-token knowledge graph (`62` notes / `94` nodes / `743` edges)**.
+- **Zero-Bloat `modern-web-guidance` 10-App Fleet Audit & Remediation (`26/47` False Positives Filtered):**
+  - Wired **`npx modern-web-guidance@latest search|retrieve|legacy-scan`** on demand into specialist skills (`0` static prompt bloat); specialist Keep/Drop verification filtered **`26/47` (`55.3%`) false positives** (dropping iOS 15.0 crash traps, `<35ms` HID barcode scanner regressions, and API-key password autofill hazards).
+  - Shipped verified cross-engine remediations across the 10-app fleet: **React 19 `<dialog>` portals** (`createPortal`, `programmaticCloseRef` + `!dialog.open && e.target === dialog` async-close race fix, `e.stopPropagation()` on stacked modals, `pointerdown`/`pointerup`/`pointercancel` light-dismiss, `overscroll-behavior: contain`), **Safari 18.2–26.1 `@supports not (scrollbar-color: auto)`** guards (plus WebKit Bug 311752 ban), **iOS 15.0 progressive `@supports (height: 1dvh)` / `1svh` fallbacks**, and **`bfcache`-safe `no-cache, max-age=0, must-revalidate`** headers with `immutable` scoped strictly to `/assets/**`.
+- **Local Apple Silicon M1 Max Inference v1.2 (3-Model Co-Residency, `15.13 GB` / `32 GiB`):**
+  - Pinned **`nomic-embed-text` (`0.34 GB`) + `qwen3:8b` (`5.12 GB`) + `qwen2.5-coder:14b` (`9.67 GB`) = `15.13 GB`** simultaneously via `OLLAMA_MAX_LOADED_MODELS=3`, `OLLAMA_FLASH_ATTENTION=1`, `OLLAMA_KV_CACHE_TYPE=q8_0`, and `OLLAMA_KEEP_ALIVE=30m` (`0` evictions, `0 MB` swap).
+  - Verified at **`0` cloud tokens**: **`squad-local summarize` (`qwen3:8b` @ `36.9 tok/s`)** delivering **`93–95%` payload compression** (`squad-context --compress-local`) and **`squad-local scaffold` (`qwen2.5-coder:14b` @ `21.4 tok/s`)** wired into Wave 0 Zod/Vitest scaffolding—while keeping root-cause debugging and security audits strictly on cloud frontier specialists.
 
 ---
 
@@ -112,7 +130,9 @@ Completed full multi-loop verification for [SonoPrep Pro (iOS)](../01_Products/S
 | **SonoPrep Pro (`iOS`)** | Vitest + Playwright Free/Pro + `oxlint` + `xcodebuild` | **`34/34` unit; `15/15` E2E; `0` lint warns** | All chunks `<500 KB`; native Release build |
 | **Cognitive Memory (`squad-memory`)** | Live Optane WAL query & `<100 ms` sharded symbol maps | **`0.63–1.29 ms` lexical; `<= 4 KB` symbol maps; `<= 3.5 KB` blackboard** | `<300` returned tokens; `>96%` startup drop |
 | **18-Upgrade Efficiency & Hooks** | Automated lifecycle hook suite + Wave 0 / Sprint 2.5 proof | **`204` hook tests; `11.5 KB` rules (`-45.6%`); `-82.6%` roster; `4 → 1` MCP** | **`~1.38M` est tok / `80.5m` / `0` quota walls (~20× cut)** |
-| **Local Apple Silicon Inference** | Flash Attn + `q8_0` KV + `8K` cap co-residency benchmark | **`qwen3:8b` (`4.8 GB` VRAM / `37 tok/s`) + pinned `nomic-embed-text`** | **`0` evictions · `0 MB` swap · `0` cloud tokens** |
+| **Local Apple Silicon Inference v1.2** | 3-model co-residency (`15.13 GB` / `32 GiB` unified RAM) | **`nomic-embed-text` (`0.34 GB`) + `qwen3:8b` (`5.12 GB` / `36.9 tok/s`, `93–95%` compression) + `qwen2.5-coder:14b` (`9.67 GB` / `21.4 tok/s`, Wave 0 scaffolding)** | **`0` evictions · `0 MB` swap · `0` cloud tokens** |
+| **HALCYON Flight Deck & Graph PWA** | Warm NDJSON bridge + 3-way WAV pipeline + Tailscale Serve | **`2.32s` warm first token (~4× cut from `8.5–11.5s`), `0.29s` `16 kHz` WAV TTS, `62` notes / `94` nodes / `743` edges** | Zero-token auth (`--no-proxy-headers`, W3C Fetch Metadata, `/assets/*` `sw.js`) |
+| **Squadron Harness v1 & MWG Audit** | Code-enforced 4-Wave DAG + 12-case evals + 10-app `modern-web-guidance` | **Standalone Wave 3 Break-It Gate (`0 CRIT/HIGH`); `26/47` false positives filtered (`55.3%`) across 10 apps** | Atomic local NVMe state; zero static prompt bloat |
 | **DevOps Hooks & Pro Rulesets (`12` Repos)** | Isolated hook tests + GitHub Pro zero-bypass API audit | **Scoped Anti-Slop + `HEAD^{tree}` `0700` `60s` stamps; `24/24` Rulesets** | `<5 ms` commit gate; auto-hydrated `fleet wt`; `<5s` `fleet rollback` |
 | **Fleet & Governance Readiness (`squad-doctor`)** | Concurrent 4-worker 3-node + governance + stale-model probe | **`30/30 PASS`** (infra + governance + automated stale-model hygiene) | Parallel 3-node + SSOT & model parity sweep |
 
@@ -127,26 +147,27 @@ Rather than shipping quick patches, core failure classes observed across enginee
 | **2026-10** | Cold-start NFC tap routes overwriting recent tablet custody updates on arrival | Mandatory atomic `runTransaction` `mergeStoreState` arbitrating `checkedOutAt` vs `renamedAt` independently |
 | **2026-10** | Unbounded operational custody logs threatening Firestore's `1 MiB` document limit | UTF-8 `TextEncoder` `750 KB` safety watermark trimming strictly oldest ephemeral log tails |
 | **2026-10** | iOS Safari breaking audio cues after screen locks & hiding custom modal focus bugs | `SoundService` `visibilitychange` `ctx.resume()` recovery + native `<dialog>` coordinate light-dismiss |
-| **2026-11** | Multi-agent initialization burns (`~112k` tokens/startup) & file append collisions | Rolling `<= 3.5 KB` (`6`-entry) blackboard behind re-entrant `fcntl.flock` + `<1.5 ms` Optane FTS5 queries |
-| **2026-11** | Concurrent `pnpm` monorepo installs halting on unapproved transitive lifecycle scripts | Pre-approved `allowBuilds` manifests + centralized Optane package cache warm-ups pre-wave |
+| **2026-11** | Multi-agent initialization burns (`~112k` tokens/startup) & file append collisions | Rolling `<= 3.5 KB` (`6`-entry) blackboard behind re-entrant `fcntl.flock` + `<1.5 ms` local NVMe FTS5 queries |
+| **2026-11** | Concurrent `pnpm` monorepo installs halting on unapproved transitive lifecycle scripts | Pre-approved `allowBuilds` manifests + centralized local NVMe package cache warm-ups pre-wave |
 | **2026-11** | Generic dark `#07090e` 4-KPI-card layouts appearing on daytime operational dashboards | Domain-adaptive Daylight Enterprise / Clinical Calm archetypes verified by Playwright DOM/WCAG gate |
-| **2026-11** | Mobile Safari `<dialog>` scrollbar transitions flickering (WebKit Bug 311752) | Global `:user-invalid` + explicit `aria-invalid="false"` sync + ban on `scrollbar-color` transitions |
+| **2026-11** | Mobile Safari `<dialog>` scrollbar transitions flickering (WebKit Bug 311752) | Global `:user-invalid` + explicit `aria-invalid="false"` sync + `@supports not (scrollbar-color: auto)` + ban on `scrollbar-color` transitions |
 | **2026-11** | Sliding quota bucket drift, false weekly `[CRIT]` alarms & parent-alias billing distortion | Fixed `32.5M` 5h bucket + `325M` `~7d est` (false-`[CRIT]` suppressed while unthrottled), live `/usage` (`XX% LIVE`, `Cld:XX%/XdXXh`), child-transcript tracking, `0.35x` `Gemini 4 Low` & 27-model Neon/Hydrogen routing |
 | **2026-11** | Static prompt tax (`21.0 KB` rules, `4` global MCPs, verbose test logs & unbounded reads) causing `~29.6M`-token sprints across `2` quota resets | 18-upgrade ROI overhaul: **`11.5 KB` rules (`-45.6%`)**, **`-82.6%` roster**, **`4 → 1` MCP prune**, progressive skills, **`204` hook tests** (auto-clamping `>400→350L` reads, `--reporter=dot`, scoped Anti-Slop, consume-once `HEAD^{tree}` `0700` `60s` tree stamps) & `<100 ms` `<= 4 KB` symbol maps → **~20× token cut (`~1.38M` est tok, `0` quota walls)** |
-| **2026-11** | Default `64K` Ollama Modelfile KV-cache reservations evicting `nomic-embed-text` & causing swap thrash on Apple Silicon | Locked Flash Attention + `q8_0` KV cache + `8K` context cap (`qwen3:8b` at **`4.8 GB` VRAM / `37 tok/s`** co-resident with pinned `nomic-embed-text`, **`0` evictions & `0 MB` swap**) + `30/30` doctor stale-model hygiene |
-| **2026-11** | React 19 StrictMode `<dialog>` double-invocation race & privileged CSV onboarding escalation risks | Mandatory Wave 3 **Adversarial Break-It Audits (`Sentinel` + `Aegis`, looping until `0 CRIT/HIGH`)** catching & killing `22` real defects, Firestore `orgMode` immutability lock, and deterministic privileged-role rejection on atomic `<= 400`-row CSV imports |
+| **2026-11** | Default `64K` Ollama Modelfile KV-cache reservations evicting pinned models & causing swap thrash on Apple Silicon | Locked `OLLAMA_MAX_LOADED_MODELS=3`, Flash Attention, `q8_0` KV cache, `OLLAMA_KEEP_ALIVE=30m` & `8K` cap (**`15.13 GB` 3-model co-residency**: `nomic-embed-text` `0.34 GB` + `qwen3:8b` `5.12 GB` @ `36.9 tok/s` + `qwen2.5-coder:14b` `9.67 GB` @ `21.4 tok/s`, **`0` evictions & `0 MB` swap**) |
+| **2026-11** | React 19 StrictMode `<dialog>` queued async `close` races, stacked modal close cascades, `no-store` `bfcache` blocks & raw scanner false positives | `createPortal` + `programmaticCloseRef` + `!dialog.open && e.target === dialog` + `e.stopPropagation()` + `pointercancel` reset + `overscroll-behavior: contain`; `no-cache` + `/assets/**` `immutable`; on-demand `modern-web-guidance` + Keep/Drop filter (**`26/47` false positives dropped**) |
+| **2026-11** | Cold-spawn mobile voice latency (`8.5–11.5s`) and static browser bearer-token risk on private control panels | **HALCYON Flight Deck** warm NDJSON bridge (**`2.32s`**, ~4× faster) + `16 kHz` WAV (`0.29s`) + 3-way sentence queue + `--no-proxy-headers` constant-time `Tailscale-User-Login` + W3C Fetch Metadata + `/assets/*`-only `sw.js` |
 
 ---
 
 ## Earlier Infrastructure & Hardware Engineering Milestones (2026-10 to 2026-11)
 
-### 2026-11-08 · Three-Node Topology, Optane Cache & Edge DNS Shield Hardening
-- **Workstation Optane Scratch Routing:** Redirected Rust `CARGO_TARGET_DIR`, `ccache`, `pnpm` store, `uv`/`npm` caches, and `memory.db` WAL onto high-IOPS Intel Optane NVMe locked to the `[none]` direct multi-queue scheduler with `vm.vfs_cache_pressure=50`, `11.4 GB` `zstd` `zram`, and compositor-protecting `earlyoom` guards.
+### 2026-11-08 · Three-Node Topology, Local NVMe Cache & Edge DNS Shield Hardening
+- **Workstation NVMe Scratch Routing:** Redirected Rust `CARGO_TARGET_DIR`, `ccache`, `pnpm` store, `uv`/`npm` caches, and `memory.db` WAL onto high-IOPS local NVMe scratch locked to the `[none]` direct multi-queue scheduler with `vm.vfs_cache_pressure=50`, `11.4 GB` `zstd` `zram`, and compositor-protecting `earlyoom` guards.
 - **ARM Edge DNS Flash-Wear Hardening:** Reconfigured the always-on network DNS node with `Storage=volatile` (`32M` `tmpfs` `journald`), `noatime,commit=60` mounts, `300s` FTL SQLite write batching, and a unified telemetry HUD filtering RFC 9462 DDR noise while synchronizing lists with secondary Apple Silicon DNS every 15 minutes.
 
 ### 2026-11-05 · Zero-RAM Kernel `inotify` Mobile Capture & Local LLM Routing
 - **Event-Driven Inbox Wakeups:** Replaced resident directory polling scripts with declarative systemd `.path` + `oneshot` units triggering `<2s` upon mobile markdown or audio sync while idling at `0 MB` RAM.
-- **Atomic Sync Safety & Local Inference Offload:** Added `tempfile + os.fsync() + os.replace()` atomic file swaps across all inbox writes, resilient `audio-untranscribed` fallback archives for offline recordings, and automatic `hermes3:8b` structured JSON triage on unstructured `01_Dispatch/` notes alongside 5-bullet digests, `nomic-embed-text` vector caching, and the 5-model `squad-local` M1 Max zero-token CLI (`0` cloud tokens).
+- **Atomic Sync Safety & Local Inference Offload:** Added `tempfile + os.fsync() + os.replace()` atomic file swaps across all inbox writes, resilient `audio-untranscribed` fallback archives for offline recordings, and automatic local structured JSON triage on unstructured `dispatch-inbox/` notes alongside 5-bullet digests, `nomic-embed-text` vector caching, and the `squad-local` Apple Silicon zero-token CLI (`0` cloud tokens).
 
 ### 2026-10-28 · Parametric OpenSCAD Hardware Enclosures & Retail Floor PWAs
 - **Pause-at-Layer NFC/RFID Keyfobs:** Calibrated `0.4mm` nozzle tolerances (`+0.40 mm` XY drop-in cavity, `+0.20 mm` bridge clearance, `0.20 mm` chamfered elephant's-foot relief, layer-12 `M600` pauses) paired with XY-oriented tapered cantilever clips (`0.5 * t_root` beam taper) printed in PETG and `95A` TPU bumpers.
